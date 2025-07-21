@@ -47,9 +47,10 @@ nnoremap <silent> <Space><Space> :noh<CR>
 call plug#begin()
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'mhinz/vim-signify'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'mhinz/vim-signify'
+Plug 'machakann/vim-highlightedyank'
 Plug 'ziglang/zig.vim'
 call plug#end()
 
@@ -115,6 +116,7 @@ au FileType json setl ts=2 sts=2 sw=2 fp=jq et
 let g:fzf_vim = {}
 let g:fzf_layout = { 'down': '41%' }
 let g:fzf_vim.preview_window = ['right,41%,<70(up,41%)']
+let g:highlightedyank_highlight_duration = 150
 nnoremap <Space>f <Cmd>Files<CR>
 nnoremap <Space>F :let @+=expand('<cword>') \| Files<CR>
 nnoremap <Space>b <Cmd>Buffers<CR>

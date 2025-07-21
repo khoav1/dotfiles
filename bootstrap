@@ -35,8 +35,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
   echo '[-] installing essential packages [-]'
   brew update
-  brew install curl wget git coreutils watch ncdu cmake ninja tree parallel
-  brew install zig tmux fzf ripgrep jq universal-ctags maccy font-hack
+  brew install curl wget git coreutils watch ncdu cmake ninja
+  brew install zig tmux fzf ripgrep jq tree parallel universal-ctags
 else
   echo '[-] checking secure boot state [-]'
   if [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]]; then
@@ -60,16 +60,6 @@ else
     echo 'remember to add `mangohud %command%` to steam launch options'
   fi
 
-  target_dir=$XDG_DATA_HOME/fonts
-  if [ ! -d "$target_dir" ] ; then
-    echo '[-] installing favourite font [-]'
-    wget https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip
-    mkdir -p $target_dir
-    unzip Hack-v3.003-ttf.zip -d $target_dir
-    rm -f Hack-v3.003-ttf.zip
-    fc-cache -f -v
-  fi
-
   target_dir=$XDG_DATA_HOME/elementary-xfce
   if [ ! -d "$target_dir" ] ; then
     echo '[-] building elementary icons for xfce [-]'
@@ -80,6 +70,18 @@ else
     make
     sudo make install
     sudo make icon-caches
+  fi
+
+  target_dir=$XDG_DATA_HOME/ctags
+  if [ ! -d "$target_dir" ] ; then
+    echo '[-] building universal-ctags [-]'
+    sudo dnf install -y autoconf automake pkg-config gcc make
+    git clone https://github.com/universal-ctags/ctags.git $target_dir
+    cd $target_dir
+    ./autogen.sh
+    ./configure
+    make
+    sudo make install
   fi
 
   target_dir=$XDG_DATA_HOME/ibus-bamboo
