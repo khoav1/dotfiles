@@ -35,6 +35,6 @@ nmap K <Action>(ShowHoverInfo)
 nmap gx <Action>(RunClass)
 nmap gX <Action>(RunMenu)
 nmap - <Action>(SelectInProjectView)
-nmap <C-n> <Action>(GotoNextError)zz
-nmap <C-p> <Action>(GotoPreviousError)zz
+nmap <C-j> <Action>(GotoNextError)zz
+nmap <C-k> <Action>(GotoPreviousError)zz
 nmap <C-w>o <Action>(HideAllWindows)
