@@ -15,9 +15,9 @@ vim.lsp.config("*", {
 })
 
 require("laefhat.lsp.clangd")
-require("laefhat.lsp.gopls")
+require("laefhat.lsp.zls")
 require("laefhat.lsp.tsserver")
 require("laefhat.lsp.pylsp")
 
 -- can be disabled by `:lua vim.lsp.enable("tsserver", false)` for example
-vim.lsp.enable({ "clangd", "gopls", "tsserver", "pylsp" })
+vim.lsp.enable({ "clangd", "zls", "tsserver", "pylsp" })
