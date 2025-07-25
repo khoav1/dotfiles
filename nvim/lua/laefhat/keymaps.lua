@@ -10,6 +10,7 @@ if vim.fn.executable("rg") then
     vim.keymap.set("n", "<Space>gw", [[:silent grep! --case-sensitive --fixed-strings '<C-r><C-w>'<CR>]])
     vim.keymap.set("n", "<Space>/", [[:silent grep! --hidden --no-ignore --fixed-strings ''<Left>]])
 end
+
 vim.keymap.set("v", "//", [["0y/\V<C-r>=escape(@0,'/\')<CR><CR>]])
 vim.keymap.set("n", "<Space>e", ":e %:h<C-z>")
 
@@ -23,9 +24,7 @@ vim.keymap.set("n", "<Space>P", [["+P]])
 vim.keymap.set("n", "-", vim.cmd.Explore)
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "netrw",
-    callback = function(e)
-        vim.keymap.set("n", "<C-c>", vim.cmd.Rexplore, { buffer = 0 })
-    end
+    callback = function(e) vim.keymap.set("n", "<C-c>", vim.cmd.Rexplore, { buffer = 0 }) end
 })
 
 vim.keymap.set("n", "<Space>tg", function()
