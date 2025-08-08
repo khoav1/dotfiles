@@ -17,11 +17,7 @@ if tmux has-session -t $pattern 2>/dev/null; then
 fi
 
 # otherwise, find the first matched repo
-# - awk -F/ '{print NF, $0}': adds the number of path components (directory depth) as the first column
-# - sort -n: sorts numerically by depth (shallowest first)
-# - cut -d' ' -f2-: removes the depth number, returning only the path
-# - head -n 1: takes the first (shallowest) result
-dir=$(find ~/personal ~/repos -maxdepth 3 -type d -iname "*$pattern*" | awk -F/ '{print NF, $0}' | sort -n | cut -d' ' -f2- | head -n 1)
+dir=$(find ~/personal ~/repos -maxdepth 3 -type d -iname "*$pattern*" | head -n 1)
 if [ -z "${dir}" ]; then
   tmux display-message "no project found matching '$pattern'"
   exit 0
