@@ -17,6 +17,7 @@ HISTSIZE=10000
 # indicates support for 24-bit true color
 export TERM=tmux-256color
 export COLORTERM=truecolor
-# ensures go tools are accessible from the command line
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
+# inputs on x11
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus

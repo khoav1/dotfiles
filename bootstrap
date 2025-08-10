@@ -41,12 +41,40 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo '[-] installing essential packages [-]'
   brew update
   brew install curl wget git coreutils watch cmake ninja tree parallel tmux ripgrep jq
-  brew install google-chrome alacritty go orbstack maccy ncdu tldr universal-ctags font-hack
+  brew install google-chrome alacritty orbstack maccy ncdu tldr universal-ctags font-hack
 else
+  echo '[-] checking secure boot state [-]'
+  if [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]]; then
+    echo "could not determine the secure boot state."
+    exit 1
+  fi
+
   echo '[-] installing essential packages [-]'
-  sudo apt-get update && sudo apt-get upgrade -y
-  sudo apt-get install -y curl wget zip zsh git coreutils gcc clang cmake make ninja-build ncdu
-  sudo apt-get install -y alacritty parallel watch tree vim tmux golang ripgrep jq universal-ctags tldr
+  sudo dnf upgrade -y
+  sudo dnf install -y curl wget zip zsh git coreutils gcc clang cmake make ninja-build ncdu
+  sudo dnf install -y alacritty parallel watch tree vim tmux ripgrep jq xclip redshift tldr
+
+  if lspci | grep -E "VGA|3D" | grep -iq "AMD"; then
+    echo '[-] enabling rpm fusion repositories [-]'
+    sudo dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+    sudo dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+    ln -sfn $(pwd)/MangoHud $XDG_CONFIG_HOME/MangoHud
+    echo '[-] installing steam essential packages [-]'
+    sudo dnf install -y steam rocm-smi mangohud flatpak
+    echo 'remember to add `mangohud %command%` to steam launch options'
+  fi
+
+  target_dir=$XDG_DATA_HOME/elementary-xfce
+  if [ ! -d "$target_dir" ] ; then
+    echo '[-] building elementary icons for xfce [-]'
+    sudo dnf install -y gcc gdk-pixbuf2-devel gtk-update-icon-cache make optipng pkgconf rsvg-pixbuf-loader
+    git clone https://github.com/shimmerproject/elementary-xfce $target_dir
+    cd $target_dir
+    ./configure
+    make
+    sudo make install
+    sudo make icon-caches
+  fi
 
   target_dir=$XDG_DATA_HOME/fonts
   if [ ! -d "$target_dir" ] ; then
@@ -56,6 +84,15 @@ else
     unzip -j Hack-v3.003-ttf.zip 'ttf/*.ttf' -d "$target_dir"
     rm -f Hack-v3.003-ttf.zip
     fc-cache -f -v
+  fi
+
+  target_dir=$XDG_DATA_HOME/ibus-bamboo
+  if [ ! -d "$target_dir" ] ; then
+    echo '[-] building ibus-bamboo [-]'
+    sudo dnf install -y ibus make go libX11-devel libXtst-devel gtk3-devel
+    git clone https://github.com/BambooEngine/ibus-bamboo.git $target_dir
+    cd $target_dir
+    sudo make install PREFIX=/usr
   fi
 fi
 
