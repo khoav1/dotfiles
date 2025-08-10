@@ -1,9 +1,7 @@
 [window]
 padding = { x = 5, y = 6 }
 dynamic_padding = true
-decorations = "Buttonless"
-opacity = 0.85
-blur = true
+opacity = 0.95
 startup_mode = "Maximized"
 resize_increments = true
 dynamic_title = true
