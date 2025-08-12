@@ -40,7 +40,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
   echo '[-] installing essential packages [-]'
   brew update
-  brew install curl wget git coreutils watch cmake ninja tree parallel tmux ripgrep jq
+  brew install curl wget git coreutils watch cmake ninja tree parallel tmux fzf ripgrep jq
   brew install google-chrome alacritty orbstack maccy ncdu tldr universal-ctags font-hack
 else
   echo '[-] checking secure boot state [-]'
@@ -56,7 +56,7 @@ else
   fi
 
   echo '[-] installing essential packages [-]'
-  sudo apt-get install -y curl wget zip zsh git coreutils gcc clang cmake make ninja-build ncdu
+  sudo apt-get install -y curl wget zip zsh git coreutils gcc clang cmake make ninja-build ncdu fzf
   sudo apt-get install -y alacritty parallel watch tree vim tmux ripgrep jq universal-ctags wl-clipboard
 
   if lspci | grep -E "VGA|3D" | grep -iq "AMD"; then

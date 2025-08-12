@@ -1,11 +1,11 @@
 set nocompatible
 set regexpengine=2
-set noswapfile
 set shiftwidth=2
 set tabstop=2
 set softtabstop=2
 set expandtab
 set shiftround
+set noswapfile
 set showmatch
 set splitbelow
 set splitright
@@ -13,7 +13,6 @@ set title
 set visualbell
 set ignorecase
 set smartcase
-set background=dark
 set autoread
 set autoindent
 set incsearch
@@ -24,6 +23,7 @@ set history=10000
 let &showbreak='+++ '
 set lcs=tab:>\ ,trail:-,nbsp:+
 set list
+set background=dark
 filetype on
 syntax on
 autocmd QuickFixCmdPost [^l]* cwindow

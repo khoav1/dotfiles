@@ -19,6 +19,7 @@ vim.opt.softtabstop = 2
 vim.opt.expandtab = true
 vim.opt.shiftround = true
 -- disables editor background
+vim.cmd.colorscheme("unokai")
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 -- save change history to files in undodir

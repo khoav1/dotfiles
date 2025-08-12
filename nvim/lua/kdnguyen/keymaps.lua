@@ -36,22 +36,22 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function(e) vim.keymap.set("n", "<c-c>", vim.cmd.Rexplore, { buffer = 0 }) end
 })
 
--- minimal fuzzy files finding using rigrep
-local files_cmd = "rg --files --hidden --follow --glob '!.git' | grep -i "
-vim.api.nvim_create_user_command("Files", function(opts)
-    local pattern = opts.args
-    if vim.fn.filereadable(pattern) > 0 then
-        vim.cmd.edit(vim.fn.fnameescape(pattern))
-        return
-    end
-    local files = vim.fn.systemlist(files_cmd .. vim.fn.shellescape(pattern))
-    if #files > 0 and vim.fn.filereadable(files[1]) > 0 then
-        vim.cmd.edit(vim.fn.fnameescape(files[1]))
-    else
-        vim.notify("no file matches", vim.log.levels.WARN)
-    end
-end, { nargs = "*", complete = function(arg_lead, _, _)
-        return vim.fn.systemlist(files_cmd .. vim.fn.shellescape(arg_lead))
-    end })
-vim.keymap.set("n", "<space>ff", [[:Files ]])
-vim.keymap.set("n", "<space>fw", [[:Files <c-r><c-w>]])
+-- -- minimal fuzzy files finding using rigrep
+-- local files_cmd = "rg --files --hidden --follow --glob '!.git' | grep -i "
+-- vim.api.nvim_create_user_command("Files", function(opts)
+--     local pattern = opts.args
+--     if vim.fn.filereadable(pattern) > 0 then
+--         vim.cmd.edit(vim.fn.fnameescape(pattern))
+--         return
+--     end
+--     local files = vim.fn.systemlist(files_cmd .. vim.fn.shellescape(pattern))
+--     if #files > 0 and vim.fn.filereadable(files[1]) > 0 then
+--         vim.cmd.edit(vim.fn.fnameescape(files[1]))
+--     else
+--         vim.notify("no file matches", vim.log.levels.WARN)
+--     end
+-- end, { nargs = "*", complete = function(arg_lead, _, _)
+--         return vim.fn.systemlist(files_cmd .. vim.fn.shellescape(arg_lead))
+--     end })
+-- vim.keymap.set("n", "<space>ff", [[:Files ]])
+-- vim.keymap.set("n", "<space>fw", [[:Files <c-r><c-w>]])
