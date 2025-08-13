@@ -21,8 +21,8 @@ vim.keymap.set("n", "<space>r", [[:%s/<c-r><c-w>//gI<left><left><left>]])
 vim.keymap.set("v", "<space>r", [["0y:%s/<c-r>=escape(@0,'/\')<cr>//gI<left><left><left>]])
 
 -- copy to system clipboard, all motions after `<space>y` work the same as normal `y`
-vim.keymap.set({ "n","v" }, "<space>y", [["+y]])
-vim.keymap.set({ "n","v" }, "<space>p", [["+p]])
+vim.keymap.set({ "n", "v" }, "<space>y", [["+y]])
+vim.keymap.set({ "n", "v" }, "<space>p", [["+p]])
 vim.keymap.set("n", "<space>P", [["+P]])
 
 -- better keymap to toggle netrw
@@ -46,8 +46,11 @@ vim.api.nvim_create_user_command("Find", function(opts)
     else
         vim.notify("no file matches", vim.log.levels.WARN)
     end
-end, { nargs = "*", complete = function(arg_lead, _, _)
+end, {
+    nargs = "*",
+    complete = function(arg_lead, _, _)
         return vim.fn.systemlist(files_cmd .. vim.fn.shellescape(arg_lead))
-    end })
+    end
+})
 -- vim.keymap.set("n", "<space>ff", [[:Find ]])
 -- vim.keymap.set("n", "<space>fw", [[:Find <c-r><c-w>]])

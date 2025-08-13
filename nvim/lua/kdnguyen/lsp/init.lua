@@ -8,7 +8,7 @@ vim.lsp.config("*", {
         -- mappings.
         -- see `:help vim.lsp.*` for documentation on any of the below functions
         -- lsp navigation keymaps, use default wherever possible
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition)  -- better than pressing C-]
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition) -- better than pressing C-]
     end,
     detached = true,
 })
@@ -18,6 +18,7 @@ vim.lsp.config("*", {
 require("kdnguyen.lsp.clangd")
 require("kdnguyen.lsp.tsserver")
 require("kdnguyen.lsp.pylsp")
+require("kdnguyen.lsp.luals")
 
 -- can be disabled by `:lua vim.lsp.enable("tsserver", false)` for example
-vim.lsp.enable({ "clangd", "tsserver", "pylsp" })
+vim.lsp.enable({ "clangd", "tsserver", "pylsp", "luals" })

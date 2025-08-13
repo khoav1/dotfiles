@@ -5,10 +5,10 @@ vim.lsp.config("pylsp", {
     --   "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt",
     --   "Pipfile", "pyrightconfig.json", ".git"
     -- },
-    root_dir = vim.fn.getcwd(),
+    root_dir = vim.uv.cwd(),
     settings = {
         pylsp = {
-            plugins = { pycodestyle = { ignore = {"W391"}, maxLineLength = 150 } }
+            plugins = { pycodestyle = { ignore = { "W391" }, maxLineLength = 150 } }
         }
     }
 })
