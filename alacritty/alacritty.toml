@@ -7,7 +7,7 @@ dynamic_title = true
 option_as_alt = "Both"
 
 [font]
-normal = { family = "Hack", style = "Regular" }
+normal.family = "Hack"
 size = 16
 
 [selection]

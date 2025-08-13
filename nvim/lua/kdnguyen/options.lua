@@ -24,8 +24,6 @@ vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 -- save change history to files in undodir
 vim.opt.undofile = true
--- don't like fold, but it's the default in neovim now
-vim.opt.foldenable = false
 -- change titlestring for better recognition
 vim.opt.title = true
 -- don't like beeping
@@ -40,4 +38,7 @@ vim.g.loaded_python_provider = 0
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 -- enable an experimental interface which is intended to replace the message grid in the tui.
-require("vim._extui").enable({ enable = true, msg = { target = "cmd" } })
+require("vim._extui").enable({
+    enable = true,
+    msg = { target = "cmd" }
+})
