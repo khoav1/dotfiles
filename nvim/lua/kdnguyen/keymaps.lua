@@ -1,9 +1,7 @@
 -- unify command mode keys with shell
 vim.keymap.set("c", "<c-a>", "<home>")
 vim.keymap.set("c", "<c-e>", "<end>")
-vim.keymap.set("c", "<m-bs>", "<c-w>")
-vim.keymap.set("c", "<m-left>", "<c-left>")
-vim.keymap.set("c", "<m-right>", "<c-right>")
+vim.keymap.set("c", "<c-bs>", "<c-w>")
 
 -- extend vim grep abilities with ripgrep, result can be accessible through qf list
 if vim.fn.executable("rg") > 0 then
@@ -15,10 +13,8 @@ if vim.fn.executable("rg") > 0 then
     vim.keymap.set("n", "<space>/", [[:silent grep! --hidden --no-ignore --fixed-strings ''<left>]])
 end
 
--- some proper ways to browse/search stuff
+-- some proper ways to browse/search marked text
 vim.keymap.set("v", "//", [["0y/\V<c-r>=escape(@0,'/\')<cr><cr>]])
-vim.keymap.set("n", "<space>e", ":e %:h<c-z>")
-vim.keymap.set("n", "<space>b", ":b <c-z>")
 
 -- replace word/marked text
 vim.keymap.set("n", "<space>r", [[:%s/<c-r><c-w>//gI<left><left><left>]])
@@ -36,22 +32,22 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function(e) vim.keymap.set("n", "<c-c>", vim.cmd.Rexplore, { buffer = 0 }) end
 })
 
--- -- minimal fuzzy files finding using rigrep
--- local files_cmd = "rg --files --hidden --follow --glob '!.git' | grep -i "
--- vim.api.nvim_create_user_command("Files", function(opts)
---     local pattern = opts.args
---     if vim.fn.filereadable(pattern) > 0 then
---         vim.cmd.edit(vim.fn.fnameescape(pattern))
---         return
---     end
---     local files = vim.fn.systemlist(files_cmd .. vim.fn.shellescape(pattern))
---     if #files > 0 and vim.fn.filereadable(files[1]) > 0 then
---         vim.cmd.edit(vim.fn.fnameescape(files[1]))
---     else
---         vim.notify("no file matches", vim.log.levels.WARN)
---     end
--- end, { nargs = "*", complete = function(arg_lead, _, _)
---         return vim.fn.systemlist(files_cmd .. vim.fn.shellescape(arg_lead))
---     end })
--- vim.keymap.set("n", "<space>ff", [[:Files ]])
--- vim.keymap.set("n", "<space>fw", [[:Files <c-r><c-w>]])
+-- minimal fuzzy files finding using rigrep
+local files_cmd = "rg --files --hidden --follow --glob '!.git' | grep -i "
+vim.api.nvim_create_user_command("Find", function(opts)
+    local pattern = opts.args
+    if vim.fn.filereadable(pattern) > 0 then
+        vim.cmd.edit(vim.fn.fnameescape(pattern))
+        return
+    end
+    local files = vim.fn.systemlist(files_cmd .. vim.fn.shellescape(pattern))
+    if #files > 0 and vim.fn.filereadable(files[1]) > 0 then
+        vim.cmd.edit(vim.fn.fnameescape(files[1]))
+    else
+        vim.notify("no file matches", vim.log.levels.WARN)
+    end
+end, { nargs = "*", complete = function(arg_lead, _, _)
+        return vim.fn.systemlist(files_cmd .. vim.fn.shellescape(arg_lead))
+    end })
+-- vim.keymap.set("n", "<space>ff", [[:Find ]])
+-- vim.keymap.set("n", "<space>fw", [[:Find <c-r><c-w>]])

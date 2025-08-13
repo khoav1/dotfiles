@@ -28,17 +28,12 @@ filetype on
 syntax on
 autocmd QuickFixCmdPost [^l]* cwindow
 nnoremap <silent> <c-l> :nohlsearch<cr>
-cnoremap <m-left> <c-left>
-cnoremap <m-right> <c-right>
-cnoremap <m-bs> <c-w>
+cnoremap <c-bs> <c-w>
 cnoremap <c-a> <home>
 cnoremap <c-e> <end>
 nnoremap <space>gg :vimgrep //f **<s-left><s-left><right>
 vnoremap <space>gg "0y:vimgrep /<c-r>=escape(@0,'/\')<cr>/f **<s-left><left><left><left>
 nnoremap <space>gw :vimgrep /<c-r><c-w>/f **
-vnoremap // "0y/\V<c-r>=escape(@0,'/\')<cr><cr>
-nnoremap <space>e :e %:h<c-z>
 nnoremap <space>r :%s/<c-r><c-w>//gI<left><left><left>
 vnoremap <space>r "0y:%s/<c-r>=escape(@0,'/\')<cr>//gI<left><left><left>
-hi! Normal ctermbg=NONE guibg=NONE
-hi! NormalNC ctermbg=NONE guibg=NONE
+vnoremap // "0y/\V<c-r>=escape(@0,'/\')<cr><cr>

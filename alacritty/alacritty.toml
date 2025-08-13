@@ -1,6 +1,5 @@
 [window]
-padding = { x = 5, y = 6 }
-dynamic_padding = true
+padding = { x = 5, y = 5 }
 opacity = 0.95
 startup_mode = "Maximized"
 resize_increments = true
@@ -9,8 +8,6 @@ option_as_alt = "Both"
 
 [font]
 normal = { family = "Hack", style = "Regular" }
-italic = { family = "Hack", style = "Regular" }
-bold_italic = { family = "Hack", style = "Bold" }
 size = 16
 
 [selection]
@@ -23,15 +20,15 @@ blink_interval = 500
 
 [[keyboard.bindings]]
 key = "Left"
-mods = "Alt"
+mods = "Control"
 chars = "\u001b[1;5D"
 
 [[keyboard.bindings]]
 key = "Right"
-mods = "Alt"
+mods = "Control"
 chars = "\u001b[1;5C"
 
 [[keyboard.bindings]]
 key = "Back"
-mods = "Alt"
+mods = "Control"
 chars = "\u0017"

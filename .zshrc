@@ -3,10 +3,8 @@ autoload -Uz compinit; compinit
 setopt SHARE_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt EXTENDED_HISTORY
-# prevent ctrl-d (eof) from closing the shell (must type `exit`)
-# this conflicts with scrolling in tmux copy-mode-vi
-setopt IGNORE_EOF
-bindkey -e
+setopt IGNORE_EOF  # prevent ctrl-d (eof) from closing the shell (must type `exit`)
+bindkey -e  # emacs :D, better in shell
 bindkey '\e[A' history-beginning-search-backward
 bindkey '\e[B' history-beginning-search-forward
 bindkey '\e[1;5D' backward-word

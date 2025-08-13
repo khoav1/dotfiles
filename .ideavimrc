@@ -9,15 +9,15 @@ vnoremap <space>y "+y
 nnoremap <space>p "+p
 nnoremap <space>P "+P
 vnoremap <space>p "+p
+" enable ideavim plugins https://jb.gg/ideavim-plugins
+set highlightedyank
+set commentary
+set surround
 set ideastatusicon=gray
 set ideawrite=file
 set visualdelay=50
 set ideajoin
 set ideamarks
-" enable ideavim plugins https://jb.gg/ideavim-plugins
-set highlightedyank
-set commentary
-set surround
 " map ide actions to ideavim -- https://jb.gg/abva4t
 nmap <space>ff <Action>(GotoFile)
 nmap <space>fw viw:action GotoFile<CR>
