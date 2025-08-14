@@ -46,6 +46,7 @@ colorscheme retrobox
 call plug#begin()
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 Plug 'mhinz/vim-signify'
 Plug 'machakann/vim-highlightedyank'
 Plug 'yegappan/lsp'
