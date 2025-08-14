@@ -4,11 +4,11 @@ setopt SHARE_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt EXTENDED_HISTORY
 setopt IGNORE_EOF  # prevent ctrl-d (eof) from closing the shell (must type `exit`)
-bindkey -e  # emacs :D, better in shell
+bindkey -e  # emacs :D, literally better in shell
 bindkey '\e[A' history-beginning-search-backward
 bindkey '\e[B' history-beginning-search-forward
-bindkey '\e[1;5D' backward-word
-bindkey '\e[1;5C' forward-word
+bindkey '\e[1;3D' backward-word
+bindkey '\e[1;3C' forward-word
 source ~/.zsh/plugins/git/git-prompt.sh
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWSTASHSTATE=true

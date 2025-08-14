@@ -18,18 +18,3 @@ save_to_clipboard = true
 style.shape = "Block"
 style.blinking = "Always"
 blink_interval = 500
-
-[[keyboard.bindings]]
-key = "Left"
-mods = "Alt"
-chars = "\u001b[1;5D"
-
-[[keyboard.bindings]]
-key = "Right"
-mods = "Alt"
-chars = "\u001b[1;5C"
-
-[[keyboard.bindings]]
-key = "Back"
-mods = "Alt"
-chars = "\u0017"
