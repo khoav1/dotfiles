@@ -42,12 +42,11 @@ syntax on
 filetype indent on
 set background=dark
 colorscheme retrobox
-hi! Normal ctermbg=NONE guibg=NONE
-hi! NormalNC ctermbg=NONE guibg=NONE
 
 call plug#begin()
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'mhinz/vim-signify'
 Plug 'machakann/vim-highlightedyank'
 Plug 'yegappan/lsp'
 call plug#end()
@@ -124,6 +123,10 @@ vnoremap <space>y "+y
 nnoremap <space>p "+p
 nnoremap <space>P "+P
 vnoremap <space>p "+p
+
+hi! Normal ctermbg=NONE guibg=NONE
+hi! NormalNC ctermbg=NONE guibg=NONE
+hi! SignColumn ctermbg=NONE guibg=NONE
 
 g:highlightedyank_highlight_duration = 150
 
