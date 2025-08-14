@@ -1,6 +1,7 @@
 [window]
 padding = { x = 5, y = 5 }
-opacity = 0.95
+opacity = 0.85
+blur = true
 startup_mode = "Maximized"
 resize_increments = true
 dynamic_title = true
@@ -20,15 +21,15 @@ blink_interval = 500
 
 [[keyboard.bindings]]
 key = "Left"
-mods = "Control"
+mods = "Alt"
 chars = "\u001b[1;5D"
 
 [[keyboard.bindings]]
 key = "Right"
-mods = "Control"
+mods = "Alt"
 chars = "\u001b[1;5C"
 
 [[keyboard.bindings]]
 key = "Back"
-mods = "Control"
+mods = "Alt"
 chars = "\u0017"

@@ -63,7 +63,9 @@ autocmd BufRead,BufNewFile *.psql setl ft=sql
 autocmd QuickFixCmdPost [^l]* cwindow
 au FileType help,qf,fugitive,fugitiveblame nn <silent> <buffer> q <cmd>quit<CR>
 nnoremap <silent> <C-l> <cmd>nohlsearch<CR>
-cnoremap <C-bs> <C-w>
+cnoremap <M-left> <C-left>
+cnoremap <M-right> <C-right>
+cnoremap <M-bs> <C-w>
 cnoremap <C-a> <home>
 cnoremap <C-e> <end>
 
@@ -95,6 +97,8 @@ if executable('rg')
 endif
 vnoremap // "0y/\V<C-r>=escape(@0,'/\')<CR><CR>
 
+nnoremap <space>e :e %:h<C-z>
+nnoremap <space>b :b <C-z>
 nnoremap <space>r :%s/<C-r><C-w>//gI<left><left><left>
 vnoremap <space>r "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<left><left><left>
 
