@@ -12,7 +12,6 @@ function linking() {
   mkdir -p ${XDG_DATA_HOME:=~/.local/share}
   mkdir -p ${XDG_CONFIG_HOME:=~/.config}
   ln -sfn $(pwd)/alacritty $XDG_CONFIG_HOME/alacritty
-  ln -sfn $(pwd)/nvim $XDG_CONFIG_HOME/nvim
 
   ln -sfn $(pwd)/.gitignore ~/.gitignore
   git config --global core.excludesFile '~/.gitignore'
@@ -40,7 +39,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
   echo '[-] installing essential packages [-]'
   brew update
-  brew install curl wget git coreutils watch cmake ninja tree parallel tmux fzf ripgrep jq
+  brew install curl wget git coreutils watch cmake ninja tree parallel tmux ripgrep jq
   brew install google-chrome alacritty orbstack maccy ncdu tldr universal-ctags font-hack
 else
   echo '[-] checking secure boot state [-]'
@@ -56,8 +55,8 @@ else
   fi
 
   echo '[-] installing essential packages [-]'
-  sudo apt-get install -y curl wget zip zsh git coreutils gcc clang cmake make ninja-build ncdu fzf
-  sudo apt-get install -y alacritty parallel watch tree vim tmux ripgrep jq universal-ctags wl-clipboard
+  sudo apt-get install -y curl wget zip zsh git coreutils gcc clang cmake make ninja-build parallel ncdu
+  sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux ripgrep jq universal-ctags wl-clipboard
 
   if lspci | grep -E "VGA|3D" | grep -iq "AMD"; then
     echo '[-] installing amd essential packages [-]'
@@ -116,15 +115,9 @@ if [ ! -d "$target_dir" ] ; then
   git clone https://github.com/zsh-users/zsh-autosuggestions "$target_dir"
 fi
 
-target_dir=$XDG_DATA_HOME/neovim
-if [ ! -d "$target_dir" ] ; then
-  echo '[-] building neovim [-]'
-  git clone https://github.com/neovim/neovim.git "$target_dir"
-  cd "$target_dir"
-  git checkout nightly
-  make CMAKE_BUILD_TYPE=RelWithDebInfo
-  sudo make install
-fi
+echo '[-] downloading plug.vim script [-]'
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 current_shell=$(echo $SHELL)
 if [ "$current_shell" != '/usr/bin/zsh' ] && [ "$current_shell" != '/bin/zsh' ]; then

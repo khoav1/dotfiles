@@ -1,23 +1,21 @@
-" you can find a list of commands here: https://jb.gg/h38q75
+" find a list of commands here: https://jb.gg/h38q75
 " find more examples here: https://jb.gg/share-ideavimrc
-source ~/.vimrc
-nnoremap <space>r viw"0y:%s/<c-r>0//gI<left><left><left>
-vnoremap <space>r "0y:%s/<c-r>0//gI<left><left><left>
-vnoremap // "0y/\V<c-r>0<cr>
-nnoremap <space>y "+y
-vnoremap <space>y "+y
-nnoremap <space>p "+p
-nnoremap <space>P "+P
-vnoremap <space>p "+p
-" enable ideavim plugins https://jb.gg/ideavim-plugins
-set highlightedyank
-set commentary
-set surround
+set visualbell
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+set history=10000
+set list
 set ideastatusicon=gray
 set ideawrite=file
 set visualdelay=50
 set ideajoin
 set ideamarks
+" enable ideavim plugins https://jb.gg/ideavim-plugins
+set highlightedyank
+set commentary
+set surround
 " map ide actions to ideavim -- https://jb.gg/abva4t
 nmap <space>ff <Action>(GotoFile)
 nmap <space>fw viw:action GotoFile<CR>
@@ -29,13 +27,21 @@ nmap <space>gw viw:action FindInPath<CR>
 nmap <space>/ <Action>(SearchEverywhere)
 nmap - <Action>(SelectInProjectView)
 nmap gd <Action>(GotoDeclaration)
-nmap gri <Action>(GotoImplementation)
-nmap grr <Action>(FindUsages)
-nmap gra <Action>(GotoAction)
-nmap grn <Action>(RenameElement)
+nmap gi <Action>(GotoImplementation)
+nmap gr <Action>(FindUsages)
+nmap ga <Action>(GotoAction)
 nmap gq <Action>(ReformatCode)
 vmap gq <Action>(ReformatCode)
 nmap ]d <Action>(GotoNextError)zz
 nmap [d <Action>(GotoPreviousError)zz
 nmap K <Action>(ShowHoverInfo)
-nmap <c-w>o <Action>(HideAllWindows)
+nmap <C-w>o <Action>(HideAllWindows)
+nnoremap <space>y "+y
+vnoremap <space>y "+y
+nnoremap <space>p "+p
+nnoremap <space>P "+P
+vnoremap <space>p "+p
+nnoremap <silent> <C-l> :nohlsearch<CR>
+nnoremap <space>r viw"0y:%s/<C-r>0//gI<left><left><left>
+vnoremap <space>r "0y:%s/<C-r>0//gI<left><left><left>
+vnoremap // "0y/\V<C-r>0<CR>

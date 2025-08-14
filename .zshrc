@@ -19,5 +19,4 @@ GIT_PS1_COMPRESSSPARSESTATE=true
 setopt PROMPT_SUBST
 PS1='%B%F{magenta}%0~%f%b% %F{blue}$(__git_ps1 " [%s]") %f%(?..%F{red})%(!.#.$)%f%b '
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-alias vim=nvim
 source $HOME/.profile
