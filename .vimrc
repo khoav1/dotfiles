@@ -126,6 +126,7 @@ hi! NormalNC ctermbg=NONE guibg=NONE
 hi! SignColumn ctermbg=NONE guibg=NONE
 
 var lsp_opts = {
+  ignoreMissingServer: v:true,
   hoverInPreview: v:true,
   omniComplete: v:true,
   showInlayHints: v:true
@@ -137,6 +138,10 @@ var lsp_servers = [{
   filetype: ['c', 'cpp', 'proto'],
   path: 'clangd',
   args: ['--background-index']
+}, {
+  name: 'zls',
+  filetype: ['zig', 'zir'],
+  path: 'zls'
 }, {
   name: 'tsserver',
   filetype: ['javascript', 'typescript'],
