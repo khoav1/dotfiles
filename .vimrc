@@ -41,6 +41,12 @@ syntax on
 set background=dark
 colorscheme retrobox
 
+# keep things simple here
+call plug#begin()
+Plug 'tpope/vim-fugitive'
+Plug 'yegappan/lsp'
+call plug#end()
+
 au FileType c,cpp,java,python setl sw=4 ts=4 sts=4 et
 au FileType javascript,typescript setl sw=2 ts=2 sts=2 et
 au FileType go setl sw=4 ts=4 sts=4 noet fp=gofmt
@@ -50,10 +56,9 @@ autocmd BufRead,BufNewFile *.log,*.log{.*} setl ft=messages
 autocmd BufRead,BufNewFile *.psql setl ft=sql
 
 autocmd QuickFixCmdPost [^l]* cwindow
-au FileType help,qf,fugitive,fugitiveblame nn <silent> <buffer> q <cmd>quit<CR>
-nnoremap <silent> <C-l> <cmd>nohlsearch<CR>
-cnoremap <C-a> <home>
-cnoremap <C-e> <end>
+nnoremap <C-l> :nohlsearch<CR>
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
 
 # generate tags in the background
 def GenTags()
@@ -69,24 +74,24 @@ def GenTags()
 enddef
 command! -nargs=0 Tag GenTags()
 
-nnoremap - <cmd>Explore<CR>
-au FileType netrw nn <buffer> <C-c> <cmd>Rexplore<CR>
+nnoremap - :Explore<CR>
+au FileType netrw nnoremap <buffer> <C-c> :Rexplore<CR>
 
 # extend vim grep abilities with ripgrep, result can be accessible through qf list
 if executable('rg')
     set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading\ --column
     set grepformat^=%f:%l:%c:%m
-    nnoremap <space>gg :grep! --fixed-strings ''<left>
-    vnoremap <space>gg "0y:grep! --case-sensitive --fixed-strings '<C-r>0'<left>
-    nnoremap <space>gw :grep! --case-sensitive --fixed-strings '<C-r><C-w>'<CR>
-    nnoremap <space>/ :grep! --hidden --no-ignore --fixed-strings ''<left>
+    nnoremap <Space>gg :grep! --fixed-strings ''<Left>
+    vnoremap <Space>gg "0y:grep! --case-sensitive --fixed-strings '<C-r>0'<Left>
+    nnoremap <Space>gw :grep! --case-sensitive --fixed-strings '<C-r><C-w>'<CR>
+    nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings ''<Left>
 endif
 vnoremap // "0y/\V<C-r>=escape(@0,'/\')<CR><CR>
 
-nnoremap <space>e :e %:h<C-z>
-nnoremap <space>b :b <C-z>
-nnoremap <space>r :%s/<C-r><C-w>//gI<left><left><left>
-vnoremap <space>r "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<left><left><left>
+nnoremap <Space>e :e %:h<C-z>
+nnoremap <Space>b :b <C-z>
+nnoremap <Space>r :%s/<C-r><C-w>//gI<Left><Left><Left>
+vnoremap <Space>r "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<Left><Left><Left>
 
 # minimal fuzzy files finding using rigrep
 const files_cmd = 'rg --files --hidden --follow --glob "!.git" | sort | grep -i '
@@ -106,22 +111,18 @@ def FindComplete(arg_lead: string, cmd_line: string, cursor_pos: number): list<s
   return systemlist(files_cmd .. shellescape(arg_lead))
 enddef
 command! -nargs=* -complete=customlist,FindComplete Find FindCommand(<q-args>)
-nnoremap <space>ff :Find 
-nnoremap <space>fw :Find <C-r><C-w>
+nnoremap <Space>ff :Find 
+nnoremap <Space>fw :Find <C-r><C-w>
 
-nnoremap <space>y "+y
-vnoremap <space>y "+y
-nnoremap <space>p "+p
-nnoremap <space>P "+P
-vnoremap <space>p "+p
+nnoremap <Space>y "+y
+vnoremap <Space>y "+y
+nnoremap <Space>p "+p
+nnoremap <Space>P "+P
+vnoremap <Space>p "+p
 
 hi! Normal ctermbg=NONE guibg=NONE
 hi! NormalNC ctermbg=NONE guibg=NONE
 hi! SignColumn ctermbg=NONE guibg=NONE
-
-call plug#begin()
-Plug 'yegappan/lsp'
-call plug#end()
 
 var lsp_opts = {
   hoverInPreview: v:true,
@@ -150,18 +151,18 @@ autocmd User LspSetup call LspAddServer(lsp_servers)
 def LspConfig()
   setlocal tagfunc=lsp#lsp#TagFunc  # go to definition by C-]
   setlocal formatexpr=lsp#lsp#FormatExpr()  # lsp format using gq
-  nnoremap <buffer> gri <cmd>LspGotoImpl<CR>
-  nnoremap <buffer> grr <cmd>LspShowReferences<CR>
-  nnoremap <buffer> gra <cmd>LspCodeAction<CR>
-  nnoremap <buffer> grn <cmd>LspRename<CR>
-  nnoremap <buffer> ]d <cmd>LspDiagNext<CR>
-  nnoremap <buffer> [d <cmd>LspDiagPrev<CR>
-  nnoremap <buffer> <C-w>d <cmd>LspDiagCurrent<CR>
-  nnoremap <buffer> K <cmd>LspHover<CR>
+  nnoremap <buffer> gri :LspGotoImpl<CR>
+  nnoremap <buffer> grr :LspShowReferences<CR>
+  nnoremap <buffer> gra :LspCodeAction<CR>
+  nnoremap <buffer> grn :LspRename<CR>
+  nnoremap <buffer> ]d :LspDiagNext<CR>
+  nnoremap <buffer> [d :LspDiagPrev<CR>
+  nnoremap <buffer> <C-w>d :LspDiagCurrent<CR>
+  nnoremap <buffer> K :LspHover<CR>
 enddef
 augroup lsp_keymaps
   au!
-  au FileType c,cpp,javascript,typescript,python LspConfig()
+  au FileType c,cpp,javascript,typescript,python call LspConfig()
 augroup END
 
 defcompile

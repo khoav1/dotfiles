@@ -14,15 +14,15 @@ set visualdelay=50
 set ideajoin
 set ideamarks
 " enable ideavim plugins https://jb.gg/ideavim-plugins
-" map ide actions to ideavim -- https://jb.gg/abva4t
-nmap <space>ff <Action>(GotoFile)
-nmap <space>fw viw:action GotoFile<CR>
-nmap <space>e <Action>(ShowNavBar)
-nmap <space>b <Action>(RecentFiles)
-nmap <space>gg <Action>(FindInPath)
-vmap <space>gg <Action>(FindInPath)
-nmap <space>gw viw:action FindInPath<CR>
-nmap <space>/ <Action>(SearchEverywhere)
+" map ide actions to ideavim - https://jb.gg/abva4t
+nmap <Space>ff <Action>(GotoFile)
+nmap <Space>fw viw:action GotoFile<CR>
+nmap <Space>e <Action>(ShowNavBar)
+nmap <Space>b <Action>(RecentFiles)
+nmap <Space>gg <Action>(FindInPath)
+vmap <Space>gg <Action>(FindInPath)
+nmap <Space>gw viw:action FindInPath<CR>
+nmap <Space>/ <Action>(SearchEverywhere)
 nmap - <Action>(SelectInProjectView)
 nmap <C-]> <Action>(GotoDeclaration)
 nmap gq <Action>(ReformatCode)
@@ -35,12 +35,12 @@ nmap ]d <Action>(GotoNextError)zz
 nmap [d <Action>(GotoPreviousError)zz
 nmap K <Action>(ShowHoverInfo)
 nmap <C-w>o <Action>(HideAllWindows)
-nnoremap <space>y "+y
-vnoremap <space>y "+y
-nnoremap <space>p "+p
-nnoremap <space>P "+P
-vnoremap <space>p "+p
+nnoremap <Space>y "+y
+vnoremap <Space>y "+y
+nnoremap <Space>p "+p
+nnoremap <Space>P "+P
+vnoremap <Space>p "+p
 nnoremap <silent> <C-l> :nohlsearch<CR>
-nnoremap <space>r viw"0y:%s/<C-r>0//gI<left><left><left>
-vnoremap <space>r "0y:%s/<C-r>0//gI<left><left><left>
+nnoremap <Space>r viw"0y:%s/<C-r>0//gI<Left><Left><Left>
+vnoremap <Space>r "0y:%s/<C-r>0//gI<Left><Left><Left>
 vnoremap // "0y/\V<C-r>0<CR>
