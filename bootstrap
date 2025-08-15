@@ -39,7 +39,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
   echo '[-] installing essential packages [-]'
   brew update
-  brew install curl wget git coreutils watch cmake ninja tree parallel tmux ripgrep jq
+  brew install curl wget git coreutils watch cmake ninja tree parallel tmux ripgrep jq zig
   brew install google-chrome alacritty orbstack maccy ncdu tldr universal-ctags font-hack
 else
   if [ ! -f '/etc/apt/sources.list.d/debian.sources' ]; then
@@ -52,6 +52,19 @@ else
   echo '[-] installing essential packages [-]'
   sudo apt-get install -y curl wget zip zsh git coreutils gcc clang cmake make ninja-build parallel
   sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux ripgrep jq universal-ctags ncdu
+
+  echo '[-] downloading zig executable [-]'
+  curl -s https://ziglang.org/download/index.json \
+    | jq -r 'to_entries | map(select(.key != "master")) | max_by(.key | split(".") | map(tonumber)) | .value["x86_64-linux"].tarball' \
+    | xargs wget
+  tar -xf zig-x86_64-linux-*.tar.xz
+  sudo mv zig-x86_64-linux-*/zig /usr/bin/zig
+  if [ -d '/usr/lib/zig' ] ; then
+    sudo rm -rf /usr/lib/zig
+  fi
+  sudo mkdir -p /usr/lib/zig
+  sudo mv zig-x86_64-linux*/lib/* /usr/lib/zig/
+  rm -rf zig-x86_64-linux-*
 
   target_dir=$XDG_DATA_HOME/fonts
   if [ ! -d "$target_dir" ] ; then

@@ -45,9 +45,10 @@ colorscheme retrobox
 call plug#begin()
 Plug 'tpope/vim-fugitive'
 Plug 'yegappan/lsp'
+Plug 'ziglang/zig.vim'
 call plug#end()
 
-au FileType c,cpp,java,python setl sw=4 ts=4 sts=4 et
+au FileType c,cpp,zig,java,python setl sw=4 ts=4 sts=4 et
 au FileType javascript,typescript setl sw=2 ts=2 sts=2 et
 au FileType go setl sw=4 ts=4 sts=4 noet fp=gofmt
 au FileType json setl sw=4 ts=4 sts=4 noet fp=jq
