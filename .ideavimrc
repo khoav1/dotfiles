@@ -5,17 +5,15 @@ set ignorecase
 set smartcase
 set incsearch
 set hlsearch
-set history=10000
 set list
+set number
+set relativenumber
 set ideastatusicon=gray
 set ideawrite=file
 set visualdelay=50
 set ideajoin
 set ideamarks
 " enable ideavim plugins https://jb.gg/ideavim-plugins
-set highlightedyank
-set commentary
-set surround
 " map ide actions to ideavim -- https://jb.gg/abva4t
 nmap <space>ff <Action>(GotoFile)
 nmap <space>fw viw:action GotoFile<CR>
@@ -26,12 +24,13 @@ vmap <space>gg <Action>(FindInPath)
 nmap <space>gw viw:action FindInPath<CR>
 nmap <space>/ <Action>(SearchEverywhere)
 nmap - <Action>(SelectInProjectView)
-nmap gd <Action>(GotoDeclaration)
-nmap gi <Action>(GotoImplementation)
-nmap gr <Action>(FindUsages)
-nmap ga <Action>(GotoAction)
+nmap <C-]> <Action>(GotoDeclaration)
 nmap gq <Action>(ReformatCode)
 vmap gq <Action>(ReformatCode)
+nmap gri <Action>(GotoImplementation)
+nmap grr <Action>(FindUsages)
+nmap gra <Action>(GotoAction)
+nmap grn <Action>(RenameElement)
 nmap ]d <Action>(GotoNextError)zz
 nmap [d <Action>(GotoPreviousError)zz
 nmap K <Action>(ShowHoverInfo)

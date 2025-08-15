@@ -11,7 +11,6 @@ set splitright
 set title
 set visualbell
 set ruler
-set updatetime=100
 
 set ignorecase
 set smartcase
@@ -23,13 +22,12 @@ set hlsearch
 set wildmenu
 set wildoptions=pum,tagfile
 set wildcharm=<C-z>
-set history=10000
 
 set shiftwidth=2
 set tabstop=2
 set softtabstop=2
-set expandtab
 set shiftround
+set expandtab
 
 set number
 set relativenumber
@@ -38,19 +36,10 @@ set lcs=tab:>\ ,trail:-,nbsp:+
 &showbreak = '+++ '
 
 filetype on
-syntax on
 filetype indent on
+syntax on
 set background=dark
 colorscheme retrobox
-
-call plug#begin()
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'mhinz/vim-signify'
-Plug 'machakann/vim-highlightedyank'
-Plug 'yegappan/lsp'
-call plug#end()
 
 au FileType c,cpp,java,python setl sw=4 ts=4 sts=4 et
 au FileType javascript,typescript setl sw=2 ts=2 sts=2 et
@@ -63,9 +52,6 @@ autocmd BufRead,BufNewFile *.psql setl ft=sql
 autocmd QuickFixCmdPost [^l]* cwindow
 au FileType help,qf,fugitive,fugitiveblame nn <silent> <buffer> q <cmd>quit<CR>
 nnoremap <silent> <C-l> <cmd>nohlsearch<CR>
-cnoremap <M-left> <C-left>
-cnoremap <M-right> <C-right>
-cnoremap <M-bs> <C-w>
 cnoremap <C-a> <home>
 cnoremap <C-e> <end>
 
@@ -103,7 +89,7 @@ nnoremap <space>r :%s/<C-r><C-w>//gI<left><left><left>
 vnoremap <space>r "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<left><left><left>
 
 # minimal fuzzy files finding using rigrep
-const files_cmd = 'rg --files --hidden --follow --glob "!.git" | grep -i '
+const files_cmd = 'rg --files --hidden --follow --glob "!.git" | sort | grep -i '
 def FindCommand(pattern: string)
   if filereadable(pattern)
     execute 'edit' fnameescape(pattern)
@@ -133,7 +119,9 @@ hi! Normal ctermbg=NONE guibg=NONE
 hi! NormalNC ctermbg=NONE guibg=NONE
 hi! SignColumn ctermbg=NONE guibg=NONE
 
-g:highlightedyank_highlight_duration = 150
+call plug#begin()
+Plug 'yegappan/lsp'
+call plug#end()
 
 var lsp_opts = {
   hoverInPreview: v:true,
@@ -147,25 +135,25 @@ var lsp_servers = [{
   filetype: ['c', 'cpp', 'proto'],
   path: 'clangd',
   args: ['--background-index']
-},
-{
+}, {
   name: 'tsserver',
   filetype: ['javascript', 'typescript'],
   path: 'typescript-language-server',
   args: ['--stdio']
-},
-{
+}, {
   name: 'pylsp',
   filetype: ['python'],
   path: 'pylsp'
 }]
 autocmd User LspSetup call LspAddServer(lsp_servers)
 
-def LspKeymapsConfig()
-  nnoremap <buffer> gd <cmd>LspGotoDefinition<CR>
-  nnoremap <buffer> gi <cmd>LspGotoImpl<CR>
-  nnoremap <buffer> gr <cmd>LspShowReferences<CR>
-  nnoremap <buffer> ga <cmd>LspCodeAction<CR>
+def LspConfig()
+  setlocal tagfunc=lsp#lsp#TagFunc  # go to definition by C-]
+  setlocal formatexpr=lsp#lsp#FormatExpr()  # lsp format using gq
+  nnoremap <buffer> gri <cmd>LspGotoImpl<CR>
+  nnoremap <buffer> grr <cmd>LspShowReferences<CR>
+  nnoremap <buffer> gra <cmd>LspCodeAction<CR>
+  nnoremap <buffer> grn <cmd>LspRename<CR>
   nnoremap <buffer> ]d <cmd>LspDiagNext<CR>
   nnoremap <buffer> [d <cmd>LspDiagPrev<CR>
   nnoremap <buffer> <C-w>d <cmd>LspDiagCurrent<CR>
@@ -173,7 +161,7 @@ def LspKeymapsConfig()
 enddef
 augroup lsp_keymaps
   au!
-  au FileType c,cpp,javascript,typescript,python LspKeymapsConfig()
+  au FileType c,cpp,javascript,typescript,python LspConfig()
 augroup END
 
 defcompile
