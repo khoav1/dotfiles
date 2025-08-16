@@ -22,6 +22,7 @@ set hlsearch
 set wildmenu
 set wildoptions=pum,tagfile
 set wildcharm=<C-z>
+set updatetime=100
 
 set shiftwidth=2
 set tabstop=2
@@ -45,6 +46,7 @@ colorscheme retrobox
 call plug#begin()
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-signify'
 Plug 'yegappan/lsp'
 Plug 'ziglang/zig.vim'
 call plug#end()
