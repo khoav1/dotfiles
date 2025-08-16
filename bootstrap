@@ -54,9 +54,7 @@ else
   sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux ripgrep jq universal-ctags ncdu
 
   echo '[-] downloading zig executable [-]'
-  curl -s https://ziglang.org/download/index.json \
-    | jq -r 'to_entries | map(select(.key != "master")) | max_by(.key | split(".") | map(tonumber)) | .value["x86_64-linux"].tarball' \
-    | xargs wget
+  curl -s https://ziglang.org/download/index.json | jq -r '.master["x86_64-linux"].tarball' | xargs wget
   tar -xf zig-x86_64-linux-*.tar.xz
   sudo mv zig-x86_64-linux-*/zig /usr/bin/zig
   if [ -d '/usr/lib/zig' ] ; then
