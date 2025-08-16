@@ -14,6 +14,7 @@ set visualdelay=50
 set ideajoin
 set ideamarks
 " enable ideavim plugins https://jb.gg/ideavim-plugins
+set commentary
 " map ide actions to ideavim - https://jb.gg/abva4t
 nmap <Space>ff <Action>(GotoFile)
 nmap <Space>fw viw:action GotoFile<CR>
