@@ -1,17 +1,16 @@
 " find a list of commands here: https://jb.gg/h38q75
 " find more examples here: https://jb.gg/share-ideavimrc
-set visualbell ignorecase smartcase incsearch hlsearch list relativenumber
+set visualbell ignorecase smartcase incsearch hlsearch list
 set ideastatusicon=gray ideawrite=file visualdelay=50 ideajoin ideamarks
 " enable ideavim plugins https://jb.gg/ideavim-plugins
 set commentary
 " map ide actions to ideavim - https://jb.gg/abva4t
-nmap <Space>ff <Action>(GotoFile)
-nmap <Space>fw viw:action GotoFile<CR>
+nmap <Space>f <Action>(GotoFile)
 nmap <Space>e <Action>(ShowNavBar)
 nmap <Space>b <Action>(RecentFiles)
-nmap <Space>gg <Action>(FindInPath)
-vmap <Space>gg <Action>(FindInPath)
-nmap <Space>gw viw:action FindInPath<CR>
+nmap <Space>g <Action>(FindInPath)
+vmap <Space>g <Action>(FindInPath)
+nmap <Space>G viw:action FindInPath<CR>
 nmap <Space>/ <Action>(SearchEverywhere)
 nmap - <Action>(SelectInProjectView)
 nmap <C-]> <Action>(GotoDeclaration)

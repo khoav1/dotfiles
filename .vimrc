@@ -1,7 +1,7 @@
 vim9script
 
-set nocompatible regexpengine=2 laststatus=2 noswapfile showmatch
-set splitbelow splitright title visualbell ruler relativenumber
+set nocompatible regexpengine=2 laststatus=2 noswapfile
+set splitbelow splitright title visualbell ruler showmatch
 set ignorecase smartcase autoread autoindent incsearch hlsearch
 set updatetime=100 wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
@@ -30,10 +30,11 @@ au FileType json setl sw=4 ts=4 sts=4 noet fp=jq
 autocmd BufRead,BufNewFile *.log,*.log{.*} setl ft=messages
 autocmd BufRead,BufNewFile *.psql setl ft=sql
 
-autocmd QuickFixCmdPost [^l]* cwindow
 nnoremap <C-l> :nohlsearch<CR>
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
+autocmd QuickFixCmdPost [^l]* cwindow
+autocmd FileType help,qf,fugitive,fugitiveblame,lspgfm nnoremap <buffer> q :q<CR>
 
 # generate tags in the background
 def GenTags()
@@ -53,9 +54,9 @@ au FileType netrw nnoremap <buffer> <C-c> :Rexplore<CR>
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading\ --column
   set grepformat^=%f:%l:%c:%m
-  nnoremap <Space>gg :grep! --fixed-strings ''<Left>
-  vnoremap <Space>gg "0y:grep! --case-sensitive --fixed-strings '<C-r>0'<Left>
-  nnoremap <Space>gw :grep! --case-sensitive --fixed-strings '<C-r><C-w>'<CR>
+  nnoremap <Space>g :grep! --fixed-strings ''<Left>
+  vnoremap <Space>g "0y:grep! --case-sensitive --fixed-strings '<C-r>0'<Left>
+  nnoremap <Space>G :grep! --case-sensitive --fixed-strings '<C-r><C-w>'<CR>
   nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings ''<Left>
 endif
 vnoremap // "0y/\V<C-r>=escape(@0,'/\')<CR><CR>
@@ -67,12 +68,12 @@ vnoremap <Space>s "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<Left><Left><Left>
 
 # minimal files finding using fzf + rigrep
 def FilesCommand()
-  const files_cmd = 'rg --files --hidden --follow | xargs ls -atu | fzf'
+  const files_cmd = 'rg --files --hidden --follow | fzf'
   execute 'edit' substitute(system(files_cmd), '\n', '', '')
   execute 'redraw!'
 enddef
 command! -nargs=0 Files FilesCommand()
-nnoremap <Space>ff :Files<CR>
+nnoremap <Space>f :Files<CR>
 
 nnoremap <Space>y "+y
 vnoremap <Space>y "+y
