@@ -42,11 +42,13 @@ syntax on
 set background=dark
 colorscheme retrobox
 
-# keep things simple here
+# keep things simple here, only essentials
 call plug#begin()
-Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-signify'
+Plug 'machakann/vim-highlightedyank'
 Plug 'yegappan/lsp'
 Plug 'ziglang/zig.vim'
 call plug#end()
@@ -70,13 +72,11 @@ def GenTags()
     echohl WarningMsg | echomsg 'no ctags installation found' | echohl None
     return
   endif
-  var job = job_start(
-    ['ctags', '--tag-relative=never', '-G', '-R', '.'],
-    { "in_io": "null", "out_io": "null", "err_io": "null" }
-  )
+  var job = job_start(['ctags', '--tag-relative=never', '-G', '-R', '.'],
+    { "in_io": "null", "out_io": "null", "err_io": "null" })
   echomsg 'generate tags..., id: ' .. string(job)
 enddef
-command! -nargs=0 Tag GenTags()
+command! -nargs=0 Tags GenTags()
 
 nnoremap - :Explore<CR>
 au FileType netrw nnoremap <buffer> <C-c> :Rexplore<CR>
@@ -92,12 +92,12 @@ if executable('rg')
 endif
 vnoremap // "0y/\V<C-r>=escape(@0,'/\')<CR><CR>
 
-nnoremap <Space>e :e %:h<C-z>
-nnoremap <Space>b :b <C-z>
-nnoremap <Space>r :%s/<C-r><C-w>//gI<Left><Left><Left>
-vnoremap <Space>r "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<Left><Left><Left>
+nnoremap <Space>e :edit %:h<C-z>
+nnoremap <Space>b :buffer 
+nnoremap <Space>s :%s/<C-r><C-w>//gI<Left><Left><Left>
+vnoremap <Space>s "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<Left><Left><Left>
 
-# minimal fuzzy files finding using rigrep
+# minimal regex files finding using rigrep
 const files_cmd = 'rg --files --hidden --follow --glob "!.git" | sort | grep -i '
 def FindCommand(pattern: string)
   if filereadable(pattern)
@@ -156,6 +156,7 @@ var lsp_servers = [{
   path: 'pylsp'
 }]
 autocmd User LspSetup call LspAddServer(lsp_servers)
+g:highlightedyank_highlight_duration = 150
 
 def LspConfig()
   setlocal tagfunc=lsp#lsp#TagFunc  # go to definition by C-]

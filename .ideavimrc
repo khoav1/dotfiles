@@ -15,6 +15,8 @@ set ideajoin
 set ideamarks
 " enable ideavim plugins https://jb.gg/ideavim-plugins
 set commentary
+set surround
+set highlightedyank
 " map ide actions to ideavim - https://jb.gg/abva4t
 nmap <Space>ff <Action>(GotoFile)
 nmap <Space>fw viw:action GotoFile<CR>
@@ -42,6 +44,6 @@ nnoremap <Space>p "+p
 nnoremap <Space>P "+P
 vnoremap <Space>p "+p
 nnoremap <silent> <C-l> :nohlsearch<CR>
-nnoremap <Space>r viw"0y:%s/<C-r>0//gI<Left><Left><Left>
-vnoremap <Space>r "0y:%s/<C-r>0//gI<Left><Left><Left>
+nnoremap <Space>s viw"0y:%s/<C-r>0//gI<Left><Left><Left>
+vnoremap <Space>s "0y:%s/<C-r>0//gI<Left><Left><Left>
 vnoremap // "0y/\V<C-r>0<CR>
