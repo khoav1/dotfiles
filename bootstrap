@@ -8,6 +8,7 @@ function linking() {
   ln -sfn $(pwd)/.psqlrc ~/.psqlrc
   ln -sfn $(pwd)/.vimrc ~/.vimrc
   ln -sfn $(pwd)/.ideavimrc ~/.ideavimrc
+  ln -sfn $(pwd)/.ripgreprc ~/.ripgreprc
 
   mkdir -p ${XDG_DATA_HOME:=~/.local/share}
   mkdir -p ${XDG_CONFIG_HOME:=~/.config}
@@ -66,7 +67,7 @@ else
   sudo mv zig-x86_64-linux*/lib/* /usr/lib/zig/
   rm -rf zig-x86_64-linux-*
 
-  target_dir=$XDG_DATA_HOME/fonts
+  target_dir=${XDG_DATA_HOME:=~/.local/share}/fonts
   if [ ! -d "$target_dir" ] ; then
     echo '[-] installing favourite font [-]'
     wget https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip

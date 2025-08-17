@@ -6,7 +6,6 @@ set smartcase
 set incsearch
 set hlsearch
 set list
-set number
 set relativenumber
 set ideastatusicon=gray
 set ideawrite=file

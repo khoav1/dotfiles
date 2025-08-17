@@ -30,7 +30,6 @@ set softtabstop=2
 set shiftround
 set expandtab
 
-set number
 set relativenumber
 set list
 set lcs=tab:>\ ,trail:-,nbsp:+
@@ -72,8 +71,7 @@ def GenTags()
     echohl WarningMsg | echomsg 'no ctags installation found' | echohl None
     return
   endif
-  var job = job_start(['ctags', '--tag-relative=never', '-G', '-R', '.'],
-    { "in_io": "null", "out_io": "null", "err_io": "null" })
+  var job = job_start(['ctags', '-G', '-R', '.'], { 'in_io': 'null', 'out_io': 'null', 'err_io': 'null' })
   echomsg 'generate tags..., id: ' .. string(job)
 enddef
 command! -nargs=0 Tags GenTags()
@@ -98,7 +96,7 @@ nnoremap <Space>s :%s/<C-r><C-w>//gI<Left><Left><Left>
 vnoremap <Space>s "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<Left><Left><Left>
 
 # minimal regex files finding using rigrep
-const files_cmd = 'rg --files --hidden --follow --glob "!.git" | sort | grep -i '
+const files_cmd = 'rg --files --hidden --follow | xargs ls -atu | grep -i '
 def FindCommand(pattern: string)
   if filereadable(pattern)
     execute 'edit' fnameescape(pattern)
@@ -108,7 +106,7 @@ def FindCommand(pattern: string)
   if len(files) > 0 && filereadable(files[0])
     execute 'edit' fnameescape(files[0])
   else
-    echohl WarningMsg | echo "no file matches" | echohl None
+    echohl WarningMsg | echo 'no file matches' | echohl None
   endif
 enddef
 def FindComplete(arg_lead: string, cmd_line: string, cursor_pos: number): list<string>
