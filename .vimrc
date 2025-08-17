@@ -1,45 +1,16 @@
 vim9script
-
-set nocompatible
-set regexpengine=2
-set laststatus=2
-set noswapfile
-set showmatch
-
-set splitbelow
-set splitright
-set title
-set visualbell
-set ruler
-
-set ignorecase
-set smartcase
-set autoread
-set autoindent
-set incsearch
-set hlsearch
-
-set wildmenu
-set wildoptions=pum,tagfile
-set wildcharm=<C-z>
-set updatetime=100
-
-set shiftwidth=2
-set tabstop=2
-set softtabstop=2
-set shiftround
-set expandtab
-
-set relativenumber
-set list
-set lcs=tab:>\ ,trail:-,nbsp:+
+set nocompatible regexpengine=2 laststatus=2 noswapfile showmatch
+set splitbelow splitright title visualbell ruler relativenumber
+set ignorecase smartcase autoread autoindent incsearch hlsearch
+set updatetime=100 wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
+set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
+set background=dark list lcs=tab:>\ ,trail:-,nbsp:+
 &showbreak = '+++ '
+colorscheme retrobox
 
 filetype on
 filetype indent on
 syntax on
-set background=dark
-colorscheme retrobox
 
 # keep things simple here, only essentials
 call plug#begin()
@@ -81,12 +52,12 @@ au FileType netrw nnoremap <buffer> <C-c> :Rexplore<CR>
 
 # extend vim grep abilities with ripgrep, result can be accessible through qf list
 if executable('rg')
-    set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading\ --column
-    set grepformat^=%f:%l:%c:%m
-    nnoremap <Space>gg :grep! --fixed-strings ''<Left>
-    vnoremap <Space>gg "0y:grep! --case-sensitive --fixed-strings '<C-r>0'<Left>
-    nnoremap <Space>gw :grep! --case-sensitive --fixed-strings '<C-r><C-w>'<CR>
-    nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings ''<Left>
+  set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading\ --column
+  set grepformat^=%f:%l:%c:%m
+  nnoremap <Space>gg :grep! --fixed-strings ''<Left>
+  vnoremap <Space>gg "0y:grep! --case-sensitive --fixed-strings '<C-r>0'<Left>
+  nnoremap <Space>gw :grep! --case-sensitive --fixed-strings '<C-r><C-w>'<CR>
+  nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings ''<Left>
 endif
 vnoremap // "0y/\V<C-r>=escape(@0,'/\')<CR><CR>
 
@@ -126,35 +97,16 @@ hi! Normal ctermbg=NONE guibg=NONE
 hi! NormalNC ctermbg=NONE guibg=NONE
 hi! SignColumn ctermbg=NONE guibg=NONE
 
-var lsp_opts = {
-  ignoreMissingServer: v:true,
-  hoverInPreview: v:true,
-  omniComplete: v:true,
-  showInlayHints: v:true
-}
+var lsp_opts = { ignoreMissingServer: v:true, hoverInPreview: v:true, omniComplete: v:true, showInlayHints: v:true }
 autocmd User LspSetup call LspOptionsSet(lsp_opts)
 
-var lsp_servers = [{
-  name: 'clang',
-  filetype: ['c', 'cpp', 'proto'],
-  path: 'clangd',
-  args: ['--background-index']
-}, {
-  name: 'zls',
-  filetype: ['zig', 'zir'],
-  path: 'zls'
-}, {
-  name: 'tsserver',
-  filetype: ['javascript', 'typescript'],
-  path: 'typescript-language-server',
-  args: ['--stdio']
-}, {
-  name: 'pylsp',
-  filetype: ['python'],
-  path: 'pylsp'
-}]
+var lsp_servers = [
+  { name: 'clang', filetype: ['c', 'cpp', 'proto'], path: 'clangd', args: ['--background-index'] },
+  { name: 'zls', filetype: ['zig', 'zir'], path: 'zls' },
+  { name: 'pylsp', filetype: ['python'], path: 'pylsp' },
+  { name: 'tsserver', filetype: ['javascript', 'typescript'], path: 'typescript-language-server', args: ['--stdio'] }
+]
 autocmd User LspSetup call LspAddServer(lsp_servers)
-g:highlightedyank_highlight_duration = 150
 
 def LspConfig()
   setlocal tagfunc=lsp#lsp#TagFunc  # go to definition by C-]
@@ -173,4 +125,5 @@ augroup lsp_keymaps
   au FileType c,cpp,zig,javascript,typescript,python call LspConfig()
 augroup END
 
+g:highlightedyank_highlight_duration = 150
 defcompile

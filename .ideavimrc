@@ -1,17 +1,7 @@
 " find a list of commands here: https://jb.gg/h38q75
 " find more examples here: https://jb.gg/share-ideavimrc
-set visualbell
-set ignorecase
-set smartcase
-set incsearch
-set hlsearch
-set list
-set relativenumber
-set ideastatusicon=gray
-set ideawrite=file
-set visualdelay=50
-set ideajoin
-set ideamarks
+set visualbell ignorecase smartcase incsearch hlsearch list relativenumber
+set ideastatusicon=gray ideawrite=file visualdelay=50 ideajoin ideamarks
 " enable ideavim plugins https://jb.gg/ideavim-plugins
 set commentary
 set surround
