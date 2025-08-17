@@ -4,8 +4,6 @@ set visualbell ignorecase smartcase incsearch hlsearch list relativenumber
 set ideastatusicon=gray ideawrite=file visualdelay=50 ideajoin ideamarks
 " enable ideavim plugins https://jb.gg/ideavim-plugins
 set commentary
-set surround
-set highlightedyank
 " map ide actions to ideavim - https://jb.gg/abva4t
 nmap <Space>ff <Action>(GotoFile)
 nmap <Space>fw viw:action GotoFile<CR>

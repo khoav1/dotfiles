@@ -1,28 +1,19 @@
 #!/usr/bin/env bash
-set -e
-
-pattern="$1"
-if [[ -z "$pattern" ]]; then
-  echo "usage: $0 <pattern>"
-  tree -L 3 -d ~/repos ~/personal
-  exit 1
-fi
-
-if tmux has-session -t "$pattern" 2>/dev/null; then
-  tmux switch -t "$pattern"
-  exit 0
-fi
-
-dir=$(find ~/personal ~/repos -maxdepth 3 -type d -iname "$pattern*" | head -n 1)
+dir=$(find ~/dotfiles ~/personal ~/repos -maxdepth 3 -type d | fzf --tmux)
 if [ -z "${dir}" ]; then
-  tmux display-message "no project found matching '$pattern'"
   exit 0
 fi
 
+# let choosing dotfiles goes to first session
+if [ "$dir" = "$HOME/dotfiles" ]; then
+  tmux switch-client -t 0
+  exit 0
+fi
+
+# otherwise, create a new session with corresponding project name
 name=$(basename "$dir")
 if ! tmux has-session -t "$name" 2>/dev/null; then
   tmux new-session -s "$name" -d -c "$dir"
 fi
-
-tmux switch -t "$name"
+tmux switch-client -t $name
 # vim: ft=bash

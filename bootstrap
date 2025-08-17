@@ -40,8 +40,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
   echo '[-] installing essential packages [-]'
   brew update
-  brew install curl wget git coreutils watch cmake ninja tree parallel tmux ripgrep jq zig
-  brew install google-chrome alacritty orbstack maccy ncdu tldr universal-ctags font-hack
+  brew install curl wget git coreutils watch cmake ninja tree parallel tmux fzf ripgrep jq
+  brew install google-chrome alacritty orbstack maccy zig ncdu tldr universal-ctags font-hack
 else
   if [ ! -f '/etc/apt/sources.list.d/debian.sources' ]; then
     echo '[-] configuring debian sources [-]'
@@ -52,7 +52,7 @@ else
 
   echo '[-] installing essential packages [-]'
   sudo apt-get install -y curl wget zip zsh git coreutils gcc clang cmake make ninja-build parallel
-  sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux ripgrep jq universal-ctags ncdu
+  sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux fzf ripgrep jq universal-ctags ncdu
 
   echo '[-] downloading zig executable [-]'
   curl -s https://ziglang.org/download/index.json \

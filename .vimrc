@@ -1,4 +1,5 @@
 vim9script
+
 set nocompatible regexpengine=2 laststatus=2 noswapfile showmatch
 set splitbelow splitright title visualbell ruler relativenumber
 set ignorecase smartcase autoread autoindent incsearch hlsearch
@@ -16,9 +17,7 @@ syntax on
 call plug#begin()
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-signify'
-Plug 'machakann/vim-highlightedyank'
 Plug 'yegappan/lsp'
 Plug 'ziglang/zig.vim'
 call plug#end()
@@ -66,26 +65,14 @@ nnoremap <Space>b :buffer
 nnoremap <Space>s :%s/<C-r><C-w>//gI<Left><Left><Left>
 vnoremap <Space>s "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<Left><Left><Left>
 
-# minimal regex files finding using rigrep
-const files_cmd = 'rg --files --hidden --follow | xargs ls -atu | grep -i '
-def FindCommand(pattern: string)
-  if filereadable(pattern)
-    execute 'edit' fnameescape(pattern)
-    return
-  endif
-  var files = systemlist(files_cmd .. shellescape(pattern))
-  if len(files) > 0 && filereadable(files[0])
-    execute 'edit' fnameescape(files[0])
-  else
-    echohl WarningMsg | echo 'no file matches' | echohl None
-  endif
+# minimal files finding using fzf + rigrep
+def FilesCommand()
+  const files_cmd = 'rg --files --hidden --follow | xargs ls -atu | fzf'
+  execute 'edit' substitute(system(files_cmd), '\n', '', '')
+  execute 'redraw!'
 enddef
-def FindComplete(arg_lead: string, cmd_line: string, cursor_pos: number): list<string>
-  return systemlist(files_cmd .. shellescape(arg_lead))
-enddef
-command! -nargs=* -complete=customlist,FindComplete Find FindCommand(<q-args>)
-nnoremap <Space>ff :Find 
-nnoremap <Space>fw :Find <C-r><C-w>
+command! -nargs=0 Files FilesCommand()
+nnoremap <Space>ff :Files<CR>
 
 nnoremap <Space>y "+y
 vnoremap <Space>y "+y
@@ -125,5 +112,4 @@ augroup lsp_keymaps
   au FileType c,cpp,zig,javascript,typescript,python call LspConfig()
 augroup END
 
-g:highlightedyank_highlight_duration = 150
 defcompile
