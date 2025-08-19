@@ -1,6 +1,6 @@
 vim9script
 
-set nocompatible regexpengine=2 laststatus=2 noswapfile
+set nocompatible regexpengine=2 laststatus=0 noswapfile
 set splitbelow splitright title visualbell ruler showmatch
 set ignorecase smartcase autoread autoindent incsearch hlsearch
 set updatetime=100 wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
@@ -68,8 +68,10 @@ vnoremap <Space>s "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<Left><Left><Left>
 
 # minimal files finding using fzf + rigrep
 def FilesCommand()
-  const files_cmd = 'rg --files --hidden --follow | fzf'
-  execute 'edit' substitute(system(files_cmd), '\n', '', '')
+  const file = trim(system('rg --files --hidden --follow | fzf'))
+  if !empty(file)
+    execute 'edit ' .. fnameescape(file)
+  endif
   execute 'redraw!'
 enddef
 command! -nargs=0 Files FilesCommand()
@@ -83,6 +85,9 @@ vnoremap <Space>p "+p
 
 hi! Normal ctermbg=NONE guibg=NONE
 hi! NormalNC ctermbg=NONE guibg=NONE
+hi! StatusLine cterm=underline ctermbg=NONE guibg=NONE
+hi! StatusLineNC cterm=underline ctermbg=NONE guibg=NONE
+hi! VertSplit cterm=NONE ctermbg=NONE guibg=NONE
 hi! SignColumn ctermbg=NONE guibg=NONE
 
 var lsp_opts = { ignoreMissingServer: v:true, hoverInPreview: v:true, omniComplete: v:true, showInlayHints: v:true }
