@@ -3,10 +3,11 @@ vim9script
 set nocompatible regexpengine=2 laststatus=0 noswapfile
 set splitbelow splitright title visualbell ruler showmatch
 set ignorecase smartcase autoread autoindent incsearch hlsearch
-set updatetime=100 wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
+set updatetime=256 wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
 set background=dark list lcs=tab:>\ ,trail:-,nbsp:+
 &showbreak = '+++ '
+set t_Co=16  # use terminal 16 colors
 colorscheme retrobox
 
 filetype on
@@ -16,8 +17,6 @@ syntax on
 # keep things simple here, only essentials
 call plug#begin()
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-commentary'
-Plug 'mhinz/vim-signify'
 Plug 'yegappan/lsp'
 Plug 'ziglang/zig.vim'
 call plug#end()
@@ -83,12 +82,10 @@ nnoremap <Space>p "+p
 nnoremap <Space>P "+P
 vnoremap <Space>p "+p
 
-hi! Normal ctermbg=NONE guibg=NONE
-hi! NormalNC ctermbg=NONE guibg=NONE
-hi! StatusLine cterm=underline ctermbg=NONE guibg=NONE
-hi! StatusLineNC cterm=underline ctermbg=NONE guibg=NONE
-hi! VertSplit cterm=NONE ctermbg=NONE guibg=NONE
-hi! SignColumn ctermbg=NONE guibg=NONE
+hi! StatusLine cterm=underline ctermbg=NONE
+hi! StatusLineNC cterm=underline ctermbg=NONE
+hi! VertSplit cterm=NONE ctermbg=NONE ctermfg=darkgray
+hi! SignColumn ctermbg=NONE
 
 var lsp_opts = { ignoreMissingServer: v:true, hoverInPreview: v:true, omniComplete: v:true, showInlayHints: v:true }
 autocmd User LspSetup call LspOptionsSet(lsp_opts)
