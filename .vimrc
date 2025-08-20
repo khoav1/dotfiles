@@ -1,13 +1,12 @@
 vim9script
 
-set nocompatible regexpengine=2 laststatus=0 noswapfile
+set nocompatible regexpengine=2 laststatus=2 noswapfile
 set splitbelow splitright title visualbell ruler showmatch
 set ignorecase smartcase autoread autoindent incsearch hlsearch
 set updatetime=256 wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
 set background=dark list lcs=tab:>\ ,trail:-,nbsp:+
 &showbreak = '+++ '
-set t_Co=16  # use terminal 16 colors
 colorscheme retrobox
 
 filetype on
@@ -17,6 +16,7 @@ syntax on
 # keep things simple here, only essentials
 call plug#begin()
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
 Plug 'yegappan/lsp'
 Plug 'ziglang/zig.vim'
 call plug#end()
@@ -33,7 +33,6 @@ nnoremap <C-l> :nohlsearch<CR>
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
 autocmd QuickFixCmdPost [^l]* cwindow
-autocmd FileType help,qf,fugitive,fugitiveblame,lspgfm nnoremap <buffer> q :q<CR>
 
 # generate tags in the background
 def GenTags()
@@ -82,20 +81,37 @@ nnoremap <Space>p "+p
 nnoremap <Space>P "+P
 vnoremap <Space>p "+p
 
-hi! StatusLine cterm=underline ctermbg=NONE
-hi! StatusLineNC cterm=underline ctermbg=NONE
-hi! VertSplit cterm=NONE ctermbg=NONE ctermfg=darkgray
-hi! SignColumn ctermbg=NONE
+highlight SignColumn ctermbg=NONE guibg=NONE
+highlight Normal ctermbg=NONE guibg=NONE
+highlight NormalNC ctermbg=NONE guibg=NONE
 
-var lsp_opts = { ignoreMissingServer: v:true, hoverInPreview: v:true, omniComplete: v:true, showInlayHints: v:true }
+var lsp_opts = {
+  ignoreMissingServer: v:true,
+  hoverInPreview: v:true,
+  omniComplete: v:true,
+  showInlayHints: v:true
+}
 autocmd User LspSetup call LspOptionsSet(lsp_opts)
 
-var lsp_servers = [
-  { name: 'clang', filetype: ['c', 'cpp', 'proto'], path: 'clangd', args: ['--background-index'] },
-  { name: 'zls', filetype: ['zig', 'zir'], path: 'zls' },
-  { name: 'pylsp', filetype: ['python'], path: 'pylsp' },
-  { name: 'tsserver', filetype: ['javascript', 'typescript'], path: 'typescript-language-server', args: ['--stdio'] }
-]
+var lsp_servers = [{
+  name: 'clang',
+  filetype: ['c', 'cpp', 'proto'],
+  path: 'clangd',
+  args: ['--background-index']
+}, {
+  name: 'zls',
+  filetype: ['zig', 'zir'],
+  path: 'zls'
+}, {
+  name: 'pylsp',
+  filetype: ['python'],
+  path: 'pylsp'
+}, {
+  name: 'tsserver',
+  filetype: ['javascript', 'typescript'],
+  path: 'typescript-language-server',
+  args: ['--stdio']
+}]
 autocmd User LspSetup call LspAddServer(lsp_servers)
 
 def LspConfig()

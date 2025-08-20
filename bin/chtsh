@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+url='https://cht.sh'
+cache_dir="$XDG_CACHE_HOME/cht.sh"
+list_cache_file="$cache_dir/list.txt"
+list_cache_duration=$((24 * 60 * 60))
+query_cache_duration=$((60 * 60))
+
+if [ ! -d "$cache_dir" ] ; then
+  mkdir -p "$cache_dir"
+fi
+
+if [ -f "$list_cache_file" ] && [ $(( $(date +%s) - $(stat -f %m "$list_cache_file") )) -lt $list_cache_duration ]; then
+  query=$(cat "$list_cache_file" | fzf --tmux)
+else
+  tmux display-message "fetching cht.sh list..."
+  query=$(curl -s "$url/:list" | tee "$list_cache_file" | fzf --tmux)
+fi
+if [ -z "${query}" ]; then
+  exit 0
+fi
+
+query_cache_file="$cache_dir/$(echo "$query" | tr -d '[:space:]/' | tr -C '[:alnum:]' '_').txt"
+if [ -f "$query_cache_file" ] && [ $(( $(date +%s) - $(stat -f %m "$query_cache_file") )) -lt $query_cache_duration ]; then
+  output=$(cat "$query_cache_file")
+else
+  tmux display-message "querying cht.sh..."
+  output=$(curl -s "$url/$query" | tee "$query_cache_file")
+fi
+
+if man -w "$query" &> /dev/null; then
+  tmux display-message "getting local man page..."
+  output="\n\n$output$(man "$query" | col -b)"  # col -b removes formatting for clean text
+fi
+
+echo -e "$output" | less -R
+# vim:ft=bash

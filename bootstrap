@@ -41,7 +41,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo '[-] installing essential packages [-]'
   brew update
   brew install curl wget git coreutils watch cmake ninja tree parallel tmux fzf ripgrep jq
-  brew install google-chrome alacritty orbstack maccy zig ncdu tldr universal-ctags font-hack
+  brew install google-chrome alacritty orbstack maccy zig ncdu universal-ctags font-hack
 else
   if [ ! -f '/etc/apt/sources.list.d/debian.sources' ]; then
     echo '[-] configuring debian sources [-]'
