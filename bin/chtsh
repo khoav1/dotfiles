@@ -2,8 +2,8 @@
 url='https://cht.sh'
 cache_dir="$XDG_CACHE_HOME/cht.sh"
 list_cache_file="$cache_dir/list.txt"
-list_cache_duration=$((24 * 60 * 60))
-query_cache_duration=$((60 * 60))
+list_cache_duration=$((8 * 60 * 60))
+query_cache_duration=$((30 * 60))
 
 if [ ! -d "$cache_dir" ] ; then
   mkdir -p "$cache_dir"
@@ -13,7 +13,7 @@ if [ -f "$list_cache_file" ] && [ $(( $(date +%s) - $(stat -f %m "$list_cache_fi
   query=$(cat "$list_cache_file" | fzf --tmux)
 else
   tmux display-message "fetching cht.sh list..."
-  query=$(curl -s "$url/:list" | tee "$list_cache_file" | fzf --tmux)
+  query=$(curl -s "$url/:list" | grep -vE '^:' | sort | tee "$list_cache_file" | fzf --tmux)
 fi
 if [ -z "${query}" ]; then
   exit 0
