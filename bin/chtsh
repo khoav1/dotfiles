@@ -29,7 +29,7 @@ fi
 
 if man -w "$query" &> /dev/null; then
   tmux display-message "getting local man page..."
-  output="\n\n$output$(man "$query" | col -b)"  # col -b removes formatting for clean text
+  output="$output\n\n$(man "$query" | col -b)"  # col -b removes formatting for clean text
 fi
 
 echo -e "$output" | less -R

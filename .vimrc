@@ -7,7 +7,7 @@ set updatetime=256 wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
 set background=dark list lcs=tab:>\ ,trail:-,nbsp:+
 &showbreak = '+++ '
-colorscheme retrobox
+colorscheme desert
 
 filetype on
 filetype indent on
@@ -81,9 +81,10 @@ nnoremap <Space>p "+p
 nnoremap <Space>P "+P
 vnoremap <Space>p "+p
 
-highlight SignColumn ctermbg=NONE guibg=NONE
-highlight Normal ctermbg=NONE guibg=NONE
-highlight NormalNC ctermbg=NONE guibg=NONE
+highlight SignColumn cterm=NONE ctermbg=NONE guibg=NONE
+highlight VertSplit cterm=NONE ctermbg=NONE guibg=NONE
+highlight StatusLine ctermbg=gray ctermfg=black
+highlight StatusLineNC ctermbg=darkgray ctermfg=black
 
 var lsp_opts = {
   ignoreMissingServer: v:true,
