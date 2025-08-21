@@ -1,11 +1,11 @@
-font-family=hack
-font-style-bold=regular
-font-style-italic=regular
-font-style-bold-italic=regular
-font-size=18
+font-family=Hack
+font-style-bold=Regular
+font-style-italic=Regular
+font-style-bold-italic=Regular
+font-size=15
 font-feature=-calt,-liga,-dlig
 font-thicken=true
-theme=desert
+theme=Desert
 shell-integration-features=no-cursor
 cursor-style=block
 copy-on-select=true

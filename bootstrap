@@ -68,18 +68,39 @@ else
     echo 'be sure to cp mangohud config to `.config/MangoHud` directory inside steam flatpak'
   fi
 
-  echo '[-] downloading zig executable [-]'
+  target_dir=${XDG_DATA_HOME:=~/.local/share}/ghostty
+  if [ ! -d "$target_dir" ] ; then
+    echo '[-] downloading zig 0.13.0 executable [-]'
+    wget https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz
+    tar -xf zig-*.tar.xz
+    sudo mv zig-*/zig /usr/bin/zig
+    if [ -d '/usr/lib/zig' ] ; then
+      sudo rm -rf /usr/lib/zig
+    fi
+    sudo mkdir -p /usr/lib/zig
+    sudo mv zig-*/lib/* /usr/lib/zig/
+    rm -rf zig-*
+
+    echo '[-] building ghostty [-]'
+    sudo apt-get install -y libgtk-4-dev libadwaita-1-dev git blueprint-compiler gettext libxml2-utils
+    git clone https://github.com/ghostty-org/ghostty.git "$target_dir"
+    cd "$target_dir"
+    git checkout v1.1.3
+    zig build -p ~/.local -Doptimize=ReleaseFast
+  fi
+
+  echo '[-] downloading latest zig executable [-]'
   curl -s https://ziglang.org/download/index.json \
     | jq -r 'to_entries | map(select(.key != "master")) | max_by(.key | split(".") | map(tonumber)) | .value["x86_64-linux"].tarball' \
     | xargs wget
-  tar -xf zig-x86_64-linux-*.tar.xz
-  sudo mv zig-x86_64-linux-*/zig /usr/bin/zig
+  tar -xf zig-*.tar.xz
+  sudo mv zig-*/zig /usr/bin/zig
   if [ -d '/usr/lib/zig' ] ; then
     sudo rm -rf /usr/lib/zig
   fi
   sudo mkdir -p /usr/lib/zig
-  sudo mv zig-x86_64-linux*/lib/* /usr/lib/zig/
-  rm -rf zig-x86_64-linux-*
+  sudo mv zig-*/lib/* /usr/lib/zig/
+  rm -rf zig-*
 
   target_dir=${XDG_DATA_HOME:=~/.local/share}/fonts
   if [ ! -d "$target_dir" ] ; then
@@ -105,15 +126,6 @@ else
     Pin-Priority: 1000
     ' | sudo tee /etc/apt/preferences.d/mozilla
     sudo apt-get update -y && sudo apt-get install -y firefox
-  fi
-
-  target_dir=${XDG_DATA_HOME:=~/.local/share}/ghostty
-  if [ ! -d "$target_dir" ] ; then
-    echo '[-] building ghostty [-]'
-    sudo apt-get install -y libgtk-4-dev libadwaita-1-dev git blueprint-compiler gettext libxml2-utils
-    git clone https://github.com/ghostty-org/ghostty.git "$target_dir"
-    cd "$target_dir"
-    zig build -p ~/.local -Doptimize=ReleaseFast
   fi
 
   target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo
