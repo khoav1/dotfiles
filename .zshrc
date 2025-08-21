@@ -17,6 +17,7 @@ GIT_PS1_SHOWUPSTREAM='verbose'
 GIT_PS1_HIDE_IF_PWD_IGNORED=true
 GIT_PS1_COMPRESSSPARSESTATE=true
 setopt PROMPT_SUBST
-PS1='%B%F{magenta}%0~%f%b% %F{blue}$(__git_ps1 " [%s]") %f%(?..%F{red})%(!.#.$)%f%b '
+NL=$'\n'  # separate prompt to a new line
+PS1='%F{cyan}%0~%f%b% %F{magenta}$(__git_ps1 " [%s]")%f$NL%(?..%F{red})%(!.#.$)%f%b '
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.profile

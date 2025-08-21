@@ -12,7 +12,7 @@ function linking() {
 
   mkdir -p ${XDG_DATA_HOME:=~/.local/share}
   mkdir -p ${XDG_CONFIG_HOME:=~/.config}
-  ln -sfn $(pwd)/alacritty $XDG_CONFIG_HOME/alacritty
+  ln -sfn $(pwd)/ghostty $XDG_CONFIG_HOME/ghostty
 
   ln -sfn $(pwd)/.gitignore ~/.gitignore
   git config --global core.excludesFile '~/.gitignore'
@@ -41,8 +41,14 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   echo '[-] installing essential packages [-]'
   brew update
   brew install curl wget git coreutils watch cmake ninja tree parallel tmux fzf ripgrep jq
-  brew install google-chrome alacritty orbstack maccy zig ncdu universal-ctags font-hack
+  brew install google-chrome ghostty orbstack maccy zig ncdu universal-ctags font-hack
 else
+  echo '[-] checking secure boot state [-]'
+  if [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]]; then
+    echo "could not determine the secure boot state."
+    exit 1
+  fi
+
   if [ ! -f '/etc/apt/sources.list.d/debian.sources' ]; then
     echo '[-] configuring debian sources [-]'
     sudo cp -f $(pwd)/etc/apt/sources.list /etc/apt/sources.list
@@ -52,7 +58,15 @@ else
 
   echo '[-] installing essential packages [-]'
   sudo apt-get install -y curl wget zip zsh git coreutils gcc clang cmake make ninja-build parallel
-  sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux fzf ripgrep jq universal-ctags ncdu
+  sudo apt-get install -y watch tree vim vim-gtk3 tmux fzf ripgrep jq universal-ctags ncdu xclip
+
+  if lspci | grep -E "VGA|3D" | grep -iq "AMD"; then
+    echo '[-] installing amd essential packages [-]'
+    sudo apt-get install -y rocm-smi gamemode flatpak gnome-software-plugin-flatpak
+    flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    flatpak install --noninteractive -y flathub com.github.tchx84.Flatseal
+    echo 'be sure to cp mangohud config to `.config/MangoHud` directory inside steam flatpak'
+  fi
 
   echo '[-] downloading zig executable [-]'
   curl -s https://ziglang.org/download/index.json \
@@ -75,6 +89,42 @@ else
     unzip -j Hack-v3.003-ttf.zip 'ttf/*.ttf' -d "$target_dir"
     rm -f Hack-v3.003-ttf.zip
     fc-cache -f -v
+  fi
+
+  if [ ! -f '/etc/apt/sources.list.d/mozilla.list' ]; then
+    echo '[-] installing latest firefox [-]'
+    sudo apt-get purge --autoremove -y firefox-esr
+    sudo apt-get autoremove -y
+    sudo install -d -m 0755 /etc/apt/keyrings
+    wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null
+    gpg -n -q --import --import-options import-show /etc/apt/keyrings/packages.mozilla.org.asc | awk '/pub/{getline; gsub(/^ +| +$/,""); if($0 == "35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3") print "\nThe key fingerprint matches ("$0").\n"; else print "\nVerification failed: the fingerprint ("$0") does not match the expected one.\n"}'
+    echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list > /dev/null
+    echo '
+    Package: *
+    Pin: origin packages.mozilla.org
+    Pin-Priority: 1000
+    ' | sudo tee /etc/apt/preferences.d/mozilla
+    sudo apt-get update -y && sudo apt-get install -y firefox
+  fi
+
+  target_dir=${XDG_DATA_HOME:=~/.local/share}/ghostty
+  if [ ! -d "$target_dir" ] ; then
+    echo '[-] building ghostty [-]'
+    sudo apt-get install -y libgtk-4-dev libadwaita-1-dev git blueprint-compiler gettext libxml2-utils
+    git clone https://github.com/ghostty-org/ghostty.git "$target_dir"
+    cd "$target_dir"
+    zig build -p ~/.local -Doptimize=ReleaseFast
+  fi
+
+  target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo
+  if [ ! -d "$target_dir" ] ; then
+    echo '[-] building ibus-bamboo [-]'
+    sudo apt-get install -y ibus make golang libx11-dev libxtst-dev libgtk-3-dev
+    git clone https://github.com/BambooEngine/ibus-bamboo.git "$target_dir"
+    cd "$target_dir"
+    sudo make install PREFIX=/usr
+    env DCONF_PROFILE=ibus dconf write /desktop/ibus/general/preload-engines "['BambooUs', 'Bamboo']" && \
+      gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'Bamboo')]"
   fi
 fi
 

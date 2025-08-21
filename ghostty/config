@@ -1,0 +1,15 @@
+font-family=hack
+font-style-bold=regular
+font-style-italic=regular
+font-style-bold-italic=regular
+font-size=18
+font-feature=-calt,-liga,-dlig
+font-thicken=true
+theme=desert
+shell-integration-features=no-cursor
+cursor-style=block
+copy-on-select=true
+window-padding-x=5
+window-padding-y=5
+window-padding-balance=true
+macos-option-as-alt=true
