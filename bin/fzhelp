@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+bin=$((compgen -c | sort -ru) | fzf --tmux)
+if [ -z "${bin}" ]; then
+  exit 0
+fi
+
+output=$(man "$bin" | col -b)
+if [ -z "${output}" ]; then
+  output=$("$bin" --help)
+fi
+if [ -z "${output}" ]; then
+  output=$("$bin" help)
+fi
+if [ -z "${output}" ]; then
+  tmux display-message "no help available for $bin"
+fi
+echo -e "$output" | less -R
+# vim: ft=bash
