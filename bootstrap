@@ -44,7 +44,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   brew install google-chrome ghostty orbstack maccy zig ncdu universal-ctags font-hack
 else
   echo '[-] checking secure boot state [-]'
-  if [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]]; then
+  if [ ! -f '/etc/wsl.conf' ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]]; then
     echo "could not determine the secure boot state."
     exit 1
   fi
@@ -68,7 +68,7 @@ else
     echo 'be sure to cp mangohud config to `.config/MangoHud` directory inside steam flatpak'
   fi
 
-  if [ ! -f '/etc/apt/sources.list.d/mozilla.list' ]; then
+  if [ ! -f '/etc/wsl.conf' ] && [ ! -f '/etc/apt/sources.list.d/mozilla.list' ]; then
     echo '[-] installing latest firefox [-]'
     sudo apt-get purge --autoremove -y firefox-esr
     sudo apt-get autoremove -y
@@ -85,7 +85,7 @@ else
   fi
 
   target_dir=${XDG_DATA_HOME:=~/.local/share}/fonts
-  if [ ! -d "$target_dir" ] ; then
+  if [ ! -d "$target_dir" ]; then
     echo '[-] installing favourite font [-]'
     wget https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip
     mkdir -p "$target_dir"
@@ -95,7 +95,7 @@ else
   fi
 
   target_dir=${XDG_DATA_HOME:=~/.local/share}/ghostty
-  if [ ! -d "$target_dir" ] ; then
+  if [ ! -d "$target_dir" ]; then
     echo '[-] downloading zig 0.13.0 executable [-]'
     wget https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz
   else
@@ -106,14 +106,14 @@ else
   fi
   tar -xf zig-*.tar.xz
   sudo mv zig-*/zig /usr/bin/zig
-  if [ -d '/usr/lib/zig' ] ; then
+  if [ -d '/usr/lib/zig' ]; then
     sudo rm -rf /usr/lib/zig
   fi
   sudo mkdir -p /usr/lib/zig
   sudo mv zig-*/lib/* /usr/lib/zig/
   rm -rf zig-*
   target_dir=${XDG_DATA_HOME:=~/.local/share}/ghostty
-  if [ ! -d "$target_dir" ] ; then
+  if [ ! -d "$target_dir" ]; then
     echo '[-] building ghostty [-]'
     sudo apt-get install -y libgtk-4-dev libadwaita-1-dev git blueprint-compiler gettext libxml2-utils
     git clone https://github.com/ghostty-org/ghostty.git "$target_dir"
@@ -123,7 +123,7 @@ else
   fi
 
   target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo
-  if [ ! -d "$target_dir" ] ; then
+  if [ ! -f '/etc/wsl.conf' ] && [ ! -d "$target_dir" ]; then
     echo '[-] building ibus-bamboo [-]'
     sudo apt-get install -y ibus make golang libx11-dev libxtst-dev libgtk-3-dev
     git clone https://github.com/BambooEngine/ibus-bamboo.git "$target_dir"
