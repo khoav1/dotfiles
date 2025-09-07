@@ -1,9 +1,12 @@
 " find a list of commands here: https://jb.gg/h38q75
 " find more examples here: https://jb.gg/share-ideavimrc
 set visualbell ignorecase smartcase incsearch hlsearch list
-set ideastatusicon=gray ideawrite=file visualdelay=50 ideajoin ideamarks
+set showcmd showmode scrolloff=0 sidescrolloff=0 colorcolumn=120
+set ideastatusicon=gray ideawrite=file visualdelay=50
+set ideajoin ideamarks ideaglobalmode
 " enable ideavim plugins https://jb.gg/ideavim-plugins
-set commentary
+set highlightedyank
+set surround
 " map ide actions to ideavim - https://jb.gg/abva4t
 nmap <Space>f <Action>(GotoFile)
 nmap <Space>e <Action>(ShowNavBar)
@@ -33,3 +36,4 @@ nnoremap <silent> <C-l> :nohlsearch<CR>
 nnoremap <Space>s viw"0y:%s/<C-r>0//gI<Left><Left><Left>
 vnoremap <Space>s "0y:%s/<C-r>0//gI<Left><Left><Left>
 vnoremap // "0y/\V<C-r>0<CR>
+let g:highlightedyank_highlight_duration = 150

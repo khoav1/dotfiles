@@ -3,10 +3,14 @@ padding = { x = 5, y = 5 }
 startup_mode = "Maximized"
 resize_increments = true
 dynamic_title = true
+decorations_theme_variant = "Dark"
 option_as_alt = "Both"
 
 [font]
 normal.family = "Hack"
+bold.style = "Regular"
+italic.style = "Regular"
+bold_italic.style = "Regular"
 size = 16
 
 [selection]
