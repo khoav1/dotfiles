@@ -42,6 +42,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'machakann/vim-highlightedyank'
 Plug 'yegappan/lsp'
+Plug 'github/copilot.vim'
 call plug#end()
 
 set undodir=~/.vim/undo undofile
@@ -85,7 +86,7 @@ function! s:find_complete(arglead, cmdline, cursorpos)
   let l:cmd = s:files_cmd . shellescape(a:arglead)
   return systemlist(l:cmd)
 endfunction
-command! -nargs=* -complete=customlist,<SID>find_complete Find call <SID>find_command(<q-args>)
+command! -nargs=1 -complete=customlist,<SID>find_complete Find call <SID>find_command(<q-args>)
 nnoremap <space>f :Find 
 nnoremap <space>F :Find <c-r><c-w>
 

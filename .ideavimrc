@@ -6,6 +6,7 @@ set ideastatusicon=gray ideawrite=file visualdelay=50
 " enable ideavim plugins https://jb.gg/ideavim-plugins -> see .vimrc
 " map ide actions to ideavim - https://jb.gg/abva4t
 nmap <space>f <Action>(GotoFile)
+nmap <space>F viw:action GotoFile<cr>
 nmap <space>e <Action>(ShowNavBar)
 nmap <space>b <Action>(RecentFiles)
 nmap <space>g <Action>(FindInPath)
