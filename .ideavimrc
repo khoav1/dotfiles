@@ -1,22 +1,19 @@
 " find a list of commands here: https://jb.gg/h38q75
 " find more examples here: https://jb.gg/share-ideavimrc
-set visualbell ignorecase smartcase incsearch hlsearch list
-set showcmd showmode scrolloff=0 sidescrolloff=0 colorcolumn=120
-set ideastatusicon=gray ideawrite=file visualdelay=50
+source ~/.vimrc
 set ideajoin ideamarks ideaglobalmode
-" enable ideavim plugins https://jb.gg/ideavim-plugins
-set highlightedyank
-set surround
+set ideastatusicon=gray ideawrite=file visualdelay=50
+" enable ideavim plugins https://jb.gg/ideavim-plugins -> see .vimrc
 " map ide actions to ideavim - https://jb.gg/abva4t
-nmap <Space>f <Action>(GotoFile)
-nmap <Space>e <Action>(ShowNavBar)
-nmap <Space>b <Action>(RecentFiles)
-nmap <Space>g <Action>(FindInPath)
-vmap <Space>g <Action>(FindInPath)
-nmap <Space>G viw:action FindInPath<CR>
-nmap <Space>/ <Action>(SearchEverywhere)
+nmap <space>f <Action>(GotoFile)
+nmap <space>e <Action>(ShowNavBar)
+nmap <space>b <Action>(RecentFiles)
+nmap <space>g <Action>(FindInPath)
+vmap <space>g <Action>(FindInPath)
+nmap <space>G viw:action FindInPath<cr>
+nmap <space>/ <Action>(SearchEverywhere)
 nmap - <Action>(SelectInProjectView)
-nmap <C-]> <Action>(GotoDeclaration)
+nmap <c-]> <Action>(GotoDeclaration)
 nmap gq <Action>(ReformatCode)
 vmap gq <Action>(ReformatCode)
 nmap gri <Action>(GotoImplementation)
@@ -26,14 +23,7 @@ nmap grn <Action>(RenameElement)
 nmap ]d <Action>(GotoNextError)zz
 nmap [d <Action>(GotoPreviousError)zz
 nmap K <Action>(ShowHoverInfo)
-nmap <C-w>o <Action>(HideAllWindows)
-nnoremap <Space>y "+y
-vnoremap <Space>y "+y
-nnoremap <Space>p "+p
-nnoremap <Space>P "+P
-vnoremap <Space>p "+p
-nnoremap <silent> <C-l> :nohlsearch<CR>
-nnoremap <Space>s viw"0y:%s/<C-r>0//gI<Left><Left><Left>
-vnoremap <Space>s "0y:%s/<C-r>0//gI<Left><Left><Left>
-vnoremap // "0y/\V<C-r>0<CR>
-let g:highlightedyank_highlight_duration = 150
+nmap <c-w>o <Action>(HideAllWindows)
+nnoremap <space>s viw"0y:%s/<c-r>0//gI<left><left><left>
+vnoremap <space>s "0y:%s/<c-r>0//gI<left><left><left>
+vnoremap // "0y/\V<c-r>0<cr>
