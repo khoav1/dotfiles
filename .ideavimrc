@@ -1,30 +1,36 @@
 " find a list of commands here: https://jb.gg/h38q75
-" find more examples here: https://jb.gg/share-ideavimrc
+"   or :actionlist [pattern]
 source ~/.vimrc
-set ideajoin ideamarks ideaglobalmode
-set ideastatusicon=gray ideawrite=file visualdelay=50
-" enable ideavim plugins https://jb.gg/ideavim-plugins -> see .vimrc
+set ideastatusicon=gray
+set ideawrite=file
+set visualdelay=50
+set ideaglobalmode
+set ideajoin
+set ideamarks
+" enable ideavim plugins https://jb.gg/ideavim-plugins
+"   -- see .vimrc
 " map ide actions to ideavim - https://jb.gg/abva4t
-nmap <space>f <Action>(GotoFile)
-nmap <space>F viw:action GotoFile<cr>
-nmap <space>e <Action>(ShowNavBar)
-nmap <space>b <Action>(RecentFiles)
-nmap <space>g <Action>(FindInPath)
-vmap <space>g <Action>(FindInPath)
-nmap <space>G viw:action FindInPath<cr>
-nmap <space>/ <Action>(SearchEverywhere)
+nmap <Space>f <Action>(GotoFile)
+nmap <Space>F viw:action GotoFile<CR>
+nmap <Space>e <Action>(ShowNavBar)
+nmap <Space>b <Action>(RecentFiles)
+nmap <Space>g <Action>(FindInPath)
+vmap <Space>g <Action>(FindInPath)
+nmap <Space>G viw:action FindInPath<CR>
+nmap <Space>/ <Action>(SearchEverywhere)
 nmap - <Action>(SelectInProjectView)
-nmap <c-]> <Action>(GotoDeclaration)
+nmap <C-]> <Action>(GotoDeclaration)
 nmap gq <Action>(ReformatCode)
 vmap gq <Action>(ReformatCode)
-nmap gri <Action>(GotoImplementation)
-nmap grr <Action>(FindUsages)
-nmap gra <Action>(GotoAction)
-nmap grn <Action>(RenameElement)
+nmap gi <Action>(GotoImplementation)
+nmap gr <Action>(FindUsages)
+nmap gR <Action>(RenameElement)
+nmap K <Action>(ShowHoverInfo)
 nmap ]d <Action>(GotoNextError)zz
 nmap [d <Action>(GotoPreviousError)zz
-nmap K <Action>(ShowHoverInfo)
-nmap <c-w>o <Action>(HideAllWindows)
-nnoremap <space>s viw"0y:%s/<c-r>0//gI<left><left><left>
-vnoremap <space>s "0y:%s/<c-r>0//gI<left><left><left>
-vnoremap // "0y/\V<c-r>0<cr>
+nmap <C-w>d <Action>(ShowHoverInfo)
+nmap <Space>a <Action>(GotoAction)
+nmap <C-w>o <Action>(HideAllWindows)
+nnoremap <Space>s viw"0y:%s/<C-r>0//gI<Left><Left><Left>
+vnoremap <Space>s "0y:%s/<C-r>0//gI<Left><Left><Left>
+vnoremap // "0y/\V<C-r>0<CR>

@@ -1,43 +1,75 @@
-set nocompatible regexpengine=2 laststatus=2 noswapfile
-set splitbelow splitright title ruler showmatch
-set ignorecase smartcase autoread autoindent incsearch hlsearch
-set visualbell showcmd showmode
-set updatetime=256 wildmenu wildoptions=pum,tagfile wildcharm=<c-z>
-set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
-set termguicolors background=dark list lcs=tab:>\ ,trail:-,nbsp:+
+set nocompatible
+set regexpengine=2
+set noswapfile
+set splitbelow
+set splitright
+
+set title
+set ruler
+set showmatch
+set ignorecase
+set smartcase
+set autoread
+set autoindent
+
+set incsearch
+set hlsearch
+set visualbell
+set showcmd
+set showmode
+
+set updatetime=256
+set wildmenu
+set wildoptions=pum,tagfile
+set wildcharm=<C-z>
+
+set shiftwidth=2
+set tabstop=2
+set softtabstop=2
+set shiftround
+set expandtab
+
+set termguicolors
+set background=dark
+set laststatus=2
+
+set list
+set lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
 filetype on
 filetype indent on
 syntax on
 
-nnoremap <space>e :edit %:h<c-z>
-nnoremap <space>b :buffer 
-nnoremap <space>s :%s/<c-r><c-w>//gI<left><left><left>
-vnoremap <space>s "0y:%s/<c-r>=escape(@0,'/\')<cr>//gI<left><left><left>
-vnoremap // "0y/\V<c-r>=escape(@0,'/\')<cr><cr>
+nnoremap <Space>e :edit %:h<C-z>
+nnoremap <Space>b :buffer 
+nnoremap <Space>s :%s/<C-r><C-w>//gI<Left><Left><Left>
+vnoremap <Space>s "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<Left><Left><Left>
+vnoremap // "0y/\V<C-r>=escape(@0,'/\')<CR><CR>
 
-nnoremap <c-l> :nohlsearch<cr>
-cnoremap <c-a> <home>
-cnoremap <c-e> <end>
+nnoremap <C-l> :nohlsearch<CR>
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
 autocmd QuickFixCmdPost [^l]* cwindow
-autocmd FileType help,qf,messages,fugitive,fugitiveblame nnoremap <buffer> q :q<cr>
+autocmd FileType help,qf,messages,fugitive,fugitiveblame nnoremap <buffer> q :q<CR>
 
-nnoremap <silent> - :Explore<cr>
-autocmd FileType netrw nnoremap <silent> <buffer> <c-c> :Rex<cr>
+nnoremap <silent> - :Explore<CR>
+autocmd FileType netrw nnoremap <silent> <buffer> <C-c> :Rex<CR>
 
 autocmd BufRead,BufNewFile *.log,*.log{.*} setl ft=messages
 autocmd BufRead,BufNewFile *.psql setl ft=sql
 autocmd FileType vim setl keywordprg=:help
 
-nnoremap <space>y "+y
-vnoremap <space>y "+y
-nnoremap <space>p "+p
-nnoremap <space>P "+P
-vnoremap <space>p "+p
+nnoremap <Space>y "+y
+vnoremap <Space>y "+y
+nnoremap <Space>p "+p
+nnoremap <Space>P "+P
+vnoremap <Space>p "+p
 
 " keep things simple here, only essentials
 call plug#begin()
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'machakann/vim-highlightedyank'
@@ -53,6 +85,7 @@ function! s:gen_tags() abort
     echohl WarningMsg | echomsg 'no ctags installation found' | echohl None
     return
   endif
+
   let l:job = job_start(['ctags', '-G', '-R', '.'], { 'in_io': 'null', 'out_io': 'null', 'err_io': 'null' })
   echomsg 'generate tags..., id: ' . string(l:job)
 endfunction
@@ -62,33 +95,35 @@ command! -nargs=0 Tags call <SID>gen_tags()
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading\ --column
   set grepformat^=%f:%l:%c:%m
-  nnoremap <space>g :grep! --fixed-strings ''<left>
-  vnoremap <space>g "0y:grep! --case-sensitive --fixed-strings '<c-r>0'<left>
-  nnoremap <space>G :grep! --case-sensitive --fixed-strings '<c-r><c-w>'<cr>
-  nnoremap <space>/ :grep! --hidden --no-ignore --fixed-strings ''<left>
+
+  nnoremap <Space>g :grep! --fixed-strings ''<Left>
+  vnoremap <Space>g "0y:grep! --case-sensitive --fixed-strings '<C-r>0'<Left>
+  nnoremap <Space>G :grep! --case-sensitive --fixed-strings '<C-r><C-w>'<CR>
+  nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings ''<Left>
 endif
 
-" minimal file finder using ripgrep
-let s:files_cmd = 'rg --files --hidden --follow | grep -i '
+function! s:find_complete(arglead, cmdline, cursorpos)
+  let l:cmd = 'rg --files --hidden --follow | grep -i ' . shellescape(a:arglead)
+  return systemlist(l:cmd)
+endfunction
+
 function! s:find_command(pattern) abort
   if filereadable(a:pattern)
     execute 'edit' fnameescape(a:pattern)
     return
   endif
-  let l:files = systemlist(s:files_cmd . shellescape(a:pattern))
-  if len(l:files) > 0 && filereadable(l:files[0])
-    execute 'edit' fnameescape(l:files[0])
-  else
+
+  let l:files = s:find_complete(a:pattern, '', 0)
+  if len(l:files) == 0
     echohl WarningMsg | echom "no file matches" | echohl None
   endif
+  execute 'edit' fnameescape(l:files[0])
 endfunction
-function! s:find_complete(arglead, cmdline, cursorpos)
-  let l:cmd = s:files_cmd . shellescape(a:arglead)
-  return systemlist(l:cmd)
-endfunction
+
+" minimal file finder using ripgrep
 command! -nargs=1 -complete=customlist,<SID>find_complete Find call <SID>find_command(<q-args>)
-nnoremap <space>f :Find 
-nnoremap <space>F :Find <c-r><c-w>
+nnoremap <Space>f :Find 
+nnoremap <Space>F :Find <C-r><C-w>
 
 autocmd FileType go setl sw=4 ts=4 sts=4 noet fp=gofmt
 autocmd FileType json setl sw=4 ts=4 sts=4 et fp=jq
@@ -106,16 +141,27 @@ autocmd FileType javascript,typescript setl sw=2 ts=2 sts=2 et
 autocmd FileType javascript,typescript if filereadable(findfile('package.json', '.;')) |
       \ setl makeprg=npm\ run\ build | endif
 
-highlight StatusLine ctermbg=gray guibg=gray ctermfg=black guifg=black
-highlight StatusLineNC ctermbg=darkgray guibg=darkgray ctermfg=black guifg=black
-highlight VertSplit cterm=NONE ctermbg=NONE ctermfg=darkgray guibg=NONE guifg=darkgray
-highlight SignColumn cterm=NONE ctermbg=NONE guibg=NONE
+hi StatusLine ctermbg=gray guibg=gray ctermfg=black guifg=black
+hi StatusLineNC ctermbg=darkgray guibg=darkgray ctermfg=black guifg=black
+hi VertSplit cterm=NONE ctermbg=NONE ctermfg=darkgray guibg=NONE guifg=darkgray
+hi SignColumn cterm=NONE ctermbg=NONE guibg=NONE
 
 " plugins
 let g:highlightedyank_highlight_duration = 150
 
-let s:lsp_opts = #{ ignoreMissingServer: v:true, hoverInPreview: v:true,
-      \ omniComplete: v:true, showInlayHints: v:true }
+let g:fzf_vim = {}
+let g:fzf_layout = { 'down': '41%' }
+let g:fzf_vim.preview_window = ['right,41%,<70(up,41%)']
+nnoremap <Space>f :Files<CR>
+nnoremap <Space>b :Buffers<CR>
+nnoremap <Space>g :Rg<CR>
+
+let s:lsp_opts = #{
+      \ ignoreMissingServer: v:true,
+      \ hoverInPreview: v:true,
+      \ omniComplete: v:true,
+      \ showInlayHints: v:true
+      \ }
 autocmd User LspSetup call LspOptionsSet(s:lsp_opts)
 
 let s:lsp_servers = [
@@ -128,13 +174,13 @@ autocmd User LspSetup call LspAddServer(s:lsp_servers)
 function! s:lsp_config()
   setl tagfunc=lsp#lsp#TagFunc  " go to definition by C-]
   setl formatexpr=lsp#lsp#FormatExpr()  " lsp format using gq
-  nnoremap <buffer> gri :LspGotoImpl<cr>
-  nnoremap <buffer> grr :LspShowReferences<cr>
-  nnoremap <buffer> gra :LspCodeAction<cr>
-  nnoremap <buffer> grn :LspRename<cr>
-  nnoremap <buffer> ]d :LspDiagNext<cr>
-  nnoremap <buffer> [d :LspDiagPrev<cr>
-  nnoremap <buffer> <c-w>d :LspDiagCurrent<cr>
-  nnoremap <buffer> K :LspHover<cr>
+  nnoremap <buffer> gi :LspGotoImpl<CR>
+  nnoremap <buffer> gr :LspShowReferences<CR>
+  nnoremap <buffer> gR :LspRename<CR>
+  nnoremap <buffer> K :LspHover<CR>
+  nnoremap <buffer> ]d :LspDiagNext<CR>
+  nnoremap <buffer> [d :LspDiagPrev<CR>
+  nnoremap <buffer> <C-w>d :LspDiagCurrent<CR>
+  nnoremap <buffer> <Space>a :LspCodeAction<CR>
 endfunction
 autocmd User LspAttached call <SID>lsp_config()
