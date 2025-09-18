@@ -10,19 +10,19 @@ function linking() {
   ln -sfn $(pwd)/.ideavimrc ~/.ideavimrc
   ln -sfn $(pwd)/.ripgreprc ~/.ripgreprc
 
+  mkdir -p ~/.local/bin
+  mkdir -p ~/.vim/undo
   mkdir -p ${XDG_DATA_HOME:=~/.local/share}
   mkdir -p ${XDG_CONFIG_HOME:=~/.config}
   ln -sfn $(pwd)/alacritty $XDG_CONFIG_HOME/alacritty
+  ln -sfn $(pwd)/pack ~/.vim/pack
 
   ln -sfn $(pwd)/.gitignore ~/.gitignore
   git config --global core.excludesFile '~/.gitignore'
 
   touch ~/.profile
-  mkdir -p ~/.local/bin
   mkdir -p ~/personal
   mkdir -p ~/repos
-  mkdir -p ~/.vim/pack/downloads/opt
-  mkdir -p ~/.vim/undo
 }
 echo '[-] linking dotfiles [-]'
 linking
@@ -89,9 +89,8 @@ if [ ! -d "$target_dir" ] ; then
   git clone https://github.com/zsh-users/zsh-autosuggestions "$target_dir"
 fi
 
-echo '[-] downloading plug.vim script [-]'
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+echo '[-] updating vim plugins helptags [-]'
+vim -u NONE -c "helptags $HOME/.vim/pack/downloads/opt/*/doc" -c q
 
 current_shell=$(echo $SHELL)
 if [ "$current_shell" != '/usr/bin/zsh' ] && [ "$current_shell" != '/bin/zsh' ]; then

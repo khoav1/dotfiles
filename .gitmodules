@@ -1,0 +1,18 @@
+[submodule "pack/downloads/opt/fugitive"]
+	path = pack/downloads/opt/fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "pack/downloads/opt/commentary"]
+	path = pack/downloads/opt/commentary
+	url = https://github.com/tpope/vim-commentary.git
+[submodule "pack/downloads/opt/surround"]
+	path = pack/downloads/opt/surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "pack/downloads/opt/highlightedyank"]
+	path = pack/downloads/opt/highlightedyank
+	url = https://github.com/machakann/vim-highlightedyank.git
+[submodule "pack/downloads/opt/lsp"]
+	path = pack/downloads/opt/lsp
+	url = https://github.com/yegappan/lsp.git
+[submodule "pack/downloads/opt/copilot"]
+	path = pack/downloads/opt/copilot
+	url = https://github.com/github/copilot.vim.git

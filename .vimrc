@@ -1,41 +1,14 @@
-set nocompatible
-set regexpengine=2
-set noswapfile
-set splitbelow
-set splitright
+vim9script
 
-set title
-set ruler
-set showmatch
-set ignorecase
-set smartcase
-set autoread
-set autoindent
-
-set incsearch
-set hlsearch
-set visualbell
-set showcmd
-set showmode
-
-set updatetime=256
-set wildmenu
-set wildoptions=pum,tagfile
-set wildcharm=<C-z>
-
-set shiftwidth=2
-set tabstop=2
-set softtabstop=2
-set shiftround
-set expandtab
-
-set notermguicolors
-set background=dark
-set laststatus=2
-
-set list
-set lcs=tab:>\ ,trail:-,nbsp:+
-let &showbreak = '+++ '
+set nocompatible regexpengine=2 noswapfile splitbelow splitright
+set title ruler showmatch ignorecase smartcase autoread autoindent
+set incsearch hlsearch visualbell showcmd showmode
+set timeout timeoutlen=512 updatetime=256
+set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
+set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
+set notermguicolors background=dark laststatus=2
+set list lcs=tab:>\ ,trail:-,nbsp:+
+&showbreak = '+++ '
 
 filetype on
 filetype indent on
@@ -56,9 +29,9 @@ autocmd FileType help,qf,messages,fugitive,fugitiveblame nnoremap <buffer> q :q<
 nnoremap <silent> - :Explore<CR>
 autocmd FileType netrw nnoremap <silent> <buffer> <C-c> :Rex<CR>
 
-autocmd BufRead,BufNewFile *.log,*.log{.*} setl ft=messages
-autocmd BufRead,BufNewFile *.psql setl ft=sql
-autocmd FileType vim setl keywordprg=:help
+autocmd BufRead,BufNewFile *.log,*.log{.*} setlocal ft=messages
+autocmd BufRead,BufNewFile *.psql setlocal ft=sql
+autocmd FileType vim setlocal keywordprg=:help
 
 nnoremap <Space>y "+y
 vnoremap <Space>y "+y
@@ -66,33 +39,29 @@ nnoremap <Space>p "+p
 nnoremap <Space>P "+P
 vnoremap <Space>p "+p
 
-" keep things simple here, only essentials
-call plug#begin()
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'machakann/vim-highlightedyank'
-Plug 'yegappan/lsp'
-Plug 'github/copilot.vim'
-call plug#end()
+# keep things simple here, only essentials
+packadd fugitive
+packadd commentary
+packadd surround
+packadd highlightedyank
+packadd lsp
+packadd copilot
 
 set undodir=~/.vim/undo undofile
 colorscheme desert
 
-function! s:gen_tags() abort
+def GenTags(): void
   if !executable('ctags')
     echohl WarningMsg | echomsg 'no ctags installation found' | echohl None
     return
   endif
 
-  let l:job = job_start(['ctags', '-G', '-R', '.'],
-        \ { 'in_io': 'null', 'out_io': 'null', 'err_io': 'null' })
-  echomsg 'generate tags..., id: ' . string(l:job)
-endfunction
-command! -nargs=0 Tags call <SID>gen_tags()
+  const job = job_start(['ctags', '-G', '-R', '.'], { 'in_io': 'null', 'out_io': 'null', 'err_io': 'null' })
+  echomsg 'generate tags..., id: ' .. string(job)
+enddef
+command! -nargs=0 Tags call GenTags()
 
-" extend vim grep abilities with ripgrep, result can be accessible through qf list
+# extend vim grep abilities with ripgrep, result can be accessible through qf list
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading\ --column
   set grepformat^=%f:%l:%c:%m
@@ -103,85 +72,80 @@ if executable('rg')
   nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings ''<Left>
 endif
 
-function! s:find_complete(arglead, cmdline, cursorpos)
-  let l:cmd = 'rg --files --hidden --follow | grep -i ' . shellescape(a:arglead)
-  return systemlist(l:cmd)
-endfunction
+def FindComplete(arglead: string, cmdline: string, cursorpos: number): list<string>
+  const cmd = 'rg --files --hidden --follow | grep -i ' .. shellescape(arglead)
+  return systemlist(cmd)
+enddef
 
-function! s:find_command(pattern) abort
-  if filereadable(a:pattern)
-    execute 'edit' fnameescape(a:pattern)
+def FindCommand(pattern: string): void
+  if filereadable(pattern)
+    execute 'edit' fnameescape(pattern)
     return
   endif
 
-  let l:files = s:find_complete(a:pattern, '', 0)
-  if len(l:files) == 0
-    echohl WarningMsg | echom "no file matches" | echohl None
+  const files = FindComplete(pattern, '', 0)
+  if len(files) == 0
+    echohl WarningMsg | echom 'no file matches' | echohl None
   endif
-  execute 'edit' fnameescape(l:files[0])
-endfunction
+  execute 'edit' fnameescape(files[0])
+enddef
 
-" minimal file finder using ripgrep
-command! -nargs=1 -complete=customlist,<SID>find_complete Find call <SID>find_command(<q-args>)
+# minimal file finder using ripgrep
+command! -nargs=1 -complete=customlist,FindComplete Find call FindCommand(<q-args>)
 nnoremap <Space>f :Find 
 nnoremap <Space>F :Find <C-r><C-w>
 
-autocmd FileType go setl sw=4 ts=4 sts=4 noet fp=gofmt
-autocmd FileType json setl sw=4 ts=4 sts=4 et fp=jq
+autocmd FileType go setlocal sw=4 ts=4 sts=4 noet fp=gofmt
+autocmd FileType json setlocal sw=4 ts=4 sts=4 et fp=jq
 
-autocmd FileType c,cpp,java,python setl sw=4 ts=4 sts=4 et
-autocmd FileType c,cpp if filereadable(findfile('CMakeLists.txt', '.;')) |
-      \ setl makeprg=cmake\ -S\ %:p:h\ -B\ build\ \&\&\ cmake\ --build\ build |
-      \ setl errorformat=%f:%l:%c:\ %m | endif
+autocmd FileType c,cpp,java,python setlocal sw=4 ts=4 sts=4 et
+autocmd FileType c,cpp if filereadable(findfile('CMakeLists.txt', '.;'))
+  | setlocal makeprg=cmake\ -S\ %:p:h\ -B\ build\ \&\&\ cmake\ --build\ build
+  | setlocal errorformat=%f:%l:%c:\ %m | endif
 
-autocmd FileType java if filereadable(findfile('pom.xml', '.;')) |
-      \ setl makeprg=mvn\ compile |
-      \ setl errorformat=[ERROR]\ %f:[%l\\,%v]\ %m | endif
+autocmd FileType java if filereadable(findfile('pom.xml', '.;'))
+  | setlocal makeprg=mvn\ compile
+  | setlocal errorformat=[ERROR]\ %f:[%l\\,%v]\ %m | endif
 
-autocmd FileType javascript,typescript setl sw=2 ts=2 sts=2 et
-autocmd FileType javascript,typescript if filereadable(findfile('package.json', '.;')) |
-      \ setl makeprg=npm\ run\ build | endif
+autocmd FileType javascript,typescript setlocal sw=2 ts=2 sts=2 et
+autocmd FileType javascript,typescript if filereadable(findfile('package.json', '.;'))
+  | setlocal makeprg=npm\ run\ build | endif
 
-hi StatusLine ctermbg=gray ctermfg=black
-hi StatusLineNC ctermbg=darkgray ctermfg=black
-hi VertSplit cterm=NONE ctermbg=NONE ctermfg=darkgray
-hi SignColumn cterm=NONE ctermbg=NONE
+highlight StatusLine ctermbg=gray ctermfg=black
+highlight StatusLineNC ctermbg=darkgray ctermfg=black
+highlight VertSplit cterm=NONE ctermbg=NONE ctermfg=darkgray
+highlight SignColumn cterm=NONE ctermbg=NONE
 
-" plugins
-let g:highlightedyank_highlight_duration = 150
+# plugins
+g:highlightedyank_highlight_duration = 150
 
-let g:fzf_vim = {}
-let g:fzf_layout = { 'down': '41%' }
-let g:fzf_vim.preview_window = ['right,41%,<70(up,41%)']
-nnoremap <Space>f :Files<CR>
-nnoremap <Space>b :Buffers<CR>
-nnoremap <Space>g :Rg<CR>
+const lsp_opts = {
+  ignoreMissingServer: v:true,
+  hoverInPreview: v:true,
+  omniComplete: v:true,
+  showInlayHints: v:true
+}
+autocmd User LspSetup call LspOptionsSet(lsp_opts)
 
-let s:lsp_opts = #{
-      \ ignoreMissingServer: v:true,
-      \ hoverInPreview: v:true,
-      \ omniComplete: v:true,
-      \ showInlayHints: v:true
-      \ }
-autocmd User LspSetup call LspOptionsSet(s:lsp_opts)
+var lsp_servers = [
+  { name: 'clang', filetype: ['c', 'cpp', 'proto'], path: 'clangd', args: ['--background-index'] },
+  { name: 'pylsp', filetype: ['python'], path: 'pylsp', args: [] },
+  { name: 'tsserver', filetype: ['javascript', 'typescript'], path: 'typescript-language-server', args: ['--stdio'] }
+]
+autocmd User LspSetup call LspAddServer(lsp_servers)
 
-let s:lsp_servers = [
-      \ #{ name: 'clang', filetype: ['c', 'cpp', 'proto'], path: 'clangd', args: ['--background-index'] },
-      \ #{ name: 'pylsp', filetype: ['python'], path: 'pylsp', args: [] },
-      \ #{ name: 'tsserver', filetype: ['javascript', 'typescript'], path: 'typescript-language-server', args: ['--stdio'] }
-      \ ]
-autocmd User LspSetup call LspAddServer(s:lsp_servers)
+def LspConfig(): void
+  setlocal tagfunc=lsp#lsp#TagFunc  # go to definition by C-]
+  setlocal formatexpr=lsp#lsp#FormatExpr()  # lsp format using gq
+  nnoremap <silent> <buffer> gi :LspGotoImpl<CR>
+  nnoremap <silent> <buffer> gr :LspShowReferences<CR>
+  nnoremap <silent> <buffer> gR :LspRename<CR>
+  nnoremap <silent> <buffer> K :LspHover<CR>
+  nnoremap <silent> <buffer> ]d :LspDiagNext<CR>
+  nnoremap <silent> <buffer> [d :LspDiagPrev<CR>
+  nnoremap <silent> <buffer> <C-w>d :LspDiagCurrent<CR>
+  nnoremap <silent> <buffer> <Space>a :LspCodeAction<CR>
+enddef
+autocmd User LspAttached call LspConfig()
 
-function! s:lsp_config()
-  setl tagfunc=lsp#lsp#TagFunc  " go to definition by C-]
-  setl formatexpr=lsp#lsp#FormatExpr()  " lsp format using gq
-  nnoremap <buffer> gi :LspGotoImpl<CR>
-  nnoremap <buffer> gr :LspShowReferences<CR>
-  nnoremap <buffer> gR :LspRename<CR>
-  nnoremap <buffer> K :LspHover<CR>
-  nnoremap <buffer> ]d :LspDiagNext<CR>
-  nnoremap <buffer> [d :LspDiagPrev<CR>
-  nnoremap <buffer> <C-w>d :LspDiagCurrent<CR>
-  nnoremap <buffer> <Space>a :LspCodeAction<CR>
-endfunction
-autocmd User LspAttached call <SID>lsp_config()
+defcompile

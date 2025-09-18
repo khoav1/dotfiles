@@ -1,14 +1,26 @@
 " find a list of commands here: https://jb.gg/h38q75
 "   or :actionlist [pattern]
-source ~/.vimrc
-set ideastatusicon=gray
-set ideawrite=file
-set visualdelay=50
-set ideaglobalmode
-set ideajoin
-set ideamarks
+set incsearch hlsearch visualbell showcmd showmode ignorecase smartcase
+set timeout timeoutlen=512 colorcolumn=120
+set ideaglobalmode ideajoin ideamarks
+set ideastatusicon=gray ideawrite=file visualdelay=50
+
 " enable ideavim plugins https://jb.gg/ideavim-plugins
-"   -- see .vimrc
+set commentary
+set surround
+set highlightedyank
+
+nnoremap <Space>s viw"0y:%s/<C-r>0//gI<Left><Left><Left>
+vnoremap <Space>s "0y:%s/<C-r>0//gI<Left><Left><Left>
+vnoremap // "0y/\V<C-r>0<CR>
+nnoremap <C-l> :nohlsearch<CR>
+
+nnoremap <Space>y "+y
+vnoremap <Space>y "+y
+nnoremap <Space>p "+p
+nnoremap <Space>P "+P
+vnoremap <Space>p "+p
+
 " map ide actions to ideavim - https://jb.gg/abva4t
 nmap <Space>f <Action>(GotoFile)
 nmap <Space>F viw:action GotoFile<CR>
@@ -31,6 +43,3 @@ nmap [d <Action>(GotoPreviousError)zz
 nmap <C-w>d <Action>(ShowHoverInfo)
 nmap <Space>a <Action>(GotoAction)
 nmap <C-w>o <Action>(HideAllWindows)
-nnoremap <Space>s viw"0y:%s/<C-r>0//gI<Left><Left><Left>
-vnoremap <Space>s "0y:%s/<C-r>0//gI<Left><Left><Left>
-vnoremap // "0y/\V<C-r>0<CR>
