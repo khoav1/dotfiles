@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# vim: ft=bash
 set -e
 
 function linking() {
@@ -24,10 +25,11 @@ function linking() {
   mkdir -p ~/personal
   mkdir -p ~/repos
 }
-echo '[-] linking dotfiles [-]'
-linking
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
+echo '[-] linking dotfiles [-]'
+linking  # link first to avoid any potential issues
+
+if [[ "$OSTYPE" == "darwin"* ]]; then  # macos
   if ! xcode-select -p &> /dev/null; then
     echo '[-] installing xcode command line tools [-]'
     xcode-select --install
@@ -42,9 +44,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
   echo '[-] installing essential packages [-]'
   brew update
-  brew install curl wget git coreutils watch cmake ninja tree parallel tmux ncdu
-  brew install google-chrome alacritty fzf ripgrep jq universal-ctags font-hack
-else
+  brew install curl wget git coreutils watch cmake ninja tree parallel ncdu
+  brew install alacritty tmux fzf ripgrep jq universal-ctags font-hack
+else  # linux or wsl
   echo '[-] checking secure boot state [-]'
   if [ ! -f '/etc/wsl.conf' ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]]; then
     echo "could not determine the secure boot state."
@@ -78,6 +80,7 @@ else
   fi
 fi
 
+# apply for both macos and linux
 echo '[-] downloading git-prompt.sh script [-]'
 mkdir -p ~/.zsh/plugins/git/
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh \
@@ -90,7 +93,9 @@ if [ ! -d "$target_dir" ] ; then
 fi
 
 echo '[-] updating vim plugins helptags [-]'
-vim -u NONE -c "helptags $HOME/.vim/pack/downloads/opt/*/doc" -c q
+for dir in ~/.vim/pack/downloads/opt/*/doc; do
+  [ -d "$dir" ] && vim -u NONE -c "helptags $dir" -c q
+done
 
 current_shell=$(echo $SHELL)
 if [ "$current_shell" != '/usr/bin/zsh' ] && [ "$current_shell" != '/bin/zsh' ]; then
@@ -100,4 +105,3 @@ if [ "$current_shell" != '/usr/bin/zsh' ] && [ "$current_shell" != '/bin/zsh' ];
 else
   echo '[-] device ready. [-]'
 fi
-# vim: ft=bash

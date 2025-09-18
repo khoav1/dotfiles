@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# vim: ft=bash
+
 dir=$(find ~/dotfiles ~/personal ~/repos -maxdepth 3 -type d | fzf --tmux)
 if [ -z "${dir}" ]; then
   exit 0
@@ -16,4 +18,3 @@ if ! tmux has-session -t "$name" 2>/dev/null; then
   tmux new-session -s "$name" -d -c "$dir"
 fi
 tmux switch-client -t $name
-# vim: ft=bash
