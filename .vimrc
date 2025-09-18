@@ -29,7 +29,7 @@ set softtabstop=2
 set shiftround
 set expandtab
 
-set termguicolors
+set notermguicolors
 set background=dark
 set laststatus=2
 
@@ -86,7 +86,8 @@ function! s:gen_tags() abort
     return
   endif
 
-  let l:job = job_start(['ctags', '-G', '-R', '.'], { 'in_io': 'null', 'out_io': 'null', 'err_io': 'null' })
+  let l:job = job_start(['ctags', '-G', '-R', '.'],
+        \ { 'in_io': 'null', 'out_io': 'null', 'err_io': 'null' })
   echomsg 'generate tags..., id: ' . string(l:job)
 endfunction
 command! -nargs=0 Tags call <SID>gen_tags()
@@ -141,10 +142,10 @@ autocmd FileType javascript,typescript setl sw=2 ts=2 sts=2 et
 autocmd FileType javascript,typescript if filereadable(findfile('package.json', '.;')) |
       \ setl makeprg=npm\ run\ build | endif
 
-hi StatusLine ctermbg=gray guibg=gray ctermfg=black guifg=black
-hi StatusLineNC ctermbg=darkgray guibg=darkgray ctermfg=black guifg=black
-hi VertSplit cterm=NONE ctermbg=NONE ctermfg=darkgray guibg=NONE guifg=darkgray
-hi SignColumn cterm=NONE ctermbg=NONE guibg=NONE
+hi StatusLine ctermbg=gray ctermfg=black
+hi StatusLineNC ctermbg=darkgray ctermfg=black
+hi VertSplit cterm=NONE ctermbg=NONE ctermfg=darkgray
+hi SignColumn cterm=NONE ctermbg=NONE
 
 " plugins
 let g:highlightedyank_highlight_duration = 150
