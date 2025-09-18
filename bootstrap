@@ -56,7 +56,13 @@ else  # linux or wsl
   echo '[-] installing essential packages [-]'
   sudo apt-get update && sudo apt-get upgrade -y
   sudo apt-get install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build parallel
-  sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux fzf ripgrep jq universal-ctags ncdu xclip
+  sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux fzf ripgrep jq universal-ctags ncdu wl-clipboard
+
+  if lspci | grep -E "VGA|3D" | grep -iq "AMD"; then
+    echo '[-] installing some extra packages [-]'
+    ln -sfn $(pwd)/MangoHud $XDG_CONFIG_HOME/MangoHud
+    sudo apt-get install -y rocm-smi mangohud
+  fi
 
   target_dir=${XDG_DATA_HOME:=~/.local/share}/fonts
   if [ ! -d "$target_dir" ]; then
@@ -77,6 +83,11 @@ else  # linux or wsl
     sudo make install PREFIX=/usr
     env DCONF_PROFILE=ibus dconf write /desktop/ibus/general/preload-engines "['BambooUs', 'Bamboo']" && \
       gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'Bamboo')]"
+  fi
+
+  if [ ! -f '/etc/wsl.conf' ]; then
+    echo '[-] disable dash to dock hot-keys on ubuntu [-]'
+    gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
   fi
 fi
 
