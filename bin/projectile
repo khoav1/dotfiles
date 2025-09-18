@@ -2,9 +2,7 @@
 # vim: ft=bash
 
 dir=$(find ~/dotfiles ~/personal ~/repos -maxdepth 3 -type d | fzf --tmux)
-if [ -z "${dir}" ]; then
-  exit 0
-fi
+[ -z "${dir}" ] && exit 0
 
 # let choosing dotfiles goes to first session
 if [ "$dir" = "$HOME/dotfiles" ]; then
