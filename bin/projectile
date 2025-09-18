@@ -4,7 +4,7 @@
 dir=$(find ~/personal ~/repos -maxdepth 3 -type d | sed '1s|^|'"$HOME"\\n'|' | fzf --tmux)
 [ -z "$dir" ] && exit 0
 
-# let choosing $HOME goes to first session
+# let choosing ~ goes to first session
 if [ "$dir" = "$HOME" ]; then
   tmux switch-client -t 0
   exit 0

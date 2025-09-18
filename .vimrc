@@ -66,10 +66,10 @@ if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading\ --column
   set grepformat^=%f:%l:%c:%m
 
-  nnoremap <Space>g :grep! --fixed-strings ''<Left>
-  vnoremap <Space>g "0y:grep! --case-sensitive --fixed-strings '<C-r>0'<Left>
-  nnoremap <Space>G :grep! --case-sensitive --fixed-strings '<C-r><C-w>'<CR>
-  nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings ''<Left>
+  nnoremap <Space>g :grep! --fixed-strings \'\'<Left><Left>
+  vnoremap <Space>g "0y:grep! --case-sensitive --fixed-strings \'<C-r>0\'<Left><Left>
+  nnoremap <Space>G :grep! --case-sensitive --fixed-strings \'<C-r><C-w>\'<CR>
+  nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings \'\'<Left><Left>
 endif
 
 def FindComplete(arglead: string, cmdline: string, cursorpos: number): list<string>
@@ -86,6 +86,7 @@ def FindCommand(pattern: string): void
   const files = FindComplete(pattern, '', 0)
   if len(files) == 0
     echohl WarningMsg | echom 'no file matches' | echohl None
+    return
   endif
   execute 'edit' fnameescape(files[0])
 enddef
