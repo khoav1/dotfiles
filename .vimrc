@@ -59,7 +59,7 @@ def GenTags(): void
   const job = job_start(['ctags', '-G', '-R', '.'], { 'in_io': 'null', 'out_io': 'null', 'err_io': 'null' })
   echomsg 'generate tags..., id: ' .. string(job)
 enddef
-command! -nargs=0 Tags call GenTags()
+command! -nargs=0 Tags GenTags()
 
 # extend vim grep abilities with ripgrep, result can be accessible through qf list
 if executable('rg')
@@ -92,7 +92,7 @@ def FindCommand(pattern: string): void
 enddef
 
 # minimal file finder using ripgrep
-command! -nargs=1 -complete=customlist,FindComplete Find call FindCommand(<q-args>)
+command! -nargs=1 -complete=customlist,FindComplete Find FindCommand(<q-args>)
 nnoremap <Space>f :Find 
 nnoremap <Space>F :Find <C-r><C-w>
 
@@ -126,14 +126,14 @@ const lsp_opts = {
   omniComplete: v:true,
   showInlayHints: v:true
 }
-autocmd User LspSetup call LspOptionsSet(lsp_opts)
+g:LspOptionsSet(lsp_opts)
 
 var lsp_servers = [
   { name: 'clang', filetype: ['c', 'cpp', 'proto'], path: 'clangd', args: ['--background-index'] },
   { name: 'pylsp', filetype: ['python'], path: 'pylsp', args: [] },
   { name: 'tsserver', filetype: ['javascript', 'typescript'], path: 'typescript-language-server', args: ['--stdio'] }
 ]
-autocmd User LspSetup call LspAddServer(lsp_servers)
+g:LspAddServer(lsp_servers)
 
 def LspConfig(): void
   setlocal tagfunc=lsp#lsp#TagFunc  # go to definition by C-]
@@ -147,6 +147,6 @@ def LspConfig(): void
   nnoremap <silent> <buffer> <C-w>d :LspDiagCurrent<CR>
   nnoremap <silent> <buffer> <Space>a :LspCodeAction<CR>
 enddef
-autocmd User LspAttached call LspConfig()
+autocmd User LspAttached LspConfig()
 
 defcompile

@@ -1,4 +1,5 @@
 setopt auto_cd
+autoload -Uz bashcompinit; bashcompinit
 autoload -Uz compinit; compinit
 setopt SHARE_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
