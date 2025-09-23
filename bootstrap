@@ -44,8 +44,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then  # macos
 
   echo '[-] installing essential packages [-]'
   brew update
-  brew install curl wget git coreutils watch cmake ninja tree parallel ncdu
-  brew install alacritty tmux fzf ripgrep jq universal-ctags font-hack
+  brew install curl wget git coreutils watch cmake ninja tree parallel
+  brew install alacritty tmux ncdu ripgrep jq universal-ctags font-hack
 else  # linux or wsl
   echo '[-] checking secure boot state [-]'
   if [ ! -f '/etc/wsl.conf' ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]]; then
@@ -56,7 +56,7 @@ else  # linux or wsl
   echo '[-] installing essential packages [-]'
   sudo apt-get update && sudo apt-get upgrade -y
   sudo apt-get install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build parallel
-  sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux fzf ripgrep jq universal-ctags ncdu wl-clipboard
+  sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux ripgrep jq universal-ctags ncdu wl-clipboard
 
   if lspci | grep -E "VGA|3D" | grep -iq "AMD"; then
     echo '[-] installing some extra packages [-]'
@@ -103,10 +103,16 @@ if [ ! -d "$target_dir" ] ; then
   git clone https://github.com/zsh-users/zsh-autosuggestions "$target_dir"
 fi
 
-echo '[-] updating vim plugins helptags [-]'
-for dir in ~/.vim/pack/downloads/opt/*/doc; do
-  [ -d "$dir" ] && vim -u NONE -c "helptags $dir" -c q
-done
+target_dir=~/.fzf
+if [ ! -d "$target_dir" ] ; then
+  echo '[-] installing fzf [-]'
+  git clone --depth 1 https://github.com/junegunn/fzf.git "$target_dir"
+  ~/.fzf/install --bin
+fi
+
+echo '[-] downloading vim-plug script [-]'
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 current_shell=$(echo $SHELL)
 if [ "$current_shell" != '/usr/bin/zsh' ] && [ "$current_shell" != '/bin/zsh' ]; then

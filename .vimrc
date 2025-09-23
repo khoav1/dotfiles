@@ -38,13 +38,15 @@ nnoremap <Space>P "+P
 vnoremap <Space>p "+p
 
 " keep things simple here, only essentials
-packadd fzf
-packadd fugitive
-packadd commentary
-packadd surround
-packadd highlightedyank
-packadd lsp
-packadd copilot
+call plug#begin()
+Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'machakann/vim-highlightedyank'
+Plug 'yegappan/lsp'
+Plug 'github/copilot.vim'
+call plug#end()
 
 set undodir=~/.vim/undo undofile
 colorscheme desert
@@ -118,27 +120,27 @@ highlight SignColumn cterm=NONE ctermbg=NONE
 " plugins
 let g:highlightedyank_highlight_duration = 150
 
-if has('mac')
-  set rtp+=/opt/homebrew/opt/fzf
-endif
+set rtp+=~/.fzf
 let g:fzf_vim = {}
 let g:fzf_vim.preview_window = ['right,41%,<70(up,41%)']
 let g:fzf_layout = { 'down': '41%' }
 nnoremap <Space>f :Files<CR>
 nnoremap <Space>b :Buffers<CR>
 
-call LspOptionsSet(#{
+let s:lsp_opts = #{
       \   ignoreMissingServer: v:true,
       \   hoverInPreview: v:true,
       \   omniComplete: v:true,
       \   showInlayHints: v:true
-      \ })
+      \ }
+autocmd User LspSetup call LspOptionsSet(s:lsp_opts)
 
-call LspAddServer([
+let s:lsp_servers = [
       \   #{ name: 'clang', filetype: ['c', 'cpp', 'proto'], path: 'clangd', args: ['--background-index'] },
       \   #{ name: 'pylsp', filetype: ['python'], path: 'pylsp', args: [] },
       \   #{ name: 'tsserver', filetype: ['javascript', 'typescript'], path: 'typescript-language-server', args: ['--stdio'] }
-      \ ])
+      \ ]
+autocmd User LspSetup call LspAddServer(s:lsp_servers)
 
 function! s:lsp_config() abort
   setlocal tagfunc=lsp#lsp#TagFunc  " go to definition by C-]
