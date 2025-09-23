@@ -118,7 +118,7 @@ current_shell=$(echo $SHELL)
 if [ "$current_shell" != '/usr/bin/zsh' ] && [ "$current_shell" != '/bin/zsh' ]; then
   echo '[-] change default shell to zsh [-]'
   chsh -s $(which zsh)
-  echo '[-] device ready, restart your computer. [-]'
+  echo '[-] device ready, reboot your computer. [-]'
 else
   echo '[-] device ready. [-]'
 fi

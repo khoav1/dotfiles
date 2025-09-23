@@ -67,10 +67,10 @@ if executable('rg')
   set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading\ --column
   set grepformat^=%f:%l:%c:%m
 
-  nnoremap <Space>g :grep! --fixed-strings \'\'<Left><Left>
-  vnoremap <Space>g "0y:grep! --case-sensitive --fixed-strings \'<C-r>0\'<Left><Left>
-  nnoremap <Space>G :grep! --case-sensitive --fixed-strings \'<C-r><C-w>\'<CR>
-  nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings \'\'<Left><Left>
+  nnoremap <Space>g :grep! --fixed-strings ''<Left>
+  vnoremap <Space>g "0y:grep! --case-sensitive --fixed-strings '<C-r>0'<Left>
+  nnoremap <Space>G :grep! --case-sensitive --fixed-strings '<C-r><C-w>'<CR>
+  nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings ''<Left>
 endif
 
 function! s:find_complete(arglead, cmdline, cursorpos) abort
