@@ -12,11 +12,10 @@ function linking() {
   ln -sfn $(pwd)/.ripgreprc ~/.ripgreprc
 
   mkdir -p ~/.local/bin
-  mkdir -p ~/.vim/undo
   mkdir -p ${XDG_DATA_HOME:=~/.local/share}
   mkdir -p ${XDG_CONFIG_HOME:=~/.config}
   ln -sfn $(pwd)/alacritty $XDG_CONFIG_HOME/alacritty
-  ln -sfn $(pwd)/pack ~/.vim/pack
+  ln -sfn $(pwd)/nvim $XDG_CONFIG_HOME/nvim
 
   ln -sfn $(pwd)/.gitignore ~/.gitignore
   git config --global core.excludesFile '~/.gitignore'
@@ -45,7 +44,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then  # macos
   echo '[-] installing essential packages [-]'
   brew update
   brew install curl wget git coreutils watch cmake ninja tree parallel
-  brew install alacritty tmux ncdu ripgrep jq universal-ctags font-hack
+  brew install alacritty tmux ncdu ripgrep jq universal-ctags font-jetbrains-mono
 else  # linux or wsl
   echo '[-] checking secure boot state [-]'
   if [ ! -f '/etc/wsl.conf' ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]]; then
@@ -64,15 +63,8 @@ else  # linux or wsl
     sudo apt-get install -y rocm-smi mangohud
   fi
 
-  target_dir=${XDG_DATA_HOME:=~/.local/share}/fonts
-  if [ ! -d "$target_dir" ]; then
-    echo '[-] installing favourite font [-]'
-    wget https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip
-    mkdir -p "$target_dir"
-    unzip -j Hack-v3.003-ttf.zip 'ttf/*.ttf' -d "$target_dir"
-    rm -f Hack-v3.003-ttf.zip
-    fc-cache -f -v
-  fi
+  echo '[-] installing jetbrains mono font [-]'
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 
   target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo
   if [ ! -f '/etc/wsl.conf' ] && [ ! -d "$target_dir" ]; then
@@ -110,9 +102,15 @@ if [ ! -d "$target_dir" ] ; then
   ~/.fzf/install --bin
 fi
 
-echo '[-] downloading vim-plug script [-]'
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+target_dir=${XDG_DATA_HOME:=~/.local/share}/neovim
+if [ ! -d "$target_dir" ] ; then
+  echo '[-] building neovim [-]'
+  git clone https://github.com/neovim/neovim.git "$target_dir"
+  cd "$target_dir"
+  git checkout nightly
+  make CMAKE_BUILD_TYPE=RelWithDebInfo
+  sudo make install
+fi
 
 current_shell=$(echo $SHELL)
 if [ "$current_shell" != '/usr/bin/zsh' ] && [ "$current_shell" != '/bin/zsh' ]; then

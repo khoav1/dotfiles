@@ -4,10 +4,15 @@ source ~/.vimrc
 set ideaglobalmode ideajoin ideamarks
 set ideastatusicon=gray ideawrite=file visualdelay=50
 " enable ideavim plugins https://jb.gg/ideavim-plugins
-"   -- see .vimrc
+set commentary
+set surround
+set highlightedyank
+let g:highlightedyank_highlight_duration = 128
+
 nnoremap <Space>s viw"0y:%s/<C-r>0//gI<Left><Left><Left>
 vnoremap <Space>s "0y:%s/<C-r>0//gI<Left><Left><Left>
 vnoremap // "0y/\V<C-r>0<CR>
+
 " map ide actions to ideavim - https://jb.gg/abva4t
 nmap <Space>f <Action>(GotoFile)
 nmap <Space>F viw:action GotoFile<CR>
@@ -24,10 +29,10 @@ vmap gq <Action>(ReformatCode)
 nmap gi <Action>(GotoImplementation)
 nmap gr <Action>(FindUsages)
 nmap gR <Action>(RenameElement)
+nmap ga <Action>(GotoAction)
 nmap K <Action>(ShowHoverInfo)
 nmap ]d <Action>(GotoNextError)zz
 nmap [d <Action>(GotoPreviousError)zz
 nmap <C-w>d <Action>(ShowHoverInfo)
-nmap <Space>a <Action>(GotoAction)
 nmap <C-w>o <Action>(HideAllWindows)
 nmap <Space>r <Action>(RunClass)
