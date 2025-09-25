@@ -23,7 +23,7 @@ nnoremap <C-l> :nohlsearch<CR>
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
 autocmd QuickFixCmdPost [^l]* cwindow
-autocmd FileType help,qf,messages,fugitive,fugitiveblame nnoremap <buffer> q :q<CR>
+autocmd FileType help,qf,messages nnoremap <buffer> q :q<CR>
 
 nnoremap <silent> - :Explore<CR>
 autocmd FileType netrw nnoremap <silent> <buffer> <C-c> :Rex<CR>

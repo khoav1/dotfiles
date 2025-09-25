@@ -34,5 +34,7 @@ map("n", "<Space>P", [["+P]])
 map("n", "-", cmd.Explore)
 autocmd("FileType", {
     pattern = "netrw",
-    callback = function() map("n", "<C-c>", cmd.Rexplore, { buffer = 0 }) end
+    callback = function()
+        map("n", "<C-c>", cmd.Rexplore, { buffer = 0 })
+    end
 })

@@ -3,11 +3,11 @@
 source ~/.vimrc
 set ideaglobalmode ideajoin ideamarks
 set ideastatusicon=gray ideawrite=file visualdelay=50
+
 " enable ideavim plugins https://jb.gg/ideavim-plugins
-set commentary
-set surround
 set highlightedyank
 let g:highlightedyank_highlight_duration = 128
+set commentary
 
 nnoremap <Space>s viw"0y:%s/<C-r>0//gI<Left><Left><Left>
 vnoremap <Space>s "0y:%s/<C-r>0//gI<Left><Left><Left>

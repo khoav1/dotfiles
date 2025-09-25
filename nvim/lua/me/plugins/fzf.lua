@@ -4,8 +4,7 @@ local cmd = vim.cmd
 local set = vim.opt
 
 -- set runtime path to include fzf
-set.rtp = set.rtp + "~/.fzf"
-
+set.runtimepath = set.runtimepath + "~/.fzf"
 g.fzf_layout = { down = "41%" }
 g.fzf_vim = { preview_window = { "right,41%,<70(up,41%)" } }
 
