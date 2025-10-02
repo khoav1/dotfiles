@@ -1,7 +1,7 @@
 {
     "schemes": [
         {
-            "name": "CustomScheme",
+            "name": "Desert",
             "background": "#333333",
             "foreground": "#ffffff",
             "cursorColor": "#00ff00",

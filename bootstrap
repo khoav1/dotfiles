@@ -29,10 +29,9 @@ echo '[-] linking dotfiles [-]'
 linking  # link first to avoid any potential issues
 
 if [[ "$OSTYPE" == "darwin"* ]]; then  # macos
-  if ! xcode-select -p &> /dev/null; then
-    echo '[-] installing xcode command line tools [-]'
+  ! xcode-select -p &> /dev/null && \
+    echo '[-] installing xcode command line tools [-]' && \
     xcode-select --install
-  fi
 
   if ! hash brew &> /dev/null; then
     echo '[-] installing homebrew [-]'
@@ -46,16 +45,15 @@ if [[ "$OSTYPE" == "darwin"* ]]; then  # macos
   brew install curl wget git coreutils watch cmake ninja tree parallel
   brew install alacritty tmux ncdu ripgrep jq universal-ctags font-jetbrains-mono
 else  # linux or wsl
-  echo '[-] checking secure boot state [-]'
-  if [ ! -f /etc/wsl.conf ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]] ; then
-    echo "could not determine the secure boot state."
+  echo '[-] checking secure boot state [-]' && \
+    [ ! -f /etc/wsl.conf ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]] && \
+    echo "could not determine the secure boot state." && \
     exit 1
-  fi
 
   echo '[-] installing essential packages [-]'
   sudo apt-get update && sudo apt-get upgrade -y
-  sudo apt-get install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build parallel
-  sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux ripgrep jq universal-ctags ncdu wl-clipboard
+  sudo apt-get install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build ncdu
+  sudo apt-get install -y alacritty watch tree vim tmux ripgrep jq universal-ctags parallel wl-clipboard
 
   if lspci | grep -E "VGA|3D" | grep -iq "AMD" ; then
     echo '[-] installing some extra packages [-]'
@@ -66,21 +64,18 @@ else  # linux or wsl
   echo '[-] installing jetbrains mono font [-]'
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 
-  target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo
-  if [ ! -f /etc/wsl.conf ] && [ ! -d $target_dir ] ; then
-    echo '[-] building ibus-bamboo [-]'
-    sudo apt-get install -y ibus make golang libx11-dev libxtst-dev libgtk-3-dev
-    git clone https://github.com/BambooEngine/ibus-bamboo.git $target_dir
-    cd $target_dir
-    sudo make install PREFIX=/usr
+  target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo; \
+    [ ! -f /etc/wsl.conf ] && [ ! -d $target_dir ] && \
+    echo '[-] building ibus-bamboo [-]' && \
+    sudo apt-get install -y ibus make golang libx11-dev libxtst-dev libgtk-3-dev && \
+    git clone https://github.com/BambooEngine/ibus-bamboo.git $target_dir && \
+    (cd $target_dir && sudo make install PREFIX=/usr) && \
     env DCONF_PROFILE=ibus dconf write /desktop/ibus/general/preload-engines "['BambooUs', 'Bamboo']" && \
-      gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'Bamboo')]"
-  fi
+    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'Bamboo')]"
 
-  if [ ! -f /etc/wsl.conf ] ; then
-    echo '[-] disable dash to dock hot-keys on ubuntu [-]'
+  [ ! -f /etc/wsl.conf ] && \
+    echo '[-] disable dash to dock hot-keys on ubuntu [-]' && \
     gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
-  fi
 fi
 
 # apply for both macos and linux
@@ -89,28 +84,26 @@ mkdir -p ~/.zsh/plugins/git/
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh \
   -o ~/.zsh/plugins/git/git-prompt.sh
 
-target_dir=~/.zsh/zsh-autosuggestions
-if [ ! -d $target_dir ] ; then
-  echo '[-] cloning zsh-autosuggestions [-]'
+target_dir=~/.zsh/zsh-autosuggestions; \
+  [ ! -d $target_dir ] && \
+  echo '[-] cloning zsh-autosuggestions [-]' && \
   git clone https://github.com/zsh-users/zsh-autosuggestions $target_dir
-fi
 
-target_dir=~/.fzf
-if [ ! -d $target_dir ] ; then
-  echo '[-] installing fzf [-]'
-  git clone --depth 1 https://github.com/junegunn/fzf.git $target_dir
-  $target_dir/install --bin
-fi
+target_dir=~/.fzf; \
+  echo '[-] installing fzf [-]'; \
+  [ ! -d $target_dir ] && git clone --depth 1 https://github.com/junegunn/fzf.git $target_dir; \
+  (cd $target_dir && \
+  git pull --rebase && \
+  $target_dir/install --bin)
 
-target_dir=${XDG_DATA_HOME:=~/.local/share}/neovim
-if [ ! -d $target_dir ] ; then
-  echo '[-] building neovim [-]'
-  git clone https://github.com/neovim/neovim.git $target_dir
-  cd $target_dir
-  git checkout nightly
-  make CMAKE_BUILD_TYPE=RelWithDebInfo
-  sudo make install
-fi
+target_dir=${XDG_DATA_HOME:=~/.local/share}/neovim; \
+  echo '[-] building neovim [-]'; \
+  [ ! -d $target_dir ] && git clone https://github.com/neovim/neovim.git $target_dir; \
+  (cd $target_dir && \
+  git pull --rebase && \
+  make distclean && \
+  make CMAKE_BUILD_TYPE=RelWithDebInfo && \
+  sudo make install)
 
 current_shell=$(echo $SHELL)
 if [ "$current_shell" != '/usr/bin/zsh' ] && [ "$current_shell" != '/bin/zsh' ] ; then
