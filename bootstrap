@@ -63,7 +63,6 @@ else  # linux or wsl
     flatpak install -y --noninteractive flathub com.github.tchx84.Flatseal
     flatpak install -y --noninteractive flathub com.discordapp.Discord
     flatpak install -y --noninteractive flathub com.valvesoftware.Steam
-    cp -r $(pwd)/MangoHud ~/.var/app/com.valvesoftware.Steam/.config/MangoHud
   fi
 
   echo '[-] installing jetbrains mono font [-]'
