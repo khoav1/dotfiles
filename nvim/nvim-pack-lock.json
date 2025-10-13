@@ -1,0 +1,16 @@
+{
+  "plugins": {
+    "copilot.vim": {
+      "rev": "da369d9",
+      "src": "https://github.com/github/copilot.vim"
+    },
+    "fzf.vim": {
+      "rev": "879db51",
+      "src": "https://github.com/junegunn/fzf.vim"
+    },
+    "vim-signify": {
+      "rev": "9ec7989",
+      "src": "https://github.com/mhinz/vim-signify"
+    }
+  }
+}
