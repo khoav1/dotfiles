@@ -12,6 +12,7 @@ export HISTFILE=$HOME/.zhistory
 export SAVEHIST=10000
 export HISTSIZE=10000
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
+export FZF_DEFAULT_OPTS='--color=bg+:#4d4d4d'
 if [[ ! "$PATH" == *$HOME/.fzf/bin* ]]; then
   PATH="${PATH:+${PATH}:}$HOME/.fzf/bin"
 fi
