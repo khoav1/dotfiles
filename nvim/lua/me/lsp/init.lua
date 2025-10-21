@@ -6,7 +6,7 @@ lsp.config("*", {
     on_attach = function(client, bufnr)
         lsp.semantic_tokens.enable(false)
         lsp.inlay_hint.enable(true)
-        lsp.completion.enable(true, client.id, bufnr, { autotrigger = false })
+        -- lsp.completion.enable(true, client.id, bufnr, { autotrigger = false })
         vim.diagnostic.config { virtual_text = true, underline = true }
 
         -- mappings.

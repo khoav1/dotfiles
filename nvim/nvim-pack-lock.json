@@ -1,12 +1,16 @@
 {
   "plugins": {
-    "copilot.vim": {
-      "rev": "da369d9",
-      "src": "https://github.com/github/copilot.vim"
+    "cmp-nvim-lsp": {
+      "rev": "bd5a7d6",
+      "src": "https://github.com/hrsh7th/cmp-nvim-lsp"
     },
     "fzf.vim": {
       "rev": "879db51",
       "src": "https://github.com/junegunn/fzf.vim"
+    },
+    "nvim-cmp": {
+      "rev": "a7bcf1d",
+      "src": "https://github.com/hrsh7th/nvim-cmp"
     },
     "vim-signify": {
       "rev": "9ec7989",

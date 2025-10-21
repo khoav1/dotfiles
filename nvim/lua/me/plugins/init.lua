@@ -2,7 +2,9 @@
 vim.pack.add {
     "https://github.com/junegunn/fzf.vim",
     "https://github.com/mhinz/vim-signify",
-    "https://github.com/github/copilot.vim",
+    "https://github.com/hrsh7th/nvim-cmp",
+    "https://github.com/hrsh7th/cmp-nvim-lsp",
 }
 -- prefer separate config per plugin
 require "me.plugins.fzf"
+require "me.plugins.cmp"

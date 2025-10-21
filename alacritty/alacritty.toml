@@ -23,33 +23,25 @@ style.blinking = "Always"
 blink_interval = 500
 
 [colors.primary]
-background = "#333333"
-foreground = "#ffffff"
-
-[colors.cursor]
-cursor = "#00ff00"
-text = "#000000"
-
-[colors.selection]
-background = "#b5d5ff"
-foreground = "#000000"
+background = '#000000'
+foreground = '#aaaaaa'
 
 [colors.normal]
-black = "#4d4d4d"
-red = "#ff2b2b"
-green = "#98fb98"
-yellow = "#f0e68c"
-blue = "#cd853f"
-magenta = "#ffdead"
-cyan = "#ffa0a0"
-white = "#f5deb3"
+black = '#000000'
+red = '#aa0000'
+green = '#00aa00'
+yellow = '#aa5500'
+blue = '#0000aa'
+magenta = '#aa00aa'
+cyan = '#00aaaa'
+white = '#aaaaaa'
 
 [colors.bright]
-black = "#555555"
-red = "#ff5555"
-green = "#55ff55"
-yellow = "#ffff55"
-blue = "#87ceff"
-magenta = "#ff55ff"
-cyan = "#ffd700"
-white = "#ffffff"
+black = '#555555'
+red = '#ff5555'
+green = '#55ff55'
+yellow = '#ffff55'
+blue = '#5555ff'
+magenta = '#ff55ff'
+cyan = '#55ffff'
+white = '#ffffff'

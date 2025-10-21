@@ -29,11 +29,6 @@ set.visualbell = true
 -- show invisible characters explicitly
 set.list = true
 set.showbreak = "+++ "
--- colors
-cmd.colorscheme("desert")
-hi(0, "StatusLine", { bg = "darkgray", fg = "black" })
-hi(0, "StatusLineNC", { bg = "gray", fg = "black" })
-hi(0, "WinSeparator", { bg = "none", fg = "gray" })
 -- don't load external providers
 vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0

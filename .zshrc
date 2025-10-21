@@ -18,8 +18,7 @@ GIT_PS1_SHOWUPSTREAM='verbose'
 GIT_PS1_HIDE_IF_PWD_IGNORED=true
 GIT_PS1_COMPRESSSPARSESTATE=true
 setopt PROMPT_SUBST
-NL=$'\n'  # separate prompt to a new line
-PS1='%F{cyan}%0~%f%b% %F{magenta}$(__git_ps1 " [%s]")%f$NL%(?..%F{red})%(!.#.$)%f%b '
+PS1='%F{cyan}%0~%f%b% %F{magenta}$(__git_ps1 " [%s]")%f %(?..%F{red})%(!.#.$)%f%b '
 alias vim=nvim
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.profile
