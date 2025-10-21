@@ -21,35 +21,3 @@ save_to_clipboard = true
 style.shape = "Block"
 style.blinking = "Always"
 blink_interval = 500
-
-[colors.primary]
-background = "#333333"
-foreground = "#ffffff"
-
-[colors.cursor]
-cursor = "#00ff00"
-text = "#000000"
-
-[colors.selection]
-background = "#b5d5ff"
-foreground = "#000000"
-
-[colors.normal]
-black = "#4d4d4d"
-red = "#ff2b2b"
-green = "#98fb98"
-yellow = "#f0e68c"
-blue = "#cd853f"
-magenta = "#ffdead"
-cyan = "#ffa0a0"
-white = "#f5deb3"
-
-[colors.bright]
-black = "#555555"
-red = "#ff5555"
-green = "#55ff55"
-yellow = "#ffff55"
-blue = "#87ceff"
-magenta = "#ff55ff"
-cyan = "#ffd700"
-white = "#ffffff"

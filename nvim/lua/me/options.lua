@@ -1,6 +1,5 @@
 local set = vim.opt
 local cmd = vim.cmd
-local hi = vim.api.nvim_set_hl
 -- don't want to clutter disk, haven't thought about any usages for this
 set.swapfile = true
 -- see the matching bracket
@@ -27,10 +26,8 @@ set.title = true
 -- don't like beeping
 set.visualbell = true
 -- colors
-cmd.colorscheme "desert"
-hi(0, "StatusLine", { bg = "darkgray", fg = "black" })
-hi(0, "StatusLineNC", { bg = "gray", fg = "black" })
-hi(0, "WinSeparator", { bg = "none", fg = "gray" })
+cmd.colorscheme "retrobox"
+set.termguicolors = false
 -- show invisible characters explicitly
 set.list = true
 set.showbreak = "+++ "
