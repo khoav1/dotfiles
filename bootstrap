@@ -51,13 +51,15 @@ else  # linux or wsl
     echo "could not determine the secure boot state." && exit 1
 
   echo '[-] installing essential packages [-]'
-  sudo apt-get update && sudo apt-get upgrade -y
-  sudo apt-get install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build parallel ncdu
-  sudo apt-get install -y alacritty watch tree vim vim-gtk3 tmux ripgrep jq universal-ctags wl-clipboard
+  sudo dnf upgrade -y
+  sudo dnf install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build
+  sudo dnf install -y alacritty watch tree vim tmux ripgrep jq parallel ncdu wl-clipboard
 
   if lspci | grep -E "VGA|3D" | grep -iq "AMD" ; then
-    echo '[-] installing some extra packages [-]'
-    sudo apt-get install -y steam-devices rocm-smi flatpak gnome-software-plugin-flatpak
+    echo '[-] enabling rpm fusion repositories [-]'
+    sudo dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+    sudo dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+    sudo dnf install -y steam-devices rocm-smi flatpak
     echo '[-] setting up and installing flatpak apps [-]'
     flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     flatpak install -y --noninteractive flathub com.github.tchx84.Flatseal
@@ -68,17 +70,19 @@ else  # linux or wsl
   echo '[-] installing jetbrains mono font [-]'
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 
+  target_dir=${XDG_DATA_HOME:=~/.local/share}/ctags; \
+    [ ! -d $target_dir ] && echo '[-] building ctags [-]' && \
+    sudo dnf install -y autoconf automake pkg-config gcc make && \
+    git clone --depth 1 https://github.com/universal-ctags/ctags $target_dir && \
+    (cd $target_dir && ./autogen.sh && ./configure && make && sudo make install)
+
   target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo; \
     [ ! -f /etc/wsl.conf ] && [ ! -d $target_dir ] && echo '[-] building ibus-bamboo [-]' && \
-    sudo apt-get install -y ibus make golang libx11-dev libxtst-dev libgtk-3-dev && \
+    sudo dnf install -y ibus make go libX11-devel libXtst-devel gtk3-devel && \
     git clone --depth 1 https://github.com/BambooEngine/ibus-bamboo.git $target_dir && \
     (cd $target_dir && sudo make install PREFIX=/usr) && \
     env DCONF_PROFILE=ibus dconf write /desktop/ibus/general/preload-engines "['BambooUs', 'Bamboo']" && \
     gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'Bamboo')]"
-
-  [ ! -f /etc/wsl.conf ] && \
-    echo '[-] disable dash to dock hot-keys on ubuntu [-]' && \
-    gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
 fi
 
 # apply for both macos and linux
