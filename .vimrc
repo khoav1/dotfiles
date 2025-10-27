@@ -71,9 +71,6 @@ if executable('rg')
   nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings ''<Left>
 endif
 
-autocmd FileType go setlocal sw=4 ts=4 sts=4 noet fp=gofmt
-autocmd FileType json setlocal sw=4 ts=4 sts=4 et fp=jq
-
 autocmd FileType c,cpp,java,python setlocal sw=4 ts=4 sts=4 et
 autocmd FileType c,cpp if filereadable(findfile('CMakeLists.txt', '.;')) |
       \ setlocal makeprg=cmake\ -S\ %:p:h\ -B\ build\ \&\&\ cmake\ --build\ build |
@@ -86,6 +83,9 @@ autocmd FileType java if filereadable(findfile('pom.xml', '.;')) |
 autocmd FileType javascript,typescript setlocal sw=2 ts=2 sts=2 et
 autocmd FileType javascript,typescript if filereadable(findfile('package.json', '.;')) |
       \ setlocal makeprg=npm\ run\ build | endif
+
+autocmd FileType json setlocal sw=4 ts=4 sts=4 et fp=jq
+autocmd FileType go setlocal sw=4 ts=4 sts=4 noet fp=gofmt
 
 " plugins
 let g:highlightedyank_highlight_duration = 128
@@ -118,7 +118,9 @@ autocmd User LspSetup call LspAddServer(s:lsp_servers)
 
 function! s:lsp_config() abort
   setlocal tagfunc=lsp#lsp#TagFunc  " go to definition by C-]
-  setlocal formatexpr=lsp#lsp#FormatExpr()  " lsp format using gq
+  if &filetype != 'go'
+    setlocal formatexpr=lsp#lsp#FormatExpr()  " lsp format using gq
+  endif
   nnoremap <silent> <buffer> gi :LspGotoImpl<CR>
   nnoremap <silent> <buffer> gr :LspShowReferences<CR>
   nnoremap <silent> <buffer> gR :LspRename<CR>
