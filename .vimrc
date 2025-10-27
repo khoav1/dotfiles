@@ -102,7 +102,7 @@ nnoremap <Space>b :Buffers<CR>
 
 let s:lsp_opts = #{
       \   ignoreMissingServer: v:true,
-      \   hoverInPreview: v:true,
+      \   hoverInPreview: v:false,
       \   omniComplete: v:true,
       \   showInlayHints: v:true
       \ }
@@ -110,6 +110,7 @@ autocmd User LspSetup call LspOptionsSet(s:lsp_opts)
 
 let s:lsp_servers = [
       \   #{ name: 'clang', filetype: ['c', 'cpp', 'proto'], path: 'clangd', args: ['--background-index'] },
+      \   #{ name: 'golang', filetype: ['go', 'gomod'], path: 'gopls', args: ['serve'], syncInit: v:true },
       \   #{ name: 'pylsp', filetype: ['python'], path: 'pylsp', args: [] },
       \   #{ name: 'tsserver', filetype: ['javascript', 'typescript'], path: 'typescript-language-server', args: ['--stdio'] }
       \ ]
