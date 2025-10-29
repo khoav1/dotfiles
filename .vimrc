@@ -6,7 +6,7 @@ set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
 set notermguicolors background=dark laststatus=2
-set list lcs=tab:>\ ,trail:-,nbsp:+
+set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
 filetype on
@@ -122,8 +122,9 @@ function! s:lsp_config() abort
     setlocal formatexpr=lsp#lsp#FormatExpr()  " lsp format using gq
   endif
   nnoremap <silent> <buffer> gi :LspGotoImpl<CR>
-  nnoremap <silent> <buffer> gr :LspShowReferences<CR>
-  nnoremap <silent> <buffer> gR :LspRename<CR>
+  nnoremap <silent> <buffer> grr :LspShowReferences<CR>
+  nnoremap <silent> <buffer> gru :LspPeekReferences<CR>
+  nnoremap <silent> <buffer> grn :LspRename<CR>
   nnoremap <silent> <buffer> ga :LspCodeAction<CR>
   nnoremap <silent> <buffer> K :LspHover<CR>
   nnoremap <silent> <buffer> ]d :LspDiagNext<CR>
