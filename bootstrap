@@ -43,8 +43,8 @@ if [ "$(uname -s)" = "Darwin" ]; then  # macos
 
   echo '[-] installing essential packages [-]'
   brew update
-  brew install curl wget git coreutils watch cmake ninja tree parallel ncdu
-  brew install alacritty tmux ripgrep jq universal-ctags font-jetbrains-mono
+  brew install curl wget git coreutils watch cmake ninja tree parallel ncdu gdb
+  brew install alacritty tmux ripgrep jq xxd universal-ctags font-jetbrains-mono
 else  # linux or wsl
   echo '[-] checking secure boot state [-]' && \
     [ ! -f /etc/wsl.conf ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]] && \
@@ -53,7 +53,7 @@ else  # linux or wsl
   echo '[-] installing essential packages [-]'
   sudo dnf upgrade -y
   sudo dnf install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build
-  sudo dnf install -y alacritty watch tree vim tmux ripgrep jq parallel ncdu wl-clipboard
+  sudo dnf install -y alacritty watch tree vim tmux gdb ripgrep jq xxd parallel ncdu wl-clipboard
 
   if lspci | grep -E "VGA|3D" | grep -iq "AMD" ; then
     echo '[-] enabling rpm fusion repositories [-]'

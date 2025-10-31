@@ -18,6 +18,7 @@ vmap <Space>g <Action>(FindInPath)
 nmap <Space>G viw:action FindInPath<CR>
 nmap <Space>/ <Action>(SearchEverywhere)
 nmap - <Action>(SelectInProjectView)
+" code navigation
 nmap <C-]> <Action>(GotoDeclaration)
 nmap gq <Action>(ReformatCode)
 vmap gq <Action>(ReformatCode)
@@ -33,6 +34,7 @@ nmap <C-w>d <Action>(ShowHoverInfo)
 nmap <C-w>o <Action>(HideAllWindows)
 nmap <Space>a <Action>(GotoAction)
 vmap <Space>a <Action>(GotoAction)
+" tool actions
 nmap <Space>o <Action>(FileStructurePopup)
 nmap <Space>r <Action>(RunClass)
 nmap <Space>c <Action>(copilot.chat.show)

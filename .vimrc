@@ -40,10 +40,12 @@ vnoremap <Space>p "+p
 
 " keep things simple here, only essentials
 call plug#begin()
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-signify'
-Plug 'machakann/vim-highlightedyank'
 Plug 'yegappan/lsp'
+Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
 set undodir=~/.vim/undo undofile
@@ -103,8 +105,6 @@ nnoremap <Space>b :Buffers<CR>
 let s:lsp_opts = #{
       \   ignoreMissingServer: v:true,
       \   hoverInPreview: v:false,
-      \   outlineOnRight: v:true,
-      \   outlineWinSize: 25,
       \   popupBorder: v:true,
       \   omniComplete: v:true,
       \   showInlayHints: v:true
