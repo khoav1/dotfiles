@@ -103,6 +103,9 @@ nnoremap <Space>b :Buffers<CR>
 let s:lsp_opts = #{
       \   ignoreMissingServer: v:true,
       \   hoverInPreview: v:false,
+      \   outlineOnRight: v:true,
+      \   outlineWinSize: 25,
+      \   popupBorder: v:true,
       \   omniComplete: v:true,
       \   showInlayHints: v:true
       \ }
@@ -121,14 +124,17 @@ function! s:lsp_config() abort
   if &filetype != 'go'
     setlocal formatexpr=lsp#lsp#FormatExpr()  " lsp format using gq
   endif
-  nnoremap <silent> <buffer> gi :LspGotoImpl<CR>
+  nnoremap <silent> <buffer> gri :LspGotoImpl<CR>
+  nnoremap <silent> <buffer> grs :LspGotoTypeDef<CR>
   nnoremap <silent> <buffer> grr :LspShowReferences<CR>
   nnoremap <silent> <buffer> gru :LspPeekReferences<CR>
   nnoremap <silent> <buffer> grn :LspRename<CR>
-  nnoremap <silent> <buffer> ga :LspCodeAction<CR>
   nnoremap <silent> <buffer> K :LspHover<CR>
   nnoremap <silent> <buffer> ]d :LspDiagNext<CR>
   nnoremap <silent> <buffer> [d :LspDiagPrev<CR>
   nnoremap <silent> <buffer> <C-w>d :LspDiagCurrent<CR>
+  nnoremap <silent> <buffer> <Space>a :LspCodeAction<CR>
+  vnoremap <silent> <buffer> <Space>a :LspCodeAction<CR>
+  nnoremap <silent> <buffer> <Space>o :LspDocumentSymbol<CR>
 endfunction
 autocmd User LspAttached call s:lsp_config()
