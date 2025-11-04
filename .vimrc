@@ -42,9 +42,9 @@ vnoremap <Space>p "+p
 call plug#begin()
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
+Plug 'yegappan/lsp'
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-signify'
-Plug 'yegappan/lsp'
 Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
