@@ -5,7 +5,7 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
-set notermguicolors background=dark laststatus=2
+set notermguicolors background=light laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
@@ -49,7 +49,7 @@ Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
 set undodir=~/.vim/undo undofile
-colorscheme retrobox
+colorscheme wildcharm
 
 function! s:gen_tags() abort
   if !executable('ctags')

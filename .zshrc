@@ -18,7 +18,7 @@ GIT_PS1_SHOWUPSTREAM='verbose'
 GIT_PS1_HIDE_IF_PWD_IGNORED=true
 GIT_PS1_COMPRESSSPARSESTATE=true
 setopt PROMPT_SUBST
-PS1='%F{cyan}%0~%f%b% %F{magenta}$(__git_ps1 " [%s]")%f %(?..%F{red})%(!.#.$)%f%b '
+PS1='%F{blue}%0~%f%b% %F{magenta}$(__git_ps1 " [%s]")%f %(?..%F{red})%(!.#.$)%f%b '
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 alias myip='echo $(dig +short txt ch whoami.cloudflare @1.0.0.1)'
 source $HOME/.profile
