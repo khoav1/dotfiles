@@ -5,7 +5,7 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
-set notermguicolors background=light laststatus=2
+set notermguicolors relativenumber background=dark laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
@@ -38,6 +38,13 @@ nnoremap <Space>p "+p
 nnoremap <Space>P "+P
 vnoremap <Space>p "+p
 
+hi! StatusLine cterm=none ctermbg=gray ctermfg=black
+hi! StatusLineNC cterm=none ctermbg=black ctermfg=gray
+hi! VertSplit cterm=none ctermbg=none ctermfg=darkgray
+hi! SignColumn ctermbg=none
+hi! LineNr ctermfg=darkgray
+hi! Comment ctermfg=darkgray
+
 " keep things simple here, only essentials
 call plug#begin()
 Plug 'tpope/vim-commentary'
@@ -48,8 +55,8 @@ Plug 'mhinz/vim-signify'
 Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
-set undodir=~/.vim/undo undofile
-colorscheme wildcharm
+set undodir=~/.vim/undo
+set undofile
 
 function! s:gen_tags() abort
   if !executable('ctags')
