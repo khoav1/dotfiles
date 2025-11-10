@@ -5,7 +5,7 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
-set notermguicolors relativenumber background=dark laststatus=2
+set notermguicolors relativenumber background=light laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
@@ -38,13 +38,6 @@ nnoremap <Space>p "+p
 nnoremap <Space>P "+P
 vnoremap <Space>p "+p
 
-hi! StatusLine cterm=none ctermbg=gray ctermfg=black
-hi! StatusLineNC cterm=none ctermbg=black ctermfg=gray
-hi! VertSplit cterm=none ctermbg=none ctermfg=darkgray
-hi! SignColumn ctermbg=none
-hi! LineNr ctermfg=darkgray
-hi! Comment ctermfg=darkgray
-
 " keep things simple here, only essentials
 call plug#begin()
 Plug 'tpope/vim-commentary'
@@ -55,8 +48,8 @@ Plug 'mhinz/vim-signify'
 Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
-set undodir=~/.vim/undo
-set undofile
+set undodir=~/.vim/undo undofile
+colorscheme wildcharm
 
 function! s:gen_tags() abort
   if !executable('ctags')
@@ -120,7 +113,6 @@ autocmd User LspSetup call LspOptionsSet(s:lsp_opts)
 
 let s:lsp_servers = [
       \   #{ name: 'clang', filetype: ['c', 'cpp', 'proto'], path: 'clangd', args: ['--background-index'] },
-      \   #{ name: 'golang', filetype: ['go', 'gomod'], path: 'gopls', args: ['serve'], syncInit: v:true },
       \   #{ name: 'pylsp', filetype: ['python'], path: 'pylsp', args: [] },
       \   #{ name: 'tsserver', filetype: ['javascript', 'typescript'], path: 'typescript-language-server', args: ['--stdio'] }
       \ ]
@@ -128,13 +120,9 @@ autocmd User LspSetup call LspAddServer(s:lsp_servers)
 
 function! s:lsp_config() abort
   setlocal tagfunc=lsp#lsp#TagFunc  " go to definition by C-]
-  if &filetype != 'go'
-    setlocal formatexpr=lsp#lsp#FormatExpr()  " lsp format using gq
-  endif
+  setlocal formatexpr=lsp#lsp#FormatExpr()  " lsp format using gq
   nnoremap <silent> <buffer> gri :LspGotoImpl<CR>
-  nnoremap <silent> <buffer> grs :LspGotoTypeDef<CR>
   nnoremap <silent> <buffer> grr :LspShowReferences<CR>
-  nnoremap <silent> <buffer> gru :LspPeekReferences<CR>
   nnoremap <silent> <buffer> grn :LspRename<CR>
   nnoremap <silent> <buffer> K :LspHover<CR>
   nnoremap <silent> <buffer> ]d :LspDiagNext<CR>
