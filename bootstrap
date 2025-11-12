@@ -63,21 +63,21 @@ else  # linux or wsl
     flatpak install -y --noninteractive flathub com.github.tchx84.Flatseal
     flatpak install -y --noninteractive flathub com.discordapp.Discord
     flatpak install -y --noninteractive flathub com.valvesoftware.Steam
-    fi
+  fi
 
-    echo '[-] installing jetbrains mono font [-]'
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
+  echo '[-] installing jetbrains mono font [-]'
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 
-    target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo; \
-      [ ! -f /etc/wsl.conf ] && [ ! -d $target_dir ] && echo '[-] building ibus-bamboo [-]' && \
-      sudo apt-get install -y ibus make golang libx11-dev libxtst-dev libgtk-3-dev && \
-      git clone --depth 1 https://github.com/BambooEngine/ibus-bamboo.git $target_dir && \
-      (cd $target_dir && sudo make install PREFIX=/usr) && \
-      env DCONF_PROFILE=ibus dconf write /desktop/ibus/general/preload-engines "['BambooUs', 'Bamboo']" && \
-      gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'Bamboo')]"
+  target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo; \
+    [ ! -f /etc/wsl.conf ] && [ ! -d $target_dir ] && echo '[-] building ibus-bamboo [-]' && \
+    sudo apt-get install -y ibus make golang libx11-dev libxtst-dev libgtk-3-dev && \
+    git clone --depth 1 https://github.com/BambooEngine/ibus-bamboo.git $target_dir && \
+    (cd $target_dir && sudo make install PREFIX=/usr) && \
+    env DCONF_PROFILE=ibus dconf write /desktop/ibus/general/preload-engines "['BambooUs', 'Bamboo']" && \
+    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'Bamboo')]"
 
-    [ ! -f /etc/wsl.conf ] && echo '[-] disable dash to dock hot-keys on ubuntu [-]' && \
-      gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
+  [ ! -f /etc/wsl.conf ] && echo '[-] disable dash to dock hot-keys on ubuntu [-]' && \
+    gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
 fi
 
 # apply for both macos and linux

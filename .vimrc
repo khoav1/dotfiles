@@ -39,7 +39,7 @@ nnoremap <Space>P "+P
 vnoremap <Space>p "+p
 
 hi! StatusLine cterm=none ctermbg=gray ctermfg=black
-hi! StatusLineNC cterm=none ctermbg=black ctermfg=gray
+hi! StatusLineNC cterm=none ctermbg=none ctermfg=gray
 hi! VertSplit cterm=none ctermbg=none ctermfg=darkgray
 hi! SignColumn ctermbg=none
 hi! LineNr ctermfg=darkgray
