@@ -10,12 +10,14 @@ function linking() {
   ln -sfn $(pwd)/.vimrc ~/.vimrc
   ln -sfn $(pwd)/.ideavimrc ~/.ideavimrc
   ln -sfn $(pwd)/.ripgreprc ~/.ripgreprc
-  ln -sfn $(pwd)/.gitignore ~/.gitignore
-  git config --global core.excludesFile ~/.gitignore
 
   mkdir -p ~/.local/bin
   mkdir -p ${XDG_DATA_HOME:=~/.local/share}
   mkdir -p ${XDG_CONFIG_HOME:=~/.config}
+  ln -sfn $(pwd)/ghostty $XDG_CONFIG_HOME/ghostty
+
+  ln -sfn $(pwd)/.gitignore ~/.gitignore
+  git config --global core.excludesFile ~/.gitignore
 
   touch ~/.profile
   mkdir -p ~/.vim/undo
@@ -42,7 +44,7 @@ if [ "$(uname -s)" = "Darwin" ]; then  # macos
   echo '[-] installing essential packages [-]'
   brew update
   brew install curl wget git coreutils watch cmake ninja tree parallel ncdu
-  brew install tmux ripgrep jq gdb xxd universal-ctags font-jetbrains-mono
+  brew install ghostty tmux ripgrep jq gdb xxd universal-ctags font-jetbrains-mono
 else  # linux or wsl
   echo '[-] checking secure boot state [-]' && \
     [ ! -f /etc/wsl.conf ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]] && \
