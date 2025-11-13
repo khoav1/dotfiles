@@ -38,13 +38,6 @@ nnoremap <Space>p "+p
 nnoremap <Space>P "+P
 vnoremap <Space>p "+p
 
-hi! StatusLine cterm=none ctermbg=gray ctermfg=black
-hi! StatusLineNC cterm=none ctermbg=none ctermfg=gray
-hi! VertSplit cterm=none ctermbg=none ctermfg=darkgray
-hi! SignColumn ctermbg=none
-hi! LineNr ctermfg=darkgray
-hi! Comment ctermfg=darkgray
-
 " keep things simple here, only essentials
 call plug#begin()
 Plug 'tpope/vim-commentary'
@@ -55,8 +48,8 @@ Plug 'mhinz/vim-signify'
 Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
-set undodir=~/.vim/undo
-set undofile
+set undodir=~/.vim/undo undofile
+colorscheme retrobox
 
 function! s:gen_tags() abort
   if !executable('ctags')
