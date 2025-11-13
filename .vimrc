@@ -42,10 +42,9 @@ vnoremap <Space>p "+p
 call plug#begin()
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-Plug 'yegappan/lsp'
 Plug 'junegunn/fzf.vim'
-Plug 'mhinz/vim-signify'
 Plug 'machakann/vim-highlightedyank'
+Plug 'yegappan/lsp'
 call plug#end()
 
 set undodir=~/.vim/undo undofile
@@ -103,6 +102,10 @@ nnoremap <Space>f :Files<CR>
 nnoremap <Space>b :Buffers<CR>
 
 let s:lsp_opts = #{
+      \   diagSignErrorText: '?',
+      \   diagSignHintText: '*',
+      \   diagSignInfoText: 'i',
+      \   diagSignWarningText: '!',
       \   ignoreMissingServer: v:true,
       \   hoverInPreview: v:false,
       \   popupBorder: v:true,
