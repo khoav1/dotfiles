@@ -124,9 +124,8 @@ autocmd User LspSetup call LspAddServer(s:lsp_servers)
 function! s:lsp_config() abort
   setlocal tagfunc=lsp#lsp#TagFunc  " go to definition by C-]
   setlocal formatexpr=lsp#lsp#FormatExpr()  " lsp format using gq
-  nnoremap <silent> <buffer> gri :LspGotoImpl<CR>
-  nnoremap <silent> <buffer> grr :LspShowReferences<CR>
-  nnoremap <silent> <buffer> grn :LspRename<CR>
+  nnoremap <silent> <buffer> <C-i> :LspGotoImpl<CR>
+  nnoremap <silent> <buffer> gr :LspShowReferences<CR>
   nnoremap <silent> <buffer> K :LspHover<CR>
   nnoremap <silent> <buffer> ]d :LspDiagNext<CR>
   nnoremap <silent> <buffer> [d :LspDiagPrev<CR>

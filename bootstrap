@@ -18,6 +18,9 @@ function linking() {
 
   ln -sfn $(pwd)/.gitignore ~/.gitignore
   git config --global core.excludesFile ~/.gitignore
+  git config --global diff.tool vimdiff
+  git config --global merge.tool vimdiff
+  git config --global merge.conflictstyle diff3
 
   touch ~/.profile
   mkdir -p ~/.vim/undo
