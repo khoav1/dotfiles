@@ -57,15 +57,12 @@ else  # linux or wsl
   sudo apt-get update && sudo apt-get upgrade -y
   sudo apt-get install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build parallel ncdu
   sudo apt-get install -y watch tree vim vim-gtk3 tmux ripgrep jq gdb xxd universal-ctags wl-clipboard
+  snap install ghostty --classic
 
   if lspci | grep -E "VGA|3D" | grep -iq "AMD" ; then
+    ln -sfn $(pwd)/MangoHud $XDG_CONFIG_HOME/MangoHud
     echo '[-] installing some extra packages [-]'
-    sudo apt-get install -y steam-devices rocm-smi flatpak gnome-software-plugin-flatpak
-    echo '[-] setting up and installing flatpak apps [-]'
-    flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-    flatpak install -y --noninteractive flathub com.github.tchx84.Flatseal
-    flatpak install -y --noninteractive flathub com.discordapp.Discord
-    flatpak install -y --noninteractive flathub com.valvesoftware.Steam
+    sudo apt-get install -y rocm-smi mangohud
   fi
 
   echo '[-] installing jetbrains mono font [-]'
