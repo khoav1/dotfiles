@@ -5,7 +5,7 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=2 tabstop=2 softtabstop=2 shiftround expandtab
-set termguicolors background=dark laststatus=2
+set notermguicolors background=dark laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
@@ -41,15 +41,17 @@ vnoremap <Space>p "+p
 " keep things simple here, only essentials
 call plug#begin()
 Plug 'junegunn/fzf.vim'
-Plug 'rose-pine/vim'
 Plug 'yegappan/lsp'
-Plug 'machakann/vim-highlightedyank'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
+Plug 'mhinz/vim-signify'
+Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
-set undodir=~/.vim/undo
-set undofile
+set undodir=~/.vim/undo undofile
+colorscheme retrobox
+hi! Normal cterm=none ctermbg=none
+hi! SignColumn ctermbg=none
 
 function! s:gen_tags() abort
   if !executable('ctags')
@@ -91,8 +93,6 @@ autocmd FileType go setlocal sw=4 ts=4 sts=4 noet fp=gofmt
 
 " plugins
 let g:highlightedyank_highlight_duration = 128
-let g:disable_bg = 1
-colorscheme rosepine
 
 set runtimepath+=~/.fzf
 let g:fzf_vim = {}
