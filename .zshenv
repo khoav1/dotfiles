@@ -15,4 +15,5 @@ export SDL_VIDEO_DRIVER=wayland
 export SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY=1
 export WORDCHARS='*?_[]~=/&;!#$%^(){}<>'  # remove -. so they become word boundaries
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
+export FZF_DEFAULT_OPTS='--color=bg+:#4d4d4d'
 [[ ! "$PATH" == *$HOME/.fzf/bin* ]] && PATH="${PATH:+${PATH}:}$HOME/.fzf/bin"
