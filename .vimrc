@@ -49,9 +49,15 @@ Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
 set undodir=~/.vim/undo undofile
-colorscheme retrobox
-hi! Normal cterm=none ctermbg=none
+colorscheme default
+
+hi! StatusLine cterm=none ctermbg=gray ctermfg=black
+hi! StatusLineNC cterm=none ctermbg=none ctermfg=gray
+hi! VertSplit cterm=none ctermbg=none ctermfg=darkgray
 hi! SignColumn ctermbg=none
+hi! Normal cterm=none ctermbg=none
+hi! LineNr ctermfg=darkgray
+hi! Comment ctermfg=darkgray
 
 function! s:gen_tags() abort
   if !executable('ctags')
