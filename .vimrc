@@ -5,7 +5,7 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=4 tabstop=4 softtabstop=4 shiftround expandtab
-set termguicolors background=dark laststatus=2
+set notermguicolors t_Co=16 background=dark laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
@@ -42,18 +42,18 @@ vnoremap <Space>p "+p
 call plug#begin()
 Plug 'junegunn/fzf.vim'
 Plug 'yegappan/lsp'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'mhinz/vim-signify'
 Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
-set undodir=~/.vim/undo undofile
-colorscheme unokai
+set undodir=~/.vim/undo
+set undofile
+colorscheme industry
 
-hi! StatusLine guibg=gray guifg=black
-hi! StatusLineNC guibg=NONE guifg=gray
-hi! VertSplit guibg=NONE
+hi! StatusLine cterm=none ctermbg=gray ctermfg=black
+hi! StatusLineNC cterm=none ctermbg=darkgray ctermfg=black
+hi! VertSplit cterm=none ctermbg=none ctermfg=darkgray
+hi! SignColumn ctermbg=none
+hi! Comment ctermfg=darkgray
 
 function! s:gen_tags() abort
     if !executable('ctags')
@@ -111,6 +111,7 @@ let s:lsp_opts = #{
             \   diagSignHintText: '*',
             \   diagSignInfoText: 'i',
             \   diagSignWarningText: '!',
+            \   highlightDiagInline: v:true,
             \   ignoreMissingServer: v:true,
             \   hoverInPreview: v:false,
             \   popupBorder: v:true,
@@ -139,7 +140,7 @@ autocmd User LspSetup call LspAddServer(s:lsp_servers)
 function! s:lsp_config() abort
     setlocal tagfunc=lsp#lsp#TagFunc  " go to definition by C-]
     setlocal formatexpr=lsp#lsp#FormatExpr()  " lsp format using gq
-    nnoremap <silent> <buffer> <C-i> :LspGotoImpl<CR>
+    nnoremap <silent> <buffer> gi :LspGotoImpl<CR>
     nnoremap <silent> <buffer> gr :LspShowReferences<CR>
     nnoremap <silent> <buffer> K :LspHover<CR>
     nnoremap <silent> <buffer> ]d :LspDiagNext<CR>
