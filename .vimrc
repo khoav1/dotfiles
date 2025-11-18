@@ -5,7 +5,7 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=4 tabstop=4 softtabstop=4 shiftround expandtab
-set notermguicolors t_Co=16 background=dark laststatus=2
+set colorcolumn=120 background=light laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
@@ -40,20 +40,16 @@ vnoremap <Space>p "+p
 
 " keep things simple here, only essentials
 call plug#begin()
-Plug 'junegunn/fzf.vim'
 Plug 'yegappan/lsp'
 Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
-set undodir=~/.vim/undo
-set undofile
-colorscheme industry
-
-hi! StatusLine cterm=none ctermbg=gray ctermfg=black
-hi! StatusLineNC cterm=none ctermbg=darkgray ctermfg=black
-hi! VertSplit cterm=none ctermbg=none ctermfg=darkgray
-hi! SignColumn ctermbg=none
-hi! Comment ctermfg=darkgray
+set undodir=~/.vim/undo undofile
+set termguicolors
+colorscheme wildcharm
+hi! Normal ctermbg=NONE guibg=NONE
+hi! StatusLine cterm=NONE
+hi! StatusLineNC cterm=NONE
 
 function! s:gen_tags() abort
     if !executable('ctags')
@@ -70,12 +66,34 @@ command! -nargs=0 Tags call s:gen_tags()
 if executable('rg')
     set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading\ --column
     set grepformat^=%f:%l:%c:%m
-
     nnoremap <Space>g :grep! --fixed-strings ''<Left>
     vnoremap <Space>g "0y:grep! --case-sensitive --fixed-strings '<C-r>0'<Left>
     nnoremap <Space>G :grep! --case-sensitive --fixed-strings '<C-r><C-w>'<CR>
     nnoremap <Space>/ :grep! --hidden --no-ignore --fixed-strings ''<Left>
 endif
+
+function! s:find_complete(arglead, cmdline, cursorpos) abort
+    let l:cmd = 'rg --files --hidden --follow | grep -i ' . shellescape(a:arglead)
+    return systemlist(l:cmd)
+endfunction
+
+function! s:find_command(pattern) abort
+    if filereadable(a:pattern)
+        execute 'edit' fnameescape(a:pattern)
+        return
+    endif
+    let l:files = s:find_complete(a:pattern, '', 0)
+    if len(l:files) == 0
+        echohl WarningMsg | echom 'no file matches' | echohl None
+        return
+    endif
+    execute 'edit' fnameescape(l:files[0])
+endfunction
+
+" minimal file finder using ripgrep
+command! -nargs=1 -complete=customlist,s:find_complete Find call s:find_command(<q-args>)
+nnoremap <Space>f :Find 
+nnoremap <Space>F :Find <C-r><C-w><C-z>
 
 autocmd FileType c,cpp,java,python setlocal sw=4 ts=4 sts=4 et
 autocmd FileType c,cpp if filereadable(findfile('CMakeLists.txt', '.;')) |
@@ -95,16 +113,6 @@ autocmd FileType go setlocal sw=4 ts=4 sts=4 noet fp=gofmt
 
 " plugins
 let g:highlightedyank_highlight_duration = 128
-
-set runtimepath+=~/.fzf
-let g:fzf_vim = {}
-let g:fzf_vim.preview_window = ['right,41%,<70(up,41%)']
-let g:fzf_layout = { 'down': '41%' }
-autocmd! FileType fzf
-autocmd  FileType fzf set laststatus=0 noshowmode noruler |
-            \ autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-nnoremap <Space>f :Files<CR>
-nnoremap <Space>b :Buffers<CR>
 
 let s:lsp_opts = #{
             \   diagSignErrorText: '?',

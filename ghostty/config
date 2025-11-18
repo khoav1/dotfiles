@@ -1,11 +1,8 @@
 font-family=JetBrains Mono NL
-font-style-bold=Regular
-font-style-italic=Regular
-font-style-bold-italic=Regular
 font-size=20
 font-feature=-calt,-liga,-dlig
 font-thicken=true
-theme=Builtin Dark
+theme=Alabaster
 shell-integration-features=no-cursor
 cursor-style=block
 copy-on-select=true
