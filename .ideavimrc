@@ -34,7 +34,6 @@ nmap <C-w>o <Action>(HideAllWindows)
 nmap <Space>a <Action>(GotoAction)
 vmap <Space>a <Action>(GotoAction)
 " tool actions
-nmap <Space>o <Action>(FileStructurePopup)
 nmap <Space>r <Action>(RunClass)
 nmap <Space>c <Action>(copilot.chat.show)
 vmap <Space>c <Action>(copilot.chat.show)

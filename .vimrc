@@ -5,7 +5,7 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=4 tabstop=4 softtabstop=4 shiftround expandtab
-set colorcolumn=120 background=light laststatus=2
+set colorcolumn=120 background=dark laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
@@ -40,16 +40,16 @@ vnoremap <Space>p "+p
 
 " keep things simple here, only essentials
 call plug#begin()
+Plug 'mhinz/vim-signify'
 Plug 'yegappan/lsp'
 Plug 'machakann/vim-highlightedyank'
+Plug 'lifepillar/vim-solarized8'
 call plug#end()
 
-set undodir=~/.vim/undo undofile
+set undofile undodir=~/.vim/undo
 set termguicolors
-colorscheme wildcharm
-hi! Normal ctermbg=NONE guibg=NONE
-hi! StatusLine cterm=NONE
-hi! StatusLineNC cterm=NONE
+colorscheme solarized8
+let g:highlightedyank_highlight_duration = 128
 
 function! s:gen_tags() abort
     if !executable('ctags')
@@ -111,17 +111,9 @@ autocmd FileType javascript,typescript if filereadable(findfile('package.json', 
 autocmd FileType json setlocal sw=4 ts=4 sts=4 et fp=jq
 autocmd FileType go setlocal sw=4 ts=4 sts=4 noet fp=gofmt
 
-" plugins
-let g:highlightedyank_highlight_duration = 128
-
+" lsp stuff
 let s:lsp_opts = #{
-            \   diagSignErrorText: '?',
-            \   diagSignHintText: '*',
-            \   diagSignInfoText: 'i',
-            \   diagSignWarningText: '!',
-            \   highlightDiagInline: v:true,
             \   ignoreMissingServer: v:true,
-            \   hoverInPreview: v:false,
             \   popupBorder: v:true,
             \   omniComplete: v:true,
             \   showInlayHints: v:true
@@ -156,6 +148,5 @@ function! s:lsp_config() abort
     nnoremap <silent> <buffer> <C-w>d :LspDiagCurrent<CR>
     nnoremap <silent> <buffer> <Space>a :LspCodeAction<CR>
     vnoremap <silent> <buffer> <Space>a :LspCodeAction<CR>
-    nnoremap <silent> <buffer> <Space>o :LspDocumentSymbol<CR>
 endfunction
 autocmd User LspAttached call s:lsp_config()

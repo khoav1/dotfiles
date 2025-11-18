@@ -3,18 +3,14 @@
 set -e
 pattern="$1"
 if [[ -z "$pattern" ]]; then
-  echo "usage: $0 <pattern>"
-  tree -L 3 -d ~/repos ~/personal
-  exit 1
+  echo "usage: $0 <pattern>"; tree -L 3 -d ~/repos ~/personal; exit 1
 fi
 if tmux has-session -t "$pattern" 2>/dev/null; then
-  tmux switch -t "$pattern"
-  exit 0
+  tmux switch -t "$pattern"; exit 0
 fi
 dir=$(find ~/repos ~/personal -maxdepth 3 -type d -iname "$pattern*" | head -n 1)
 if [ -z "${dir}" ]; then
-  tmux display-message "no project found matching '$pattern'"
-  exit 0
+  tmux display-message "no project found matching '$pattern'"; exit 0
 fi
 name=$(basename "$dir")
 if ! tmux has-session -t "$name" 2>/dev/null; then
