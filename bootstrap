@@ -3,99 +3,99 @@
 set -e
 
 function linking() {
-  ln -sfn $(pwd)/.zshrc ~/.zshrc
-  ln -sfn $(pwd)/.zshenv ~/.zshenv
-  ln -sfn $(pwd)/.tmux.conf ~/.tmux.conf
-  ln -sfn $(pwd)/.psqlrc ~/.psqlrc
-  ln -sfn $(pwd)/.vimrc ~/.vimrc
-  ln -sfn $(pwd)/.ideavimrc ~/.ideavimrc
-  ln -sfn $(pwd)/.ripgreprc ~/.ripgreprc
+    ln -sfn $(pwd)/.zshrc ~/.zshrc
+    ln -sfn $(pwd)/.zshenv ~/.zshenv
+    ln -sfn $(pwd)/.tmux.conf ~/.tmux.conf
+    ln -sfn $(pwd)/.psqlrc ~/.psqlrc
+    ln -sfn $(pwd)/.vimrc ~/.vimrc
+    ln -sfn $(pwd)/.ideavimrc ~/.ideavimrc
+    ln -sfn $(pwd)/.ripgreprc ~/.ripgreprc
 
-  mkdir -p ~/.local/bin
-  mkdir -p ${XDG_DATA_HOME:=~/.local/share}
-  mkdir -p ${XDG_CONFIG_HOME:=~/.config}
-  ln -sfn $(pwd)/ghostty $XDG_CONFIG_HOME/ghostty
+    mkdir -p ~/.local/bin
+    mkdir -p ${XDG_DATA_HOME:=~/.local/share}
+    mkdir -p ${XDG_CONFIG_HOME:=~/.config}
+    ln -sfn $(pwd)/ghostty $XDG_CONFIG_HOME/ghostty
 
-  ln -sfn $(pwd)/.gitignore ~/.gitignore
-  git config --global core.excludesFile ~/.gitignore
-  git config --global diff.tool vimdiff
-  git config --global merge.tool vimdiff
-  git config --global merge.conflictstyle diff3
+    ln -sfn $(pwd)/.gitignore ~/.gitignore
+    git config --global core.excludesFile ~/.gitignore
+    git config --global diff.tool vimdiff
+    git config --global merge.tool vimdiff
+    git config --global merge.conflictstyle diff3
 
-  touch ~/.profile
-  mkdir -p ~/.vim/undo
-  mkdir -p ~/personal
-  mkdir -p ~/repos
+    touch ~/.profile
+    mkdir -p ~/.vim/undo
+    mkdir -p ~/personal
+    mkdir -p ~/repos
 }
 
 echo '[-] linking dotfiles [-]'
 linking  # link first to avoid any potential issues
 
 if [ "$(uname -s)" = "Darwin" ]; then  # macos
-  if ! xcode-select -p &> /dev/null; then
-    echo '[-] installing xcode command line tools [-]'
-    xcode-select --install
-  fi
+    if ! xcode-select -p &> /dev/null; then
+        echo '[-] installing xcode command line tools [-]'
+        xcode-select --install
+    fi
 
-  if ! command -v brew &> /dev/null; then
-    echo '[-] installing homebrew [-]'
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> ~/.zprofile
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-  fi
+    if ! command -v brew &> /dev/null; then
+        echo '[-] installing homebrew [-]'
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> ~/.zprofile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
 
-  echo '[-] installing essential packages [-]'
-  brew update
-  brew install curl wget git coreutils watch cmake ninja tree parallel ncdu
-  brew install ghostty tmux ripgrep jq gdb xxd universal-ctags font-jetbrains-mono
+    echo '[-] installing essential packages [-]'
+    brew update
+    brew install curl wget git coreutils watch cmake ninja tree parallel ncdu
+    brew install ghostty tmux ripgrep jq gdb xxd universal-ctags font-jetbrains-mono
 else  # linux or wsl
-  echo '[-] checking secure boot state [-]' && \
-    [ ! -f /etc/wsl.conf ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]] && \
-    echo "could not determine the secure boot state." && exit 1
+    echo '[-] checking secure boot state [-]' && \
+        [ ! -f /etc/wsl.conf ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]] && \
+        echo "could not determine the secure boot state." && exit 1
 
-  echo '[-] installing essential packages [-]'
-  sudo apt-get update && sudo apt-get upgrade -y
-  sudo apt-get install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build parallel ncdu
-  sudo apt-get install -y watch tree vim vim-gtk3 tmux ripgrep jq gdb xxd universal-ctags wl-clipboard
-  [ ! -f /etc/wsl.conf ] && snap install ghostty --classic
+    echo '[-] installing essential packages [-]'
+    sudo apt-get update && sudo apt-get upgrade -y
+    sudo apt-get install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build parallel ncdu
+    sudo apt-get install -y watch tree vim vim-gtk3 tmux ripgrep jq gdb xxd universal-ctags wl-clipboard
+    [ ! -f /etc/wsl.conf ] && snap install ghostty --classic
 
-  if lspci | grep -E "VGA|3D" | grep -iq "AMD" ; then
-    ln -sfn $(pwd)/MangoHud $XDG_CONFIG_HOME/MangoHud
-    echo '[-] installing some extra packages [-]'
-    sudo apt-get install -y rocm-smi mangohud
-  fi
+    if lspci | grep -E "VGA|3D" | grep -iq "AMD" ; then
+        ln -sfn $(pwd)/MangoHud $XDG_CONFIG_HOME/MangoHud
+        echo '[-] installing some extra packages [-]'
+        sudo apt-get install -y rocm-smi mangohud
+    fi
 
-  target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo; \
-    [ ! -f /etc/wsl.conf ] && [ ! -d $target_dir ] && echo '[-] building ibus-bamboo [-]' && \
-    sudo apt-get install -y ibus make golang libx11-dev libxtst-dev libgtk-3-dev && \
-    git clone --depth 1 https://github.com/BambooEngine/ibus-bamboo.git $target_dir && \
-    (cd $target_dir && sudo make install PREFIX=/usr) && \
-    env DCONF_PROFILE=ibus dconf write /desktop/ibus/general/preload-engines "['BambooUs', 'Bamboo']" && \
-    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'Bamboo')]"
+    target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo; \
+        [ ! -f /etc/wsl.conf ] && [ ! -d $target_dir ] && echo '[-] building ibus-bamboo [-]' && \
+        sudo apt-get install -y ibus make golang libx11-dev libxtst-dev libgtk-3-dev && \
+        git clone --depth 1 https://github.com/BambooEngine/ibus-bamboo.git $target_dir && \
+        (cd $target_dir && sudo make install PREFIX=/usr) && \
+        env DCONF_PROFILE=ibus dconf write /desktop/ibus/general/preload-engines "['BambooUs', 'Bamboo']" && \
+        gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'Bamboo')]"
 
-  [ ! -f /etc/wsl.conf ] && echo '[-] disable dash to dock hot-keys on ubuntu [-]' && \
-    gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
+    [ ! -f /etc/wsl.conf ] && echo '[-] disable dash to dock hot-keys on ubuntu [-]' && \
+        gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
 fi
 
 # apply for both macos and linux
 echo '[-] downloading git-prompt.sh script [-]'
 mkdir -p ~/.zsh/plugins/git/
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh \
-  -o ~/.zsh/plugins/git/git-prompt.sh
+    -o ~/.zsh/plugins/git/git-prompt.sh
 
 target_dir=~/.zsh/zsh-autosuggestions; \
-  [ ! -d $target_dir ] && echo '[-] cloning zsh-autosuggestions [-]' && \
-  git clone https://github.com/zsh-users/zsh-autosuggestions $target_dir
+    [ ! -d $target_dir ] && echo '[-] cloning zsh-autosuggestions [-]' && \
+    git clone https://github.com/zsh-users/zsh-autosuggestions $target_dir
 
 echo '[-] downloading vim-plug script [-]'
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 current_shell=$(echo $SHELL)
 if [ "$current_shell" != '/usr/bin/zsh' ] && [ "$current_shell" != '/bin/zsh' ] ; then
-  echo '[-] change default shell to zsh [-]'
-  chsh -s $(which zsh)
-  echo '[-] device ready, reboot your computer. [-]'
+    echo '[-] change default shell to zsh [-]'
+    chsh -s $(which zsh)
+    echo '[-] device ready, reboot your computer. [-]'
 else
-  echo '[-] device ready. [-]'
+    echo '[-] device ready. [-]'
 fi

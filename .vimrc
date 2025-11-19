@@ -5,13 +5,13 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=4 tabstop=4 softtabstop=4 shiftround expandtab
-set colorcolumn=120 background=light laststatus=2
+set colorcolumn=99 background=light laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
 filetype on
 filetype indent on
-syntax on
+syntax enable
 
 nnoremap <Space>e :edit %:h<C-z>
 nnoremap <Space>b :buffer 
@@ -27,6 +27,7 @@ autocmd FileType help,qf,messages nnoremap <buffer> q :q<CR>
 
 nnoremap <silent> - :Explore<CR>
 autocmd FileType netrw nnoremap <silent> <buffer> <C-c> :Rexplore<CR>
+autocmd FileType netrw,qf setlocal colorcolumn=
 
 autocmd BufRead,BufNewFile *.log,*.log{.*} setlocal ft=messages
 autocmd BufRead,BufNewFile *.psql setlocal ft=sql
