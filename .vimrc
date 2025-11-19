@@ -5,7 +5,7 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=4 tabstop=4 softtabstop=4 shiftround expandtab
-set colorcolumn=99 background=light laststatus=2
+set background=light laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
@@ -15,19 +15,12 @@ syntax enable
 
 nnoremap <Space>e :edit %:h<C-z>
 nnoremap <Space>b :buffer 
-nnoremap <Space>s :%s/<C-r><C-w>//gI<Left><Left><Left>
-vnoremap <Space>s "0y:%s/<C-r>=escape(@0,'/\')<CR>//gI<Left><Left><Left>
-vnoremap // "0y/\V<C-r>=escape(@0,'/\')<CR><CR>
-
 nnoremap <C-l> :nohlsearch<CR>
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-autocmd QuickFixCmdPost [^l]* cwindow
-autocmd FileType help,qf,messages nnoremap <buffer> q :q<CR>
-
 nnoremap <silent> - :Explore<CR>
 autocmd FileType netrw nnoremap <silent> <buffer> <C-c> :Rexplore<CR>
 autocmd FileType netrw,qf setlocal colorcolumn=
+autocmd FileType help,qf,messages nnoremap <buffer> q :q<CR>
+autocmd QuickFixCmdPost [^l]* cwindow
 
 autocmd BufRead,BufNewFile *.log,*.log{.*} setlocal ft=messages
 autocmd BufRead,BufNewFile *.psql setlocal ft=sql
@@ -48,7 +41,7 @@ Plug 'lifepillar/vim-solarized8'
 call plug#end()
 
 set undofile undodir=~/.vim/undo
-set termguicolors
+set colorcolumn=99 termguicolors
 colorscheme solarized8
 let g:highlightedyank_highlight_duration = 128
 
@@ -112,35 +105,24 @@ autocmd FileType javascript,typescript if filereadable(findfile('package.json', 
 autocmd FileType json setlocal sw=4 ts=4 sts=4 et fp=jq
 autocmd FileType go setlocal sw=4 ts=4 sts=4 noet fp=gofmt
 
-" lsp stuff
-let s:lsp_opts = #{
-            \   ignoreMissingServer: v:true,
-            \   popupBorder: v:true,
-            \   omniComplete: v:true,
-            \   showInlayHints: v:true
-            \ }
+let s:lsp_opts = #{ignoreMissingServer: v:true, omniComplete: v:true}
 autocmd User LspSetup call LspOptionsSet(s:lsp_opts)
 
 let s:lsp_servers = [#{
-            \   name: 'clang',
-            \   filetype: ['c', 'cpp', 'proto'],
+            \   name: 'clang', filetype: ['c', 'cpp', 'proto'],
             \   path: 'clangd', args: ['--background-index']
             \ }, #{
-            \   name: 'pylsp',
-            \   filetype: ['python'],
-            \   path: 'pylsp',
-            \   args: []
+            \   name: 'pylsp', filetype: ['python'],
+            \   path: 'pylsp', args: []
             \ }, #{
-            \   name: 'tsserver',
-            \   filetype: ['javascript', 'typescript'],
-            \   path: 'typescript-language-server',
-            \   args: ['--stdio']
+            \   name: 'tsserver', filetype: ['javascript', 'typescript'],
+            \   path: 'typescript-language-server', args: ['--stdio']
             \ }]
 autocmd User LspSetup call LspAddServer(s:lsp_servers)
 
 function! s:lsp_config() abort
-    setlocal tagfunc=lsp#lsp#TagFunc  " go to definition by C-]
     setlocal formatexpr=lsp#lsp#FormatExpr()  " lsp format using gq
+    setlocal tagfunc=lsp#lsp#TagFunc  " go to definition by C-]
     nnoremap <silent> <buffer> gi :LspGotoImpl<CR>
     nnoremap <silent> <buffer> gr :LspShowReferences<CR>
     nnoremap <silent> <buffer> K :LspHover<CR>
