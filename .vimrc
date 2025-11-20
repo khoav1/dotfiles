@@ -5,7 +5,7 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=4 tabstop=4 softtabstop=4 shiftround expandtab
-set background=light laststatus=2
+set background=dark laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
