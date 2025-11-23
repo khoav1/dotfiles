@@ -91,7 +91,7 @@ nnoremap <Space>F :Find <C-r><C-w><C-z>
 
 autocmd FileType c,cpp,java,python setlocal sw=4 ts=4 sts=4 et
 autocmd FileType c,cpp if filereadable(findfile('CMakeLists.txt', '.;')) |
-            \ setlocal makeprg=cmake\ -S\ %:p:h\ -B\ build\ \&\&\ cmake\ --build\ build |
+            \ setlocal makeprg=cmake\ -S\ .\ -B\ build\ \&\&\ cmake\ --build\ build |
             \ setlocal errorformat=%f:%l:%c:\ %m | endif
 
 autocmd FileType java if filereadable(findfile('pom.xml', '.;')) |
