@@ -12,5 +12,5 @@ export SAVEHIST=10000
 export HISTSIZE=10000
 export WORDCHARS='*?_[]~=&;!#$%^(){}<>'  # remove -./ so they become word boundaries
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
-export SDL_VIDEO_DRIVER=wayland
-export SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY=1
+#export SDL_VIDEO_DRIVER=wayland
+#export SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY=1
