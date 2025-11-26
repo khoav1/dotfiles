@@ -10,6 +10,7 @@ export VISUAL='vim'
 export HISTFILE=$HOME/.zhistory
 export SAVEHIST=10000
 export HISTSIZE=10000
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#93a1a1"
 export WORDCHARS='*?_[]~=&;!#$%^(){}<>'  # remove -./ so they become word boundaries
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 #export SDL_VIDEO_DRIVER=wayland
