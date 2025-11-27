@@ -55,8 +55,9 @@ else  # linux or wsl
 
     echo '[-] installing essential packages [-]'
     sudo apt-get update && sudo apt-get upgrade -y
-    sudo apt-get install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build parallel ncdu
-    sudo apt-get install -y watch tree vim vim-gtk3 tmux ripgrep jq gdb xxd universal-ctags wl-clipboard
+    sudo apt-get install -y curl wget zip zsh git coreutils gcc clang clangd cmake make
+    sudo apt-get install -y ninja-build parallel ncdu watch tree vim vim-gtk3 tmux ripgrep
+    sudo apt-get install -y gdb xxd jq universal-ctags wl-clipboard fonts-cascadia-code
     [ ! -f /etc/wsl.conf ] && snap install ghostty --classic
 
     if lspci | grep -E "VGA|3D" | grep -iq "AMD" ; then
