@@ -64,6 +64,8 @@ else  # linux or wsl
         ln -sfn $(pwd)/MangoHud $XDG_CONFIG_HOME/MangoHud
         echo '[-] installing some extra packages [-]'
         sudo apt-get install -y rocm-smi mangohud
+        echo 'example launch options letting wayland works correctly:'
+        echo 'SDL_VIDEO_DRIVER=wayland SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY=1 gamemoderun %command% -novid'
     fi
 
     target_dir=${XDG_DATA_HOME:=~/.local/share}/ibus-bamboo; \

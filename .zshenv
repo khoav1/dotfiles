@@ -13,5 +13,3 @@ export HISTSIZE=10000
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#93a1a1"
 export WORDCHARS='*?_[]~=&;!#$%^(){}<>'  # remove -./ so they become word boundaries
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
-#export SDL_VIDEO_DRIVER=wayland
-#export SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY=1

@@ -5,7 +5,7 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=4 tabstop=4 softtabstop=4 shiftround expandtab
-set background=light laststatus=2
+set notermguicolors t_Co=16 background=light laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
@@ -31,17 +31,25 @@ autocmd BufRead,BufNewFile *.log,*.log{.*} setlocal ft=messages
 autocmd BufRead,BufNewFile *.psql setlocal ft=sql
 autocmd FileType vim setlocal keywordprg=:help
 
+colorscheme quiet  " minimal colors
+hi! SignColumn cterm=NONE ctermbg=NONE
+hi! VertSplit ctermbg=NONE ctermfg=cyan
+hi! StatusLineNC cterm=NONE ctermbg=cyan ctermfg=green
+hi! PmenuMatch cterm=NONE ctermbg=white ctermfg=NONE
+hi! PmenuMatchSel cterm=bold ctermbg=darkblue ctermfg=NONE
+hi! PmenuSel cterm=bold ctermbg=yellow ctermfg=white
+hi! PmenuSbar cterm=NONE ctermbg=yellow
+hi! PmenuThumb ctermbg=lightcyan
+
 " keep things simple here, only essentials
 call plug#begin()
-Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
 Plug 'yegappan/lsp'
-Plug 'lifepillar/vim-solarized8'
 Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
 set undofile undodir=~/.vim/undo
-set colorcolumn=99 termguicolors
-colorscheme solarized8
 let g:highlightedyank_highlight_duration = 128
 
 function! s:gen_tags() abort
