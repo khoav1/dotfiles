@@ -35,6 +35,11 @@ colorscheme quiet  " minimal colors
 hi! SignColumn cterm=NONE ctermbg=NONE
 hi! VertSplit ctermbg=NONE ctermfg=cyan
 hi! StatusLineNC cterm=NONE ctermbg=cyan ctermfg=green
+hi! EndOfBuffer ctermfg=gray
+hi! NonText ctermfg=gray
+hi! LineNr ctermfg=gray
+hi! Folded ctermfg=gray
+hi! SpecialKey ctermfg=gray
 hi! PmenuMatch cterm=NONE ctermbg=white ctermfg=NONE
 hi! PmenuMatchSel cterm=bold ctermbg=darkblue ctermfg=NONE
 hi! PmenuSel cterm=bold ctermbg=yellow ctermfg=white
