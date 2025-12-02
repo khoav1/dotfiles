@@ -5,7 +5,7 @@ set incsearch hlsearch visualbell showcmd showmode
 set timeout timeoutlen=512 updatetime=256
 set wildmenu wildoptions=pum,tagfile wildcharm=<C-z>
 set shiftwidth=4 tabstop=4 softtabstop=4 shiftround expandtab
-set notermguicolors t_Co=16 background=light laststatus=2
+set notermguicolors t_Co=16 background=dark laststatus=2
 set wrap list lcs=tab:>\ ,trail:-,nbsp:+
 let &showbreak = '+++ '
 
@@ -33,18 +33,13 @@ autocmd FileType vim setlocal keywordprg=:help
 
 colorscheme quiet  " minimal colors
 hi! SignColumn cterm=NONE ctermbg=NONE
-hi! VertSplit ctermbg=NONE ctermfg=cyan
-hi! StatusLineNC cterm=NONE ctermbg=cyan ctermfg=green
-hi! EndOfBuffer ctermfg=gray
-hi! NonText ctermfg=gray
-hi! LineNr ctermfg=gray
-hi! Folded ctermfg=gray
-hi! SpecialKey ctermfg=gray
-hi! PmenuMatch cterm=NONE ctermbg=white ctermfg=NONE
-hi! PmenuMatchSel cterm=bold ctermbg=darkblue ctermfg=NONE
-hi! PmenuSel cterm=bold ctermbg=yellow ctermfg=white
-hi! PmenuSbar cterm=NONE ctermbg=yellow
-hi! PmenuThumb ctermbg=lightcyan
+hi! WarningMsg ctermfg=darkyellow
+hi! ErrorMsg ctermfg=red
+hi! Visual ctermfg=yellow
+hi! PmenuMatch cterm=NONE ctermbg=black ctermfg=NONE
+hi! PmenuMatchSel cterm=bold ctermbg=darkgreen ctermfg=black
+hi! PmenuSel cterm=bold ctermbg=blue ctermfg=black
+hi! PmenuThumb ctermbg=black
 
 " keep things simple here, only essentials
 call plug#begin()
