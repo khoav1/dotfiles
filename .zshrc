@@ -21,5 +21,6 @@ setopt PROMPT_SUBST
 NL=$'\n'
 PS1='%B%0~%f%b% $(__git_ps1 " (%s)")%f$NL%(!.#.>)%f%b '
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+alias vim=nvim
 alias myip='echo $(dig +short txt ch whoami.cloudflare @1.0.0.1)'
 source $HOME/.profile

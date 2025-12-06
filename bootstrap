@@ -15,15 +15,15 @@ function linking() {
     mkdir -p ${XDG_DATA_HOME:=~/.local/share}
     mkdir -p ${XDG_CONFIG_HOME:=~/.config}
     ln -sfn $(pwd)/ghostty $XDG_CONFIG_HOME/ghostty
+    ln -sfn $(pwd)/nvim $XDG_CONFIG_HOME/nvim
 
     ln -sfn $(pwd)/.gitignore ~/.gitignore
     git config --global core.excludesFile ~/.gitignore
-    git config --global diff.tool vimdiff
-    git config --global merge.tool vimdiff
+    git config --global diff.tool 'nvim -d'
+    git config --global merge.tool 'nvim -d'
     git config --global merge.conflictstyle diff3
 
     touch ~/.profile
-    mkdir -p ~/.vim/undo
     mkdir -p ~/personal
     mkdir -p ~/repos
 }
@@ -46,7 +46,8 @@ if [ "$(uname -s)" = "Darwin" ]; then  # macos
 
     echo '[-] installing essential packages [-]'
     brew update
-    brew install curl wget git coreutils watch cmake ninja tree parallel ncdu tmux ripgrep jq gdb ghostty universal-ctags
+    brew install curl wget git coreutils watch cmake ninja tree parallel ncdu
+    brew install ghostty tmux ripgrep jq gdb universal-ctags
 else  # linux or wsl
     echo '[-] checking secure boot state [-]' && \
         [ ! -f /etc/wsl.conf ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]] && \
@@ -91,6 +92,11 @@ curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-pro
 target_dir=~/.zsh/zsh-autosuggestions; \
     [ ! -d $target_dir ] && echo '[-] cloning zsh-autosuggestions [-]' && \
     git clone https://github.com/zsh-users/zsh-autosuggestions $target_dir
+
+target_dir=${XDG_DATA_HOME:=~/.local/share}/neovim; echo '[-] building neovim [-]'; \
+    [ ! -d $target_dir ] && git clone https://github.com/neovim/neovim.git $target_dir; \
+    (cd $target_dir && git pull --rebase && git checkout nightly && \
+    make distclean && make CMAKE_BUILD_TYPE=RelWithDebInfo && sudo make install)
 
 current_shell=$(echo $SHELL)
 if [ "$current_shell" != '/usr/bin/zsh' ] && [ "$current_shell" != '/bin/zsh' ] ; then
