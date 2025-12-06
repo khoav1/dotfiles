@@ -1,8 +1,8 @@
-font-family=SF Mono
+font-family=Cascadia Mono
 font-size=18
 font-feature=-calt,-liga,-dlig
 font-thicken=true
-theme=Builtin Solarized Dark
+theme=Gruvbox Dark Hard
 shell-integration-features=no-cursor
 cursor-style=block
 copy-on-select=true

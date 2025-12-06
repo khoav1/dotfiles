@@ -47,7 +47,7 @@ if [ "$(uname -s)" = "Darwin" ]; then  # macos
     echo '[-] installing essential packages [-]'
     brew update
     brew install curl wget git coreutils watch cmake ninja tree parallel ncdu
-    brew install ghostty tmux ripgrep jq gdb universal-ctags
+    brew install ghostty tmux ripgrep jq gdb universal-ctags font-cascadia-mono
 else  # linux or wsl
     echo '[-] checking secure boot state [-]' && \
         [ ! -f /etc/wsl.conf ] && [[ "$(mokutil --sb-state)" != *"SecureBoot enabled"* ]] && \
@@ -55,8 +55,8 @@ else  # linux or wsl
 
     echo '[-] installing essential packages [-]'
     sudo dnf upgrade -y
-    sudo dnf install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build
-    sudo dnf install -y parallel ncdu watch tree vim tmux ripgrep gdb xxd jq wl-clipboard
+    sudo dnf install -y curl wget zip zsh git coreutils gcc clang clangd cmake make ninja-build parallel
+    sudo dnf install -y ncdu watch tree vim tmux ripgrep gdb xxd jq wl-clipboard cascadia-mono-fonts
 
     if lspci | grep -E "VGA|3D" | grep -iq "AMD" ; then
         echo '[-] enabling rpm fusion repositories [-]'
@@ -95,7 +95,7 @@ target_dir=~/.zsh/zsh-autosuggestions; \
 
 target_dir=${XDG_DATA_HOME:=~/.local/share}/neovim; echo '[-] building neovim [-]'; \
     [ ! -d $target_dir ] && git clone https://github.com/neovim/neovim.git $target_dir; \
-    (cd $target_dir && git pull --rebase && git checkout nightly && \
+    (cd $target_dir && git pull --rebase && \
     make distclean && make CMAKE_BUILD_TYPE=RelWithDebInfo && sudo make install)
 
 current_shell=$(echo $SHELL)
